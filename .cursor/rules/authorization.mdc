@@ -1,0 +1,16 @@
+---
+description: Authorization — CASL + RBAC.
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Authorization
+
+CASL + RBAC permission strings `{resource}.{action}`.
+
+- Ability rules in `@zarva/shared` via `createAppAbility`
+- Never duplicate ability logic outside shared
+- Nest: PoliciesGuard + service re-check for money/stock
+- FE: `@casl/react` Can + sidebar/route gates
+- Entitlements (plan) gate modules first; CASL gates user actions second
+- SUPER_ADMIN / PLATFORM_ADMIN → manage all

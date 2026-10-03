@@ -1,0 +1,8 @@
+---
+description: Testing and coverage.
+alwaysApply: false
+---
+
+# Testing
+
+Unit + e2e for critical paths (auth, RBAC, billing). Coverage target 100% on shipped first-party feature code. Mock Stripe SDK. Typed fixtures.

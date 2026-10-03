@@ -1,0 +1,81 @@
+---
+description: Glass / panel / metric box surface classes for ZARVA UI.
+globs: "apps/frontend/**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Surfaces
+
+Canonical recipes live in `apps/frontend/src/app/globals.css` (`--glass-*`, `--radius`). Do not invent per-component blur/border/shadow.
+
+## Class map
+
+| Role | Class | Use |
+|------|--------|-----|
+| App canvas | `.zarva-app-canvas` | Root shell background |
+| Shell chrome | `.zarva-glass-sidebar` | Sidebar only; header is plain (no glass) |
+| Content boxes | `.zarva-glass-card` | KPI, forms, hub cards, dialog bodies, ModuleShell, **table wrappers**, detail panels — **not** search/filter toolbars |
+| Controls | `.zarva-glass-input` | Text inputs, search, **select**, textarea — border uses `--glass-border` (same as cards) |
+| Menus / combos | `.zarva-glass-popover` | DropdownMenu, combo panels, floating lists |
+| Route tabs | `.zarva-tabs-list` / `.zarva-tabs-trigger` | SubNav; active chip uses `--glass-border` + glass fill like cards |
+| Nested cells | `bg-nested` + `border-border` | Table rows/headers, inner strips — **no** extra `backdrop-filter` |
+| Chart skeleton | `.zarva-skeleton-chart` (+ `__grid` / `__area` / `__wash`) | Only via `ForecastChartSkeleton` |
+
+## Rules
+
+- Search alone → bare `.zarva-glass-input` (no wrapper div/panel/card). `FilterBar` only when mixing search + other controls, layout-only (no chrome)
+- Outer boxes → `zarva-glass-card` (not `zarva-panel`, not ad-hoc `bg-card`/`bg-elevated` + border)
+- Inputs / selects / textareas → `zarva-glass-input` (shared `--glass-border` with cards); prefer `components/ui` Input/Select/Textarea
+- Dropdown / combo panels → `zarva-glass-popover` (wired in `components/ui/dropdown-menu.tsx`)
+- Table scroll container = `zarva-glass-card`; thead/tbody rows stay nested flat
+- Shared gold edge highlights come from the CSS `::before`/`::after` on glass card/shell — do not duplicate in JSX
+- Prefer CSS variables; no hardcoded hex for surfaces
+- Never invent per-control blur; never use `bg-popover` + plain border for menus
+
+## Metric & content boxes (law)
+
+**Canonical:** dashboard home + shared components below. Reports and other hubs must reuse these — do not invent alternate KPI/hero card layouts.
+
+| Kind | Reuse | Do not |
+|------|--------|--------|
+| Metric / KPI tiles | `KpiGrid` (`components/page/kpi-grid.tsx`) | Custom glass tiles with padded full-body numbers |
+| Content panel (chart, summary, AI, activity shell) | `DashboardPanel` (`features/dashboard/dashboard-panel.tsx`) | Ad-hoc `ChartCard` / one-off glass headers for the same job |
+| KPI / live-rate loading shell | `MetricCardShell` + `MetricCardHeader` | Flat shimmer cards without nested footer rail |
+| Chart loading bed | `ForecastChartSkeleton` inside `DashboardPanel` | Bare shimmer block or grey pulse |
+
+### Metric card anatomy (`KpiGrid` / `LiveRateCard` / `MetricCardShell`)
+
+```text
+zarva-glass-card
+├── header (flex-1): square icon + label  →  items-center gap-3
+└── footer rail: border-t border-primary/12 bg-nested/70
+    └── value (zarva-num) + optional chip
+```
+
+Must:
+
+1. Use `.zarva-metric-card` (+ `__header` / `__footer` / `__footer-row`) — **fixed** `9rem` / `9.5rem`, footer pinned with `margin-top: auto`, footer row `min-height: 1.75rem` so Suspense → live never shifts the header label
+2. Icon square per `icons.mdc` (`size-10` / `rounded-xl` / accent)
+3. Label: `text-sm font-bold leading-none` — **vertically centered with the icon** (`items-center`)
+4. **No empty subtitle spacer** under the label unless a real secondary line exists (e.g. LiveRate unit line)
+5. Value lives only in the nested footer rail (`text-[1.65rem] font-semibold leading-none text-primary` unless tone overrides)
+6. Optional hint/delta = chip in the footer (`rounded-md px-2 py-1 text-xs`), not under the title
+
+### Content panel anatomy (`DashboardPanel`)
+
+```text
+zarva-glass-card p-4 sm:p-5
+├── header: square icon + title  →  flex items-center gap-3, title leading-none
+└── body: min-h-0 (flex-1 when filling a tall cell)
+```
+
+Must:
+
+1. Tall cells (summary next to chart, forecast, AI): `min-h-[22rem] sm:min-h-[24rem]` + `flex flex-col` on the panel
+2. Chart body: `flex min-h-0 flex-1 flex-col` so `ForecastChartSkeleton` / Recharts fill the bed
+3. Side-by-side summary + chart: `grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3` (summary 1 col, chart `lg:col-span-2`) — same as dashboard overview
+4. KPI row above: `mb-4` + `grid-cols-1 sm:grid-cols-2 xl:grid-cols-4`
+
+### Skeletons
+
+Mirror the live anatomy (header square + label, footer rail shimmers, panel + chart bed). Prefer dashboard skeleton bits over page-specific flat cards when the loaded UI uses `KpiGrid` / `DashboardPanel`.

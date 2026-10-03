@@ -1,0 +1,1268 @@
+{
+  "common": {
+    "appName": "ZARVA",
+    "loading": "در حال بارگذاری…",
+    "save": "ذخیره",
+    "cancel": "انصراف",
+    "search": "جستجو",
+    "prev": "قبلی",
+    "next": "بعدی",
+    "total": "جمع",
+    "export": "خروجی",
+    "new": "جدید",
+    "close": "بستن",
+    "menu": "منو",
+    "empty": "هنوز چیزی نیست",
+    "retry": "تلاش دوباره",
+    "sectionErrorTitle": "این بخش بارگذاری نشد",
+    "sectionErrorDescription": "اینجا مشکلی پیش آمد. بقیهٔ صفحه در دسترس است — دوباره تلاش کنید.",
+    "sectionErrorAuthTitle": "ورود لازم است",
+    "sectionErrorAuthDescription": "نشست شما منقضی شده یا موجود نیست. دوباره وارد شوید و این صفحه را باز کنید.",
+    "sectionErrorPlanTitle": "در پلن شما نیست",
+    "sectionErrorPlanDescription": "این ماژول در اشتراک سازمان نیست. پلن را ارتقا دهید یا از مدیر بخواهید.",
+    "sectionErrorPermissionTitle": "دسترسی ندارید",
+    "sectionErrorPermissionDescription": "نقش شما اجازهٔ باز کردن این بخش را ندارد. از مدیر دسترسی بخواهید.",
+    "pageErrorTitle": "صفحه بارگذاری نشد",
+    "pageErrorDescription": "خطای غیرمنتظره‌ای این صفحه را متوقف کرد. دوباره تلاش کنید یا به صفحهٔ دیگری بروید.",
+    "notFoundTitle": "صفحه پیدا نشد",
+    "notFoundDescription": "این آدرس وجود ندارد یا جابه‌جا شده. از خانه مسیر دیگری انتخاب کنید.",
+    "goHome": "برو به خانه",
+    "navLoading": "در حال بارگذاری صفحه"
+  },
+  "nav": {
+    "dashboard": "داشبورد",
+    "sales": "فروش",
+    "purchases": "خرید",
+    "inventory": "انبار",
+    "gold": "طلا",
+    "customers": "مشتریان",
+    "suppliers": "تأمین‌کنندگان",
+    "accounting": "حسابداری",
+    "reports": "گزارش‌ها",
+    "settings": "تنظیمات",
+    "billing": "اشتراک",
+    "roles": "نقش‌ها",
+    "notifications": "اعلان‌ها",
+    "jewelry": "جواهرات",
+    "tax": "مالیات",
+    "workshop": "کارگاه",
+    "branches": "شعب",
+    "ai": "هوش مصنوعی",
+    "commerce": "تجارت",
+    "integrations": "یکپارچه‌سازی",
+    "appearance": "ظاهر",
+    "tagline": "سیستم عامل کسب‌وکار طلا",
+    "groupGeneral": "عمومی",
+    "groupBusiness": "کسب‌وکار",
+    "groupCommerce": "تجارت",
+    "groupIntegrations": "یکپارچه‌سازی",
+    "groupSystem": "سیستم",
+    "organization": "سازمان",
+    "audit": "ممیزی",
+    "search": "جستجو",
+    "platformOrgs": "سازمان‌ها",
+    "platformSessions": "نشست‌ها"
+  },
+  "auth": {
+    "login": "ورود",
+    "signup": "شروع دوره آزمایشی",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "phone": "شماره موبایل",
+    "address": "آدرس",
+    "name": "نام کامل",
+    "organizationName": "نام کسب‌وکار",
+    "logout": "خروج",
+    "settings": "تنظیمات",
+    "tabPassword": "رمز عبور",
+    "tabOtp": "کد پیامکی",
+    "sendOtp": "ارسال کد",
+    "resendOtp": "ارسال مجدد کد",
+    "otpCode": "کد تأیید",
+    "loginWithOtp": "ورود با کد",
+    "otpHint": "در حالت توسعه پیامک در لاگ سرور است؛ با provider کنسول کد 000000 کار می‌کند.",
+    "signupOtpHint": "قبل از ساخت فضای کاری، موبایل را با پیامک تأیید کنید. کد توسعه: 000000.",
+    "invalidPhone": "شماره موبایل معتبر وارد کنید (09XXXXXXXXX)",
+    "invalidOtp": "کد نامعتبر یا منقضی شده",
+    "otpRequestFailed": "ارسال کد پیامکی ممکن نشد",
+    "signupFailed": "ثبت‌نام ناموفق — جزئیات و کد را بررسی کنید",
+    "roles": {
+      "SUPER_ADMIN": "مدیر کل",
+      "PLATFORM_ADMIN": "مدیر پلتفرم",
+      "ORG_ADMIN": "مدیر سازمان",
+      "CASHIER": "صندوقدار"
+    },
+    "noAccount": "تازه‌وارد هستید؟",
+    "hasAccount": "حساب دارید؟",
+    "invalidCredentials": "ایمیل یا رمز عبور نادرست است",
+    "networkError": "ارتباط با سرور برقرار نشد. اتصال را بررسی کنید و دوباره تلاش کنید.",
+    "seedHint": "دمو: admin@zarva.dev / Password123! · cashier@zarva.dev · موبایل 09120000001 / 09120000002",
+    "enterAsAdmin": "ورود به‌عنوان مدیر کل",
+    "enterAsCashier": "ورود به‌عنوان صندوقدار",
+    "welcomeBack": "بازگشت به کارگاه",
+    "welcomeSub": "برای فروش، موجودی و دفتر طلا وارد شوید.",
+    "createOrg": "کارگاه خود را روی ZARVA باز کنید",
+    "createOrgSub": "یک فضای کاری برای طلافروشی — وزن، قیمت و افراد هم‌تراز.",
+    "devicesMenu": "دستگاه‌های فعال",
+    "devices": {
+      "title": "دستگاه‌های فعال",
+      "description": "ببینید حسابتان روی چه دستگاه‌هایی وارد شده است.",
+      "activeTab": "فعال",
+      "current": "این دستگاه",
+      "lastSeen": "آخرین فعالیت {when}",
+      "terminate": "قطع نشست",
+      "revokeOthers": "قطع بقیه نشست‌ها",
+      "emptyTitle": "دستگاه فعالی نیست",
+      "emptyDescription": "ورودها اینجا نمایش داده می‌شوند.",
+      "errorTitle": "بارگذاری نشد",
+      "errorDescription": "لطفاً دوباره تلاش کنید.",
+      "newLoginEyebrow": "امنیت حساب",
+      "newLoginTitle": "ورود جدید شناسایی شد",
+      "newLoginBody": "همین الان از دستگاه دیگری وارد حساب شده‌اند. خودتان بودید؟",
+      "newLoginDevice": "دستگاه",
+      "newLoginIp": "آدرس IP",
+      "newLoginHint": "اگر شما نبودید، همان الان آن نشست را قطع کنید.",
+      "newLoginYes": "بله، خودم بودم",
+      "newLoginNo": "خیر، قطع کن",
+      "newLoginDenying": "در حال قطع…",
+      "limitTitle": "سقف دستگاه پر است",
+      "limitBody": "قبل از ادامه یکی از دستگاه‌ها را خارج کنید.",
+      "banned": "این دستگاه از ورود محروم شده است.",
+      "devicesMenu": "دستگاه‌های فعال"
+    },
+    "loginHistory": {
+      "title": "تاریخچه ورود",
+      "emptyTitle": "تاریخچه‌ای نیست",
+      "emptyDescription": "ورودهای قبلی اینجا می‌آید.",
+      "active": "فعال",
+      "endReason": {
+        "logout": "خروج",
+        "revoked_by_user": "قطع شده",
+        "revoked_by_admin": "قطع توسط ادمین",
+        "replaced": "جایگزین شده",
+        "denied_not_me": "رد شده",
+        "banned": "مسدود",
+        "expired": "منقضی"
+      }
+    }
+  },
+  "landing": {
+    "eyebrow": "سیستم‌عامل کسب‌وکار طلا",
+    "headline": "فروشگاه را با دقت فلز اداره کنید",
+    "sub": "فروش، انبار و دفتر طلا در یک فضای تاریک و آرام — برای کف فروشگاه فارسی، انگلیسی و عربی.",
+    "ctaLogin": "ورود",
+    "ctaPricing": "مشاهده پلن‌ها",
+    "ctaTrial": "شروع آزمایشی"
+  },
+  "units": {
+    "millionRial": "میلیون ریال",
+    "millionRialCompact": "م.ریال",
+    "kg": "کیلوگرم",
+    "kgCompact": "ک.گ",
+    "gram": "گرم",
+    "gramCompact": "g",
+    "ounce": "اونس",
+    "ounceCompact": "oz",
+    "millionPerGram": "م/گرم",
+    "millionPerGramCompact": "م/g"
+  },
+  "dashboard": {
+    "title": "نمای کلی",
+    "subtitle": "امروز روی کف فروشگاه",
+    "kpi": {
+      "salesToday": "فروش امروز",
+      "goldStock": "موجودی طلا",
+      "customers": "مشتریان",
+      "margin": "حاشیه سود"
+    },
+    "liveRates": {
+      "title": "نرخ لحظه‌ای",
+      "xau_usd": "طلای جهانی",
+      "iran_gold_24k": "طلای ۲۴ عیار",
+      "iran_gold_18k": "طلای ۱۸ عیار",
+      "usd_irr": "دلار آزاد",
+      "perOz": "/ اونس",
+      "perGram": "/ گرم",
+      "perOzCompact": "/ oz",
+      "perGramCompact": "/ g",
+      "toman": "تومان",
+      "usd": "دلار",
+      "up": "افزایش",
+      "down": "کاهش",
+      "flat": "بدون تغییر",
+      "updated": "به‌روزرسانی",
+      "unavailable": "در دسترس نیست",
+      "stale": "منقضی"
+    },
+    "forecast": "آهنگ فروش هفت‌روزه",
+    "weekdays": {
+      "sat": "شنبه",
+      "sun": "یکشنبه",
+      "mon": "دوشنبه",
+      "tue": "سه‌شنبه",
+      "wed": "چهارشنبه",
+      "thu": "پنجشنبه",
+      "fri": "جمعه"
+    },
+    "aiTitle": "بینش‌ها",
+    "aiBody": "پیشنهادها با فعال‌شدن ماژول تحلیل نمایش داده می‌شوند.",
+    "activity": "فعالیت اخیر",
+    "activityEmptyTitle": "فعالیت اخیری نیست",
+    "activityEmptyDescription": "فروش، خرید و تغییرات موجودی اینجا نمایش داده می‌شوند.",
+    "overviewErrorTitle": "داده‌های داشبورد در دسترس نیست",
+    "overviewErrorDescription": "بارگذاری شاخص‌ها ممکن نشد. دوباره تلاش کنید.",
+    "ratesErrorTitle": "نرخ‌های زنده در دسترس نیست",
+    "ratesErrorDescription": "به‌روزرسانی نرخ بازار ممکن نشد. دوباره تلاش کنید.",
+    "activityItems": {
+      "saleCompleted": "فروش ثبت شد",
+      "purchaseReceived": "خرید دریافت شد",
+      "stockAdjust": "تعدیل موجودی"
+    }
+  },
+  "pricing": {
+    "title": "پلن‌هایی به اندازه میز کار",
+    "subtitle": "اول آزمایش. وقتی کف فروشگاه به صندلی و ماژول بیشتر نیاز داشت ارتقا دهید.",
+    "cta": "شروع کنید",
+    "monthly": "ماه",
+    "yearly": "سال",
+    "free": "رایگان",
+    "empty": "پلن‌ها با آنلاین‌شدن صورتحساب بارگذاری می‌شوند.",
+    "emptyTitle": "پلنی موجود نیست",
+    "emptyDescription": "صورتحساب آفلاین است یا هنوز پلنی منتشر نشده. کمی بعد دوباره تلاش کنید.",
+    "errorTitle": "بارگذاری پلن‌ها ممکن نشد",
+    "errorDescription": "دریافت قیمت‌ها ممکن نشد. اتصال را بررسی کنید و دوباره تلاش کنید."
+  },
+  "billing": {
+    "title": "اشتراک و صورتحساب",
+    "description": "پلن، تمدید و گزینه‌های ارتقا را ببینید.",
+    "currentPlan": "پلن فعلی",
+    "upgrade": "ارتقای پلن",
+    "errorTitle": "اشتراک در دسترس نیست",
+    "errorDescription": "بارگذاری اشتراک ممکن نشد. دوباره تلاش کنید.",
+    "emptyTitle": "پلن فعالی نیست",
+    "emptyDescription": "هنوز جزئیات اشتراکی نیست. وقتی آماده بودید ارتقا دهید.",
+    "manage": "مدیریت پرداخت",
+    "status": "وضعیت",
+    "periodEnd": "تمدید / پایان",
+    "source": "منبع صورتحساب",
+    "monthly": "ماهانه",
+    "yearly": "سالانه",
+    "selectPlan": "انتخاب پلن",
+    "noPrice": "قیمتی برای این بازه نیست",
+    "statuses": {
+      "trialing": "آزمایشی",
+      "active": "فعال",
+      "past_due": "معوق",
+      "canceled": "لغو شده",
+      "expired": "منقضی",
+      "paused": "متوقف"
+    },
+    "sources": {
+      "stripe": "Stripe",
+      "manual": "دستی"
+    }
+  },
+  "platform": {
+    "title": "سازمان‌ها",
+    "description": "اختصاص پلن، تمدید و تم برای هر سازمان.",
+    "search": "جستجوی سازمان…",
+    "kpiOrgs": "سازمان‌ها",
+    "kpiActive": "فعال",
+    "kpiExpiring": "نزدیک انقضا",
+    "orgs": "سازمان‌ها",
+    "plan": "پلن",
+    "status": "وضعیت",
+    "expires": "انقضا",
+    "theme": "تم",
+    "assign": "اختصاص اشتراک",
+    "save": "ذخیره",
+    "interval": "بازه",
+    "months": "ماه",
+    "years": "سال",
+    "emptyTitle": "سازمانی نیست",
+    "emptyDescription": "پس از ثبت‌نام اینجا دیده می‌شوند.",
+    "errorTitle": "پلتفرم در دسترس نیست",
+    "errorDescription": "بارگذاری سازمان‌ها ممکن نشد.",
+    "themeSaved": "تم ذخیره شد",
+    "subSaved": "اشتراک به‌روز شد",
+    "themes": {
+      "zarva-gold": "طلایی",
+      "zarva-noir": "تیره",
+      "zarva-emerald": "زمردی",
+      "zarva-sapphire": "یاقوت کبود",
+      "zarva-rose": "رزگلد",
+      "zarva-copper": "مسی",
+      "zarva-pearl": "مرواریدی",
+      "zarva-obsidian": "ابسیدین",
+      "zarva-amber": "کهربایی",
+      "zarva-slate": "سنگی"
+    },
+    "maxDevices": "حداکثر دستگاه هر کاربر",
+    "maxDevicesHint": "خالی = نامحدود. برای همه کاربران این سازمان اعمال می‌شود.",
+    "unlimited": "نامحدود",
+    "savePolicy": "ذخیره سیاست",
+    "policySaved": "سیاست امنیتی ذخیره شد",
+    "sessions": {
+      "title": "نشست‌ها",
+      "description": "نظارت بر ورودها در همه سازمان‌ها.",
+      "activeTab": "فعال",
+      "historyTab": "تاریخچه",
+      "search": "جستجوی کاربر…",
+      "emptyTitle": "نشست فعالی نیست",
+      "emptyDescription": "کسی الان وارد نیست.",
+      "emptyHistoryTitle": "تاریخچه‌ای نیست",
+      "emptyHistoryDescription": "ورودها اینجا می‌آید.",
+      "colOrg": "سازمان",
+      "colUser": "کاربر",
+      "colDevice": "دستگاه",
+      "colIp": "IP",
+      "colLastSeen": "آخرین فعالیت",
+      "revoke": "ابطال"
+    },
+    "deviceBans": {
+      "title": "بن دستگاه",
+      "ban": "بن دستگاه",
+      "banTitle": "بن کردن این دستگاه",
+      "scope": {
+        "user": "فقط همین کاربر",
+        "global": "همه حساب‌ها"
+      },
+      "reason": "دلیل (اختیاری)",
+      "cancel": "انصراف",
+      "confirm": "بن",
+      "unban": "رفع بن",
+      "emptyTitle": "بنی نیست",
+      "emptyDescription": "دستگاه‌های بن‌شده اینجا می‌آیند."
+    }
+  },
+  "roles": {
+    "title": "نقش‌ها و دسترسی‌ها",
+    "description": "تعیین کنید هر نقش چه کاری می‌تواند انجام دهد.",
+    "permissions": "مجوزها",
+    "edit": "ویرایش",
+    "locked": "قفل",
+    "editTitle": "ویرایش {name}",
+    "saveError": "ذخیره مجوزها ناموفق بود.",
+    "loadErrorTitle": "نقش‌ها در دسترس نیست",
+    "loadErrorDescription": "بارگذاری نقش‌ها ممکن نشد. دوباره تلاش کنید.",
+    "emptyTitle": "هنوز نقشی نیست",
+    "emptyDescription": "نقش‌ها پس از راه‌اندازی سازمان اینجا دیده می‌شوند.",
+    "perm": {
+      "notifications_read": "خواندن اعلان‌ها",
+      "notifications_send": "باز کردن ارسال",
+      "notifications_send_low": "ارسال سطح کم",
+      "notifications_send_normal": "ارسال سطح عادی",
+      "notifications_send_high": "ارسال سطح بالا",
+      "notifications_send_critical": "ارسال سطح حیاتی",
+      "notifications_broadcast_platform": "پخش سراسری پلتفرم"
+    }
+  },
+  "settings": {
+    "title": "تنظیمات",
+    "appearance": "ظاهر",
+    "appearanceDescription": "تم و ترجیحات نمایش فضای کاری.",
+    "themePreset": "پیش‌تنظیم تم",
+    "themeLocked": "تم توسط پلن یا مدیر پلتفرم تعیین می‌شود.",
+    "compactUnits": "واحدهای فشرده",
+    "compactUnitsHint": "مبالغ و وزن با مخفف نشان داده شوند (مثل م.ریال)"
+  },
+  "shell": {
+    "comingSoon": "این ماژول برای پلن شما آماده است.",
+    "sampleTable": "ردیف نمونه تا وقتی API آفلاین است",
+    "emptyTitle": "هنوز ردیفی نیست",
+    "emptyDescription": "با ثبت داده در این ماژول، اینجا پر می‌شود.",
+    "colId": "شناسه",
+    "colName": "نام",
+    "colStatus": "وضعیت",
+    "colUpdated": "به‌روزرسانی",
+    "header": {
+      "quickCreateAria": "ایجاد سریع",
+      "quickCreateTitle": "ایجاد",
+      "newSale": "فروش جدید",
+      "newPurchase": "خرید جدید",
+      "customers": "مشتریان",
+      "searchAria": "جستجو",
+      "liveRatesAria": "نرخ لحظه‌ای",
+      "liveRatesTitle": "نرخ لحظه‌ای",
+      "liveRatesError": "بارگذاری نرخ‌ها ناموفق بود",
+      "notificationsTooltip": "اعلان‌ها",
+      "breadcrumbAria": "مسیر صفحه"
+    }
+  },
+  "modules": {
+    "sales": {
+      "title": "فروش",
+      "description": "فاکتورها، صندوق، مرجوعی و دریافت‌ها.",
+      "search": "جستجوی فاکتور…",
+      "emptyTitle": "فروشی نیست",
+      "emptyDescription": "از صفحه صندوق فروش جدید بسازید.",
+      "newSale": "فروش جدید",
+      "posTitle": "صندوق فروش",
+      "posDescription": "اسکن یا افزودن کالا و تسویه.",
+      "posScan": "بارکد / SKU",
+      "posAdd": "افزودن",
+      "posItem": "کالا",
+      "posSampleItem": "زنجیر ۱۸ عیار",
+      "posCartTitle": "سبد فروش",
+      "posCartCount": "{count} کالا",
+      "posCheckout": "تسویه",
+      "posCheckoutHint": "مشتری و دریافت وجه",
+      "posCustomerPh": "نام یا موبایل مشتری",
+      "posSubtotal": "جمع جزء",
+      "posTax": "مالیات",
+      "posTotal": "جمع",
+      "posPay": "دریافت وجه",
+      "returnsTitle": "مرجوعی فروش",
+      "returnsDescription": "کالای برگشتی مرتبط با فاکتور.",
+      "paymentsTitle": "دریافت‌های فروش",
+      "paymentsDescription": "تسویه فاکتورهای باز.",
+      "nav": {
+        "invoices": "فاکتورها",
+        "pos": "صندوق",
+        "returns": "مرجوعی",
+        "payments": "دریافت‌ها"
+      },
+      "kpi": {
+        "today": "فروش امروز",
+        "count": "فاکتور",
+        "avg": "میانگین",
+        "unpaid": "پرداخت‌نشده",
+        "returns": "مرجوعی",
+        "returnValue": "ارزش مرجوعی",
+        "paymentsToday": "دریافت امروز",
+        "pending": "در انتظار"
+      },
+      "cols": {
+        "number": "شماره",
+        "customer": "مشتری",
+        "date": "تاریخ",
+        "weight": "وزن طلا",
+        "amount": "مبلغ",
+        "payment": "پرداخت",
+        "seller": "فروشنده",
+        "status": "وضعیت",
+        "invoice": "فاکتور",
+        "method": "روش"
+      },
+      "payment": {
+        "paid": "پرداخت‌شده",
+        "partial": "نسبی",
+        "unpaid": "پرداخت‌نشده"
+      },
+      "status": {
+        "completed": "تکمیل",
+        "draft": "پیش‌نویس",
+        "void": "باطل",
+        "confirmed": "تأیید شده",
+        "ready": "آماده"
+      },
+      "loadErrorTitle": "بارگذاری فروش ناموفق بود",
+      "loadErrorDescription": "اتصال را بررسی کنید و دوباره تلاش کنید.",
+      "print": {
+        "print": "چاپ / ذخیره PDF",
+        "preview": "پیش‌نمایش چاپ",
+        "back": "بازگشت به فاکتور",
+        "shopPhone": "تلفن",
+        "guildId": "شناسه صنفی",
+        "documentTitle": "فاکتور فروش طلا و جواهر",
+        "invoiceNumber": "شماره فاکتور",
+        "date": "تاریخ",
+        "customer": "خریدار",
+        "phone": "تلفن",
+        "nationalId": "کد ملی",
+        "seller": "فروشنده",
+        "totalWeight": "جمع وزن",
+        "grandTotal": "مبلغ قابل پرداخت",
+        "amountInWords": "مبلغ به حروف",
+        "grams": "گرم",
+        "warranty": "اصل طلا از مالیات معاف است؛ مالیات فقط روی اجرت و سود فروشنده محاسبه می‌شود. این فاکتور سند خرید است؛ برای مرجوعی یا فروش مجدد نزد خود نگه دارید.",
+        "buyerSign": "امضا و مهر خریدار",
+        "sellerSign": "امضا و مهر فروشنده",
+        "cols": {
+          "row": "ردیف",
+          "description": "شرح کالا",
+          "weight": "وزن",
+          "purity": "عیار",
+          "dailyRate": "قیمت روز",
+          "goldValue": "اصل طلا",
+          "wage": "اجرت",
+          "profit": "سود",
+          "tax": "مالیات",
+          "lineTotal": "مبلغ"
+        }
+      }
+    },
+    "purchases": {
+      "title": "خرید",
+      "description": "خرید از تأمین‌کننده، رسید و مرجوعی خرید.",
+      "search": "جستجوی خرید…",
+      "emptyTitle": "خریدی نیست",
+      "emptyDescription": "یک خرید از تأمین‌کننده ثبت کنید.",
+      "newPurchase": "خرید جدید",
+      "formDescription": "فرم نمایشی — اتصال API بعداً.",
+      "supplierPh": "نام تأمین‌کننده",
+      "returnsTitle": "مرجوعی خرید",
+      "returnsDescription": "کالای برگشتی به تأمین‌کننده.",
+      "nav": {
+        "list": "خریدها",
+        "new": "جدید",
+        "returns": "مرجوعی"
+      },
+      "kpi": {
+        "month": "این ماه",
+        "weight": "وزن طلا",
+        "open": "باز",
+        "returns": "مرجوعی"
+      },
+      "cols": {
+        "number": "شماره",
+        "supplier": "تأمین‌کننده",
+        "date": "تاریخ",
+        "weight": "وزن",
+        "amount": "مبلغ",
+        "payment": "پرداخت",
+        "purity": "عیار",
+        "purchase": "خرید"
+      },
+      "payment": {
+        "paid": "پرداخت‌شده",
+        "partial": "نسبی",
+        "unpaid": "پرداخت‌نشده"
+      }
+    },
+    "inventory": {
+      "title": "انبار",
+      "description": "موجودی طلا، جواهر، سکه و خام.",
+      "search": "جستجوی کالا…",
+      "emptyTitle": "انبار خالی",
+      "emptyDescription": "کالا اضافه کنید یا خرید دریافت کنید.",
+      "productsDescription": "همه SKUهای قابل فروش و خام.",
+      "movementsDescription": "ورود و خروج موجودی.",
+      "warehousesDescription": "انبارها و ویترین‌ها.",
+      "lowStockDescription": "کالاهای زیر نقطه سفارش.",
+      "valuationDescription": "ارزش‌گذاری موجودی.",
+      "adjustmentsDescription": "تعدیل دستی.",
+      "barcodesDescription": "بارکدها.",
+      "nav": {
+        "overview": "نمای کلی",
+        "products": "کالاها",
+        "movements": "گردش",
+        "warehouses": "انبارها",
+        "lowStock": "کم‌موجود",
+        "valuation": "ارزش‌گذاری",
+        "adjustments": "تعدیل",
+        "barcodes": "بارکد"
+      },
+      "kpi": {
+        "skus": "SKU",
+        "value": "ارزش",
+        "low": "کم‌موجود",
+        "weight": "وزن کل",
+        "rows": "ردیف"
+      },
+      "cols": {
+        "name": "نام",
+        "sku": "SKU",
+        "weight": "وزن",
+        "purity": "عیار",
+        "qty": "تعداد",
+        "location": "محل",
+        "value": "ارزش",
+        "status": "وضعیت"
+      },
+      "status": {
+        "available": "موجود",
+        "reserved": "رزرو",
+        "low": "کم"
+      }
+    },
+    "gold": {
+      "title": "طلا",
+      "description": "موقعیت طلای خالص، لات، عیار و دفتر.",
+      "search": "جستجوی طلا…",
+      "emptyTitle": "گردش طلا نیست",
+      "emptyDescription": "فروش و خرید اینجا دیده می‌شود.",
+      "ledgerDescription": "دفتر ریالی/طلا (نمایشی).",
+      "calculatorDescription": "ماشین‌حساب نمایشی — موتور محاسباتی واقعی نیست.",
+      "calculatorDisclaimer": "خروجی فقط برای بازبینی رابط کاربری است.",
+      "calculatorResult": "برآورد جمع",
+      "calculate": "محاسبه",
+      "ratesDescription": "نرخ نمایشی (بدون فید زنده).",
+      "txDescription": "تراکنش وزن طلا.",
+      "balanceDescription": "خلاصه مانده طلای خالص.",
+      "rawDescription": "طلای خام.",
+      "meltedDescription": "ذوب‌شده.",
+      "lotsDescription": "لات‌ها.",
+      "puritiesDescription": "استاندارد عیار.",
+      "nav": {
+        "overview": "نمای کلی",
+        "rates": "نرخ‌ها",
+        "transactions": "تراکنش‌ها",
+        "ledger": "دفتر",
+        "balance": "مانده",
+        "raw": "خام",
+        "melted": "ذوب",
+        "lots": "لات",
+        "purities": "عیار",
+        "calculator": "ماشین‌حساب"
+      },
+      "kpi": {
+        "fine": "طلای خالص",
+        "raw": "خام",
+        "melted": "ذوب",
+        "rate": "نرخ",
+        "opening": "اول دوره",
+        "closing": "آخر دوره",
+        "rows": "ردیف"
+      },
+      "cols": {
+        "date": "تاریخ",
+        "type": "نوع",
+        "weight": "وزن",
+        "purity": "عیار",
+        "fine": "خالص",
+        "counterparty": "طرف حساب",
+        "reference": "مرجع",
+        "name": "نام",
+        "description": "شرح",
+        "debit": "بدهکار",
+        "credit": "بستانکار",
+        "balance": "مانده",
+        "fee": "کارمزد"
+      }
+    },
+    "customers": {
+      "title": "مشتریان",
+      "description": "پروفایل، مانده و مطالبات.",
+      "search": "جستجوی مشتری…",
+      "emptyTitle": "مشتری نیست",
+      "emptyDescription": "برای فروش نسیه مشتری اضافه کنید.",
+      "nav": {
+        "list": "مشتریان",
+        "balances": "مطالبات",
+        "profile": "پروفایل"
+      },
+      "kpi": {
+        "count": "مشتری",
+        "balance": "مانده بدهکار",
+        "total": "گردش"
+      },
+      "cols": {
+        "name": "نام",
+        "contact": "تماس",
+        "balance": "مانده",
+        "lastTxn": "آخرین تراکنش",
+        "total": "جمع",
+        "status": "وضعیت"
+      },
+      "status": {
+        "active": "فعال",
+        "inactive": "غیرفعال"
+      },
+      "loadErrorTitle": "بارگذاری مشتریان ناموفق بود",
+      "loadErrorDescription": "اتصال را بررسی کنید و دوباره تلاش کنید."
+    },
+    "suppliers": {
+      "title": "تأمین‌کنندگان",
+      "description": "پروفایل، مانده و بدهی.",
+      "search": "جستجوی تأمین‌کننده…",
+      "emptyTitle": "تأمین‌کننده نیست",
+      "emptyDescription": "قبل از خرید تأمین‌کننده اضافه کنید.",
+      "nav": {
+        "list": "تأمین‌کنندگان",
+        "balances": "بدهی‌ها",
+        "profile": "پروفایل"
+      },
+      "kpi": {
+        "count": "تأمین‌کننده",
+        "balance": "مانده بستانکار",
+        "total": "گردش"
+      },
+      "cols": {
+        "name": "نام",
+        "contact": "تماس",
+        "balance": "مانده",
+        "lastTxn": "آخرین تراکنش",
+        "total": "جمع",
+        "status": "وضعیت"
+      },
+      "status": {
+        "active": "فعال",
+        "inactive": "غیرفعال"
+      },
+      "loadErrorTitle": "بارگذاری تأمین‌کنندگان ناموفق بود",
+      "loadErrorDescription": "اتصال را بررسی کنید و دوباره تلاش کنید."
+    },
+    "accounting": {
+      "title": "حسابداری",
+      "description": "نقد، دفاتر، درآمد، هزینه، مطالبات/بدهی و تراکنش‌ها.",
+      "search": "جستجو…",
+      "emptyTitle": "ردیفی نیست",
+      "emptyDescription": "اسناد حسابداری اینجا می‌آید.",
+      "sampleDesc": "تسویه فروش",
+      "sampleDesc2": "تسویه خرید",
+      "nav": {
+        "dashboard": "داشبورد",
+        "rialLedger": "دفتر ریالی",
+        "cashBank": "صندوق و بانک",
+        "income": "درآمد",
+        "expenses": "هزینه",
+        "receivables": "مطالبات",
+        "payables": "بدهی‌ها",
+        "transactions": "تراکنش‌ها"
+      },
+      "hub": {
+        "rial": "دفتر کل ریالی.",
+        "cash": "صندوق و حساب بانکی.",
+        "income": "درآمدها.",
+        "expenses": "هزینه‌های عملیاتی.",
+        "ar": "مطالبات مشتریان.",
+        "ap": "بدهی به تأمین‌کنندگان.",
+        "tx": "اسناد و پرداخت‌ها."
+      },
+      "kpi": {
+        "cash": "نقد",
+        "ar": "مطالبات",
+        "ap": "بدهی",
+        "pl": "سود و زیان",
+        "opening": "اول دوره",
+        "closing": "آخر دوره",
+        "rows": "ردیف"
+      },
+      "cols": {
+        "date": "تاریخ",
+        "description": "شرح",
+        "debit": "بدهکار",
+        "credit": "بستانکار",
+        "balance": "مانده",
+        "ref": "مرجع",
+        "amount": "مبلغ"
+      }
+    },
+    "reports": {
+      "title": "گزارش‌ها",
+      "description": "فروش، موجودی، طلا و سود را ببینید — یک گزارش را باز کنید.",
+      "hubIntroTitle": "نمای کلی کسب‌وکار",
+      "hubIntroDesc": "هر گزارش از داده‌های زنده سازمان شما ساخته می‌شود. برای جزئیات یکی را باز کنید.",
+      "openReport": "باز کردن",
+      "chartEmpty": "در این دوره داده‌ای نیست",
+      "chartEmptyDesc": "با ثبت فاکتور یا حرکت انبار، نمودار خودکار پر می‌شود.",
+      "seriesTitle": "روند",
+      "seriesSubtitle": "مقادیر دورهٔ انتخاب‌شده",
+      "seriesValue": "مقدار",
+      "summaryLabel": "جمع اصلی",
+      "summaryHint": "جمع‌آوری‌شده از سوابق زنده سازمان",
+      "periodBadge": "دوره · {period}",
+      "bodyErrorTitle": "دادهٔ گزارش در دسترس نیست",
+      "bodyErrorDescription": "بارگذاری این گزارش ممکن نشد. دوباره تلاش کنید.",
+      "nav": {
+        "hub": "همه گزارش‌ها"
+      },
+      "cards": {
+        "sales": "فروش",
+        "salesDesc": "فاکتورها، تسویه و عملکرد فروش در طول زمان.",
+        "purchases": "خرید",
+        "purchasesDesc": "هزینه تأمین‌کننده و وزن طلای خریداری‌شده.",
+        "inventory": "انبار",
+        "inventoryDesc": "تعداد SKU، کمبود موجودی و سطح انبار.",
+        "gold": "طلا",
+        "goldDesc": "تراکنش‌ها و حرکت طلای خالص.",
+        "profit": "سود",
+        "profitDesc": "فروش در برابر هزینه — نمای حاشیه."
+      },
+      "kpi": {
+        "period": "دوره",
+        "thisMonth": "این ماه",
+        "total": "جمع"
+      },
+      "kpiLabels": {
+        "count": "رکوردها",
+        "paid": "پرداخت‌شده",
+        "skus": "کالاها",
+        "low": "کمبود موجودی",
+        "txns": "تراکنش‌ها",
+        "sales": "فروش",
+        "cogs": "بهای تمام‌شده"
+      }
+    },
+    "settings": {
+      "title": "تنظیمات",
+      "description": "قوانین کسب‌وکار، فاکتور، طلا و امنیت.",
+      "fields": {
+        "value": "مقدار",
+        "placeholder": "مقدار را وارد کنید",
+        "note": "یادداشت"
+      },
+      "sections": {
+        "general": {
+          "title": "عمومی",
+          "description": "پیش‌فرض سازمان."
+        },
+        "business": {
+          "title": "کسب‌وکار",
+          "description": "معاملات و شعبه."
+        },
+        "invoices": {
+          "title": "فاکتور",
+          "description": "شماره‌گذاری و چاپ."
+        },
+        "gold": {
+          "title": "طلا",
+          "description": "عیار و نمایش نرخ."
+        },
+        "inventory": {
+          "title": "انبار",
+          "description": "ارزش‌گذاری و سفارش."
+        },
+        "accounting": {
+          "title": "حسابداری",
+          "description": "سال مالی و حساب‌ها."
+        },
+        "tax": {
+          "title": "مالیات",
+          "description": "کد مالیاتی."
+        },
+        "notifications": {
+          "title": "اعلان‌ها",
+          "description": "کانال هشدار."
+        },
+        "security": {
+          "title": "امنیت",
+          "description": "نشست و ۲FA."
+        },
+        "appearance": {
+          "title": "ظاهر",
+          "description": "تم و تراکم."
+        },
+        "language": {
+          "title": "زبان",
+          "description": "لوکال و تقویم."
+        },
+        "backup": {
+          "title": "پشتیبان",
+          "description": "خروجی و بازیابی (فقط UI)."
+        },
+        "billing": {
+          "title": "اشتراک",
+          "description": "پلن و صورتحساب."
+        }
+      }
+    },
+    "organization": {
+      "title": "سازمان",
+      "description": "پروفایل، کاربران، نقش‌ها و ممیزی.",
+      "search": "جستجو…",
+      "emptyTitle": "ردیفی نیست",
+      "emptyDescription": "چیزی برای نمایش نیست.",
+      "nav": {
+        "profile": "پروفایل",
+        "users": "کاربران",
+        "roles": "نقش‌ها",
+        "audit": "ممیزی"
+      },
+      "hub": {
+        "profile": "نام حقوقی و شناسه مالیاتی.",
+        "users": "افراد دارای دسترسی.",
+        "roles": "نقش‌ها و مجوزهای CASL.",
+        "audit": "گزارش امنیتی و تغییرات."
+      },
+      "fields": {
+        "name": "نام حقوقی",
+        "taxId": "شناسه مالیاتی",
+        "phone": "تلفن"
+      },
+      "status": {
+        "active": "فعال"
+      },
+      "kpi": {
+        "rows": "ردیف"
+      },
+      "cols": {
+        "a": "مورد",
+        "b": "جزئیات",
+        "c": "متا"
+      }
+    },
+    "notifications": {
+      "title": "اعلان‌ها",
+      "description": "هشدارهای سیستمی و عملیاتی.",
+      "search": "جستجوی اعلان…",
+      "emptyTitle": "صندوق خالی",
+      "emptyDescription": "همه چیز به‌روز است.",
+      "sentEmptyTitle": "هنوز اعلانی ارسال نشده",
+      "sentEmptyDescription": "اعلان‌هایی که می‌فرستید اینجا نمایش داده می‌شوند.",
+      "unread": "خوانده‌نشده",
+      "read": "خوانده‌شده",
+      "markAllRead": "خواندن همه",
+      "viewAll": "مشاهده همه",
+      "bellAria": "اعلان‌ها، {count} خوانده‌نشده",
+      "tabs": {
+        "inbox": "صندوق ورودی",
+        "sent": "ارسال‌شده"
+      },
+      "kpi": {
+        "unread": "خوانده‌نشده",
+        "today": "امروز",
+        "inbox": "صندوق",
+        "sent": "ارسال‌شده"
+      },
+      "cols": {
+        "title": "اعلان",
+        "author": "فرستنده",
+        "time": "زمان",
+        "status": "وضعیت",
+        "receipts": "خوانده"
+      },
+      "errors": {
+        "loadInbox": "بارگذاری اعلان‌ها ناموفق بود.",
+        "loadSent": "بارگذاری اعلان‌های ارسال‌شده ناموفق بود."
+      },
+      "receipts": {
+        "title": "چه کسانی خواندند",
+        "close": "بستن",
+        "loading": "در حال بارگذاری…",
+        "error": "بارگذاری رسیدها ناموفق بود.",
+        "counter": "{read} از {total}",
+        "read": "خوانده",
+        "unread": "نخوانده",
+        "noneRead": "هنوز کسی نخوانده است.",
+        "noneUnread": "همه خوانده‌اند."
+      },
+      "priority": {
+        "low": {
+          "label": "کم",
+          "hint": "به‌روزرسانی آرام — بدون وقفه."
+        },
+        "normal": {
+          "label": "عادی",
+          "hint": "اعلان استاندارد صندوق ورودی."
+        },
+        "high": {
+          "label": "بالا",
+          "hint": "در لیست و زنگوله برجسته می‌شود."
+        },
+        "critical": {
+          "label": "حیاتی",
+          "hint": "تا تأیید، رابط کاربری قفل می‌شود."
+        }
+      },
+      "critical": {
+        "eyebrow": "اعلان حیاتی",
+        "ack": "متوجه شدم",
+        "acking": "در حال تأیید…",
+        "queue": "{current} از {total}"
+      },
+      "compose": {
+        "open": "ارسال اعلان",
+        "title": "اعلان جدید",
+        "close": "بستن",
+        "cancel": "انصراف",
+        "send": "ارسال",
+        "sending": "در حال ارسال…",
+        "loading": "در حال بارگذاری…",
+        "emptyUsers": "کاربری موجود نیست.",
+        "error": "ارسال اعلان ممکن نشد.",
+        "validation": {
+          "required": "عنوان و متن الزامی است.",
+          "users": "حداقل یک کاربر را انتخاب کنید.",
+          "orgs": "حداقل یک سازمان را انتخاب کنید.",
+          "network": "اتصال به سرور برقرار نشد.",
+          "forbidden": "مجوز ارسال این اعلان را ندارید.",
+          "loadUsers": "بارگذاری کاربران ناموفق بود.",
+          "loadOrgs": "بارگذاری سازمان‌ها ناموفق بود.",
+          "priority": "مجوز ارسال این سطح را ندارید.",
+          "noPriority": "هیچ سطح ارسالی به نقش شما داده نشده."
+        },
+        "fields": {
+          "title": "عنوان",
+          "body": "متن",
+          "audience": "مخاطب",
+          "priority": "سطح اهمیت",
+          "users": "کاربران",
+          "orgs": "سازمان‌ها"
+        },
+        "audience": {
+          "orgAll": "همهٔ کاربران سازمان من",
+          "users": "کاربران انتخاب‌شده",
+          "platformAll": "همهٔ کاربران پلتفرم",
+          "orgs": "سازمان‌های انتخاب‌شده"
+        }
+      },
+      "terminateSession": "قطع نشست"
+    },
+    "search": {
+      "title": "جستجو",
+      "description": "فاکتور، کالا، طرف‌حساب و لات طلا.",
+      "placeholder": "بنویسید…",
+      "emptyTitle": "شروع کنید",
+      "emptyDescription": "نتایج اینجا نمایش داده می‌شود."
+    },
+    "workshop": {
+      "title": "کارگاه",
+      "description": "سفارش ساخت و بار کاری استادان.",
+      "search": "جستجوی سفارش…",
+      "emptyTitle": "سفارشی نیست",
+      "emptyDescription": "یک سفارش تولید بسازید.",
+      "nav": {
+        "orders": "سفارش‌ها",
+        "production": "تولید",
+        "artisans": "استادان"
+      },
+      "kpi": {
+        "open": "باز",
+        "late": "تأخیر",
+        "done": "انجام‌شده"
+      },
+      "cols": {
+        "order": "سفارش",
+        "customer": "مشتری",
+        "product": "محصول",
+        "artisan": "استاد",
+        "due": "موعد",
+        "status": "وضعیت",
+        "progress": "پیشرفت"
+      }
+    },
+    "workshopProduction": {
+      "title": "تولید",
+      "description": "بچ‌های در حال ساخت.",
+      "search": "جستجو…",
+      "emptyTitle": "بچ نیست",
+      "emptyDescription": "بچ تولیدی نیست.",
+      "kpi": {
+        "a": "بچ",
+        "aValue": "2",
+        "b": "میانگین پیشرفت",
+        "bValue": "52%"
+      },
+      "cols": {
+        "a": "بچ",
+        "b": "محصول",
+        "c": "پیشرفت"
+      }
+    },
+    "workshopArtisans": {
+      "title": "استادان",
+      "description": "صنعت‌گران کارگاه.",
+      "search": "جستجو…",
+      "emptyTitle": "استادی نیست",
+      "emptyDescription": "استاد اضافه کنید.",
+      "kpi": {
+        "a": "استاد",
+        "aValue": "2",
+        "b": "فعال",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "نام",
+        "b": "مهارت",
+        "c": "وضعیت"
+      }
+    },
+    "jewelry": {
+      "title": "جواهرات",
+      "description": "قطعات ساخته‌شده و ویترین.",
+      "search": "جستجو…",
+      "emptyTitle": "جواهری نیست",
+      "emptyDescription": "از کارگاه یا خرید اضافه کنید.",
+      "kpi": {
+        "a": "قطعه",
+        "aValue": "2",
+        "b": "ویترین",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "قطعه",
+        "b": "SKU",
+        "c": "محل"
+      }
+    },
+    "tax": {
+      "title": "مالیات",
+      "description": "اظهارنامه و دوره‌های مالیاتی.",
+      "search": "جستجو…",
+      "emptyTitle": "پرونده نیست",
+      "emptyDescription": "دوره‌ها اینجا می‌آید.",
+      "kpi": {
+        "a": "باز",
+        "aValue": "1",
+        "b": "ارسال‌شده",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "دوره",
+        "b": "وضعیت",
+        "c": "ارسال"
+      }
+    },
+    "branches": {
+      "title": "شعب",
+      "description": "محل‌های چندشعبه‌ای.",
+      "search": "جستجو…",
+      "emptyTitle": "شعبه‌ای نیست",
+      "emptyDescription": "شعبه اضافه کنید.",
+      "kpi": {
+        "a": "شعبه",
+        "aValue": "2",
+        "b": "فعال",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "شعبه",
+        "b": "شهر",
+        "c": "وضعیت"
+      }
+    },
+    "commerce": {
+      "title": "تجارت",
+      "description": "کانال‌های آنلاین و پیام‌رسان.",
+      "search": "جستجو…",
+      "emptyTitle": "کانالی نیست",
+      "emptyDescription": "یک کانال وصل کنید.",
+      "kpi": {
+        "a": "کانال",
+        "aValue": "2",
+        "b": "فعال",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "کانال",
+        "b": "وضعیت",
+        "c": "SKU"
+      }
+    },
+    "ai": {
+      "title": "بینش هوش مصنوعی",
+      "description": "فقط کارت بینش — بدون موتور استدلال جعلی.",
+      "insightLowStock": "مراقب سکه کم‌موجود",
+      "insightLowStockBody": "دو سکه بهار آزادی مانده؛ سفارش خرید را بررسی کنید.",
+      "insightMargin": "توجه به حاشیه",
+      "insightMarginBody": "فاکتور عمده پیش‌نویس پرداخت نشده — شرایط اعتبار را ببینید.",
+      "insightLabel": "بینش نمایشی"
+    },
+    "integrations": {
+      "title": "یکپارچه‌سازی",
+      "description": "دستگاه، ترازو، API و وب‌هوک (فقط UI).",
+      "kpi": {
+        "a": "متصل",
+        "aValue": "0",
+        "b": "در انتظار",
+        "bValue": "4"
+      },
+      "hub": {
+        "devices": "دستگاه‌ها",
+        "devicesDesc": "پایانه‌های صندوق و چاپگر.",
+        "scale": "ترازو",
+        "scaleDesc": "اتصال ترازو.",
+        "api": "API",
+        "apiDesc": "کلید و محدوده.",
+        "webhooks": "وب‌هوک",
+        "webhooksDesc": "رویدادهای خروجی."
+      }
+    },
+    "integrationsDevices": {
+      "title": "دستگاه‌ها",
+      "description": "دستگاه‌های ثبت‌شده.",
+      "search": "جستجو…",
+      "emptyTitle": "دستگاهی نیست",
+      "emptyDescription": "دستگاه جفت کنید.",
+      "kpi": {
+        "a": "دستگاه",
+        "aValue": "2",
+        "b": "آنلاین",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "دستگاه",
+        "b": "وضعیت",
+        "c": "یادداشت"
+      }
+    },
+    "integrationsScale": {
+      "title": "ترازو",
+      "description": "اتصال ترازو.",
+      "search": "جستجو…",
+      "emptyTitle": "ترازویی نیست",
+      "emptyDescription": "ترازو وصل کنید.",
+      "kpi": {
+        "a": "ترازو",
+        "aValue": "2",
+        "b": "آماده",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "ترازو",
+        "b": "وضعیت",
+        "c": "یادداشت"
+      }
+    },
+    "integrationsApi": {
+      "title": "API",
+      "description": "اعتبارنامه API (نمایشی).",
+      "search": "جستجو…",
+      "emptyTitle": "کلیدی نیست",
+      "emptyDescription": "کلید بسازید.",
+      "kpi": {
+        "a": "کلید",
+        "aValue": "2",
+        "b": "فعال",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "کلید",
+        "b": "وضعیت",
+        "c": "یادداشت"
+      }
+    },
+    "integrationsWebhooks": {
+      "title": "وب‌هوک",
+      "description": "نقاط پایانی وب‌هوک.",
+      "search": "جستجو…",
+      "emptyTitle": "وب‌هوکی نیست",
+      "emptyDescription": "آدرس اضافه کنید.",
+      "kpi": {
+        "a": "هوک",
+        "aValue": "2",
+        "b": "سالم",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "هوک",
+        "b": "وضعیت",
+        "c": "یادداشت"
+      }
+    }
+  },
+  "authExtras": {
+    "forgot": {
+      "title": "فراموشی رمز",
+      "description": "لینک بازیابی وقتی ایمیل پیکربندی شود ارسال می‌شود.",
+      "email": "ایمیل",
+      "submit": "ارسال لینک",
+      "back": "بازگشت به ورود"
+    },
+    "reset": {
+      "title": "بازنشانی رمز",
+      "description": "رمز جدید انتخاب کنید.",
+      "email": "ایمیل",
+      "password": "رمز جدید",
+      "submit": "به‌روزرسانی",
+      "back": "بازگشت به ورود"
+    },
+    "twofa": {
+      "title": "تأیید دو مرحله‌ای",
+      "description": "کد اپلیکیشن احراز هویت را وارد کنید.",
+      "code": "کد",
+      "submit": "تأیید",
+      "back": "بازگشت به ورود"
+    },
+    "invite": {
+      "title": "پذیرش دعوت",
+      "description": "نام و رمز را برای پیوستن تنظیم کنید.",
+      "name": "نام کامل",
+      "password": "رمز عبور",
+      "submit": "پیوستن",
+      "back": "بازگشت به ورود"
+    }
+  }
+}

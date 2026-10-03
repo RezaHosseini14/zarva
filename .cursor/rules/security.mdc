@@ -1,0 +1,8 @@
+---
+description: Security baselines.
+alwaysApply: false
+---
+
+# Security
+
+Validate all inputs. Helmet/CORS. HttpOnly cookies for refresh. Argon2id passwords. Rate-limit auth. Never log secrets. Tenant isolation on every query. Webhook signature verification.

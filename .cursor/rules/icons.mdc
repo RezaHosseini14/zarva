@@ -1,0 +1,96 @@
+---
+description: Solar CSS icons only — dashboard square boxes; add one icon at a time from Iconify Solar; never install Iconify/lucide.
+globs: apps/frontend/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# ZARVA Icons (Solar CSS)
+
+## Source of truth
+
+- CSS: `apps/frontend/src/styles/icon.css` (classes `.solar--{name}`)
+- Component: `<Icon name="..." />` from `@/components/ui/icon`
+- Catalog to pick from: https://icon-sets.iconify.design/solar/
+
+## Hard rules
+
+1. **Never** install `@iconify/*`, `lucide-react`, `react-icons`, or similar icon packages.
+2. **Never** copy the full Solar set or a multi‑MB CSS dump into the repo.
+3. **Never** use `<img>`, emoji, or standalone SVG files for UI icons.
+4. Prefer **Bold** style (e.g. `settings-bold`) for dashboard UI outside the sidebar.
+5. **Sidebar nav:** use **Linear** (outline) by default and **Bold** when the link is active (`icon` + `iconActive` on each nav item).
+
+## Content box icons (default for cards / hubs / panels / KPIs)
+
+Whenever a **glass card, hub tile, dashboard panel, KPI, or activity row** shows an icon next to a title, use the **dashboard square** — not a bare `<Icon>` in the text color.
+
+**Canonical markup** (same as `KpiGrid` / `DashboardPanel` / `HubCards`):
+
+```tsx
+<span
+  className={cn(
+    'inline-flex size-10 shrink-0 items-center justify-center rounded-xl ring-1',
+    accent ?? 'bg-primary/15 text-primary ring-primary/25',
+  )}
+>
+  <Icon name="…" className="text-lg" />
+</span>
+```
+
+**Rules for this pattern:**
+
+1. Always `size-10` + `rounded-xl` + `ring-1` + `text-lg` on the icon.
+2. Prefer a semantic **accent** per item (reuse dashboard tokens):
+   - primary/gold: `bg-primary/15 text-primary ring-primary/25`
+   - success: `bg-success/15 text-success ring-success/25`
+   - info: `bg-info/15 text-info ring-info/25`
+   - warning: `bg-warning/15 text-warning ring-warning/25`
+   - danger: `bg-danger/15 text-danger ring-danger/25`
+3. Default accent if none fits: primary (above).
+4. Layout: `flex items-center gap-3` between square and title (not a naked icon with `gap-2`).
+5. Title/label next to the square: `leading-none` so text is vertically centered with the icon. **No empty subtitle spacer** unless a real secondary line exists (e.g. LiveRate unit).
+6. Shared components (`HubCards`, `KpiGrid`, `DashboardPanel`) already own this wrapper — pass `icon` / `accent` into them; do not reimplement a flat icon next to the title.
+7. **Exceptions (no square):** sidebar links, toolbar/action buttons, table row actions, inline form field adornments, close/menu controls.
+
+Box shell anatomy (footer rail, panel heights): see **Metric & content boxes** in `surfaces.mdc`.
+
+
+## Adding an icon (new section / missing name)
+
+When UI needs an icon that is not in `IconName` / `icon.css`:
+
+1. Find the matching icon on https://icon-sets.iconify.design/solar/
+2. Fetch **only that icon** CSS (no npm), e.g.  
+   `https://api.iconify.design/solar.css?icons={name}`
+3. Convert to the project format and **append one** rule to `icon.css`:
+
+```css
+.solar--{name} {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  --svg: url("data:image/svg+xml,...");
+}
+```
+
+4. Add `{name}` to the `IconName` union in `apps/frontend/src/components/ui/icon.tsx`
+5. Use it: `<Icon name="{name}" className="text-lg" />` inside a content-box square when on a card; otherwise size via `text-*`
+
+## Where to place icons
+
+Put `<Icon />` wherever the UI needs an icon: sidebar, page headers, action buttons, empty states, filters, hub cards. Do not leave icon slots empty when a Solar match exists. On content boxes, always wrap with the square pattern above.
+
+## Checklist
+
+- [ ] Only the new icon(s) added to `icon.css` (file stays small)
+- [ ] `IconName` updated
+- [ ] No new icon npm dependency
+- [ ] No full Solar CSS import
+- [ ] Content cards/hubs/KPIs use square + accent (not bare icon)

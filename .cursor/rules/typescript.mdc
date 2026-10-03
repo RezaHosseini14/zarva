@@ -1,0 +1,23 @@
+---
+description: TypeScript standards — I-interfaces, no any.
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript
+
+Prefer `interface` over `type` for object shapes. Always prefix with `I`:
+
+- `IUser`, `IPlan`, `ICreateSaleDto`, `IPaginatedResult`
+
+Use `type` only for unions, intersections, mapped/utility types, primitive aliases.
+
+Never use `any` or `as any`. Use `unknown` + narrow, generics, or Zod parse.
+
+Export shared interfaces from `@zarva/shared`. Feature-local interfaces stay in the feature.
+
+Nest DTOs mirror shared interfaces; Prisma types stay in the repository layer.
+
+React: `interface IXxxProps`; TanStack Query generics required.
+
+Checklist: new public shape has `I*`; no implicit any; typecheck passes.

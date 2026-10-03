@@ -1,0 +1,46 @@
+import { getTranslations } from 'next-intl/server';
+
+import { SimpleDomainPage } from '@/features/domain/simple-domain-page';
+import { getTaxFilings } from '@/features/tax/get-tax-data';
+import { loadServerApiSection } from '@/lib/auth/load-server-api-section';
+import { ACCENT } from '@/lib/lists/skeleton-kpi';
+import { WrapSimpleDomainLoader } from '@/lib/lists/wrap-simple-domain-loader';
+
+async function TaxSectionLoaded() {
+  const result = await loadServerApiSection(() => getTaxFilings());
+  if (!result.ok) {
+    return (
+      <SimpleDomainPage
+        moduleKey="tax"
+        rows={[]}
+        chrome="body"
+        isError
+        errorKind={result.error.kind}
+      />
+    );
+  }
+  return (
+    <SimpleDomainPage
+      moduleKey="tax"
+      chrome="body"
+      rows={result.data.map((r) => ({ id: r.id, a: r.a, b: r.b, c: r.c }))}
+    />
+  );
+}
+
+export async function TaxSectionLoader() {
+  const t = await getTranslations('modules.tax');
+  return (
+    <WrapSimpleDomainLoader
+      moduleKey="tax"
+      skeletonKpis={[
+        { label: t('kpi.a'), icon: 'bill-list-bold', accent: ACCENT.primary },
+        { label: t('kpi.b'), icon: 'clipboard-list-bold', accent: ACCENT.info },
+      ]}
+      skeletonSearchPlaceholder={t('search')}
+      skeletonColumnHeaders={[t('cols.a'), t('cols.b'), t('cols.c')]}
+    >
+      <TaxSectionLoaded />
+    </WrapSimpleDomainLoader>
+  );
+}

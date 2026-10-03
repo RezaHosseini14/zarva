@@ -1,0 +1,123 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zarva-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zarva
+      POSTGRES_PASSWORD: zarva
+      POSTGRES_DB: zarva
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U zarva -d zarva']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - zarva-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: zarva-redis
+    restart: unless-stopped
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - zarva-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: zarva-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9011"
+    environment:
+      MINIO_ROOT_USER: zarva
+      MINIO_ROOT_PASSWORD: zarva-secret-key
+    ports:
+      - '9010:9000'
+      - '9011:9011'
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - zarva-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: zarva-backend
+    restart: unless-stopped
+    profiles:
+      - full
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://zarva:zarva@postgres:5432/zarva?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-change-me-access-secret-min-32-chars!!}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret-min-32-chars!}
+      BACKEND_PORT: 4100
+      CORS_ORIGIN: http://localhost:3100
+      COOKIE_SECURE: 'false'
+      BILLING_PROVIDER: ${BILLING_PROVIDER:-mock}
+      SWAGGER_ENABLED: 'true'
+    ports:
+      - '4100:4100'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:4100/api/v1/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - zarva-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4100/api/v1
+        NEXT_PUBLIC_APP_URL: http://localhost:3100
+    container_name: zarva-frontend
+    restart: unless-stopped
+    profiles:
+      - full
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      PORT: 3100
+      NEXT_PUBLIC_API_URL: http://localhost:4100/api/v1
+    ports:
+      - '3100:3100'
+    networks:
+      - zarva-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  zarva-network:
+    driver: bridge

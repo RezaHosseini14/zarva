@@ -1,0 +1,17 @@
+---
+description: Dashboard visual and shell UI; canonical metric/panel boxes for all hubs.
+globs: "apps/frontend/**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Dashboard UI
+
+Pixel-faithful dark gold shell: sidebar, header, KPI grid, forecast/AI panel, activity.
+
+- Gold accent restrained; CSS vars from theme preset `zarva-gold`
+- **All metric tiles and content panels** follow the Metric & content boxes law in `surfaces.mdc` (not dashboard-only)
+- Card/KPI/panel icons use the dashboard square + accent (`icons.mdc` — Content box icons); label `leading-none` + `items-center` with the square
+- Canonical components: `KpiGrid`, `DashboardPanel`, `MetricCardShell` / `MetricCardHeader`, `ForecastChartSkeleton`
+- Decompose KPI/chart/AI/activity into small components (≤100 lines)
+- Match responsive contracts; RTL-safe
+- Progressive sections: `progressive-loading.mdc` (canonical page: `dashboard/page.tsx`)

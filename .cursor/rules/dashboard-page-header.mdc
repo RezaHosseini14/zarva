@@ -1,0 +1,37 @@
+---
+description: App list/detail page header and layout — canonical sales/purchases.
+globs: "apps/frontend/**/*.tsx"
+alwaysApply: false
+---
+
+# Page layout (canonical: Sales / Purchases)
+
+Use the sales stack for every domain list/settings page.
+
+## List pages
+
+```
+AppShell
+  └─ DomainListPage  (or same structure by hand)
+       ├─ PageHeader — title + description (+ CTA)
+       ├─ KpiGrid
+       ├─ FilterSearch (+ optional SubNav via belowToolbar)
+       └─ DataTable in zarva-glass-card + zarva-scrollbar
+            footer: total (+ prev/next when paged)
+```
+
+Canonical refs:
+- `features/sales/sales-list-page.tsx`
+- `features/purchases/purchases-list-page.tsx`
+- `components/page/domain-list-page.tsx`
+- `components/page/page-header.tsx`
+
+## Detail / settings cards
+
+Same `AppShell` + `PageHeader` (title + description). Content in `.zarva-glass-card`. No inventing a second header component.
+
+## Rules
+
+- Description under the title is required for domain hubs (explain the page)
+- Tables: `DataTable` + `.zarva-scrollbar` only — never hand-rolled `jaryan-*` classes
+- Icons: Solar via `<Icon />` (see `icons.mdc`)

@@ -1,0 +1,1094 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id           String         @id @default(uuid())
+  name         String
+  slug         String         @unique
+  taxId        String         @default("")
+  phone        String         @default("")
+  address      String         @default("")
+  themePreset  String         @default("zarva-gold")
+  themeTokens  Json?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  users        User[]
+  branches     Branch[]
+  subscription Subscription?
+  billingCustomer BillingCustomer?
+  invoices     Invoice[]
+  auditLogs    AuditLog[]
+  notifications Notification[]
+  notificationRecipients NotificationRecipient[]
+  customers    Customer[]
+  saleInvoices SaleInvoice[]
+  salePayments SalePayment[]
+  saleReturns  SaleReturn[]
+  suppliers    Supplier[]
+  purchases    Purchase[]
+  purchaseReturns PurchaseReturn[]
+  inventoryItems InventoryItem[]
+  warehouses   Warehouse[]
+  stockMovements StockMovement[]
+  goldTxns     GoldTxn[]
+  goldPurities GoldPurity[]
+  goldLots     GoldLot[]
+  goldBalances GoldBalance[]
+  goldOrgRates GoldOrgRate[]
+  workshopOrders WorkshopOrder[]
+  artisans     Artisan[]
+  productionBatches ProductionBatch[]
+  ledgerEntries LedgerEntry[]
+  chartAccounts ChartAccount[]
+  journalEntries JournalEntry[]
+  orgSettings  OrgSetting[]
+  integrations Integration[]
+  apiKeys      OrgApiKey[]
+  commerceChannels CommerceChannel[]
+  taxPeriods   TaxPeriod[]
+  jewelryPieces JewelryPiece[]
+  aiInsights   AiInsight[]
+  loginEvents  AuthLoginEvent[]
+  deviceBans   DeviceBan[]
+}
+
+model Branch {
+  id             String       @id @default(uuid())
+  organizationId String
+  name           String
+  code           String       @default("")
+  city           String       @default("")
+  address        String       @default("")
+  isActive       Boolean      @default(true)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  users          User[]
+  createdAt      DateTime     @default(now())
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  isSystem    Boolean          @default(false)
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id    String           @id @default(uuid())
+  key   String           @unique
+  module String
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model User {
+  id             String           @id @default(uuid())
+  email          String           @unique
+  phone          String           @unique
+  address        String
+  name           String
+  passwordHash   String
+  locale         String           @default("fa")
+  organizationId String
+  branchId       String?
+  roleId         String
+  totpSecret     String?
+  totpEnabled    Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  branch         Branch?          @relation(fields: [branchId], references: [id])
+  role           Role             @relation(fields: [roleId], references: [id])
+  sessions       RefreshSession[]
+  loginEvents    AuthLoginEvent[]
+  deviceBans     DeviceBan[]      @relation("BannedUser")
+  deviceBansCreated DeviceBan[]   @relation("BanAuthor")
+  deviceBansLifted  DeviceBan[]   @relation("BanLifter")
+  invitesSent    UserInvite[]     @relation("Inviter")
+  notificationsAuthored Notification[] @relation("NotificationAuthor")
+  notificationRecipients NotificationRecipient[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([organizationId])
+}
+
+model Customer {
+  id             String        @id @default(uuid())
+  organizationId String
+  name           String
+  phone          String
+  address        String
+  nationalId     String?
+  balanceLabel   String        @default("۰")
+  lastTxnLabel   String        @default("—")
+  totalLabel     String        @default("—")
+  partyStatus    String        @default("active")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  saleInvoices   SaleInvoice[]
+  workshopOrders WorkshopOrder[]
+
+  @@unique([organizationId, phone])
+  @@index([organizationId])
+}
+
+model Supplier {
+  id             String       @id @default(uuid())
+  organizationId String
+  name           String
+  phone          String
+  address        String       @default("")
+  balanceLabel   String       @default("۰")
+  lastTxnLabel   String       @default("—")
+  totalLabel     String       @default("—")
+  partyStatus    String       @default("active")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  purchases      Purchase[]
+
+  @@unique([organizationId, phone])
+  @@index([organizationId])
+}
+
+/// Gold retail sale lifecycle for SMS notifications.
+enum SaleInvoiceStatus {
+  draft
+  confirmed
+  ready
+  completed
+  void
+}
+
+enum SalePaymentStatus {
+  unpaid
+  partial
+  paid
+}
+
+model SaleInvoice {
+  id               String            @id @default(uuid())
+  organizationId   String
+  customerId       String
+  number           String
+  status           SaleInvoiceStatus @default(draft)
+  paymentStatus    SalePaymentStatus @default(unpaid)
+  goldWeightGrams  Decimal           @db.Decimal(12, 3)
+  amountIRT        Decimal           @db.Decimal(18, 0)
+  remainingIRT     Decimal           @db.Decimal(18, 0) @default(0)
+  seller           String            @default("—")
+  displayDate      String            @default("")
+  amountLabel      String            @default("")
+  shopName         String            @default("")
+  shopAddress      String            @default("")
+  shopPhone        String            @default("")
+  shopGuildId      String            @default("")
+  totalsJson       Json?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer         Customer          @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  lines            SaleInvoiceLine[]
+  payments         SalePayment[]
+  returns          SaleReturn[]
+
+  @@unique([organizationId, number])
+  @@index([organizationId])
+  @@index([customerId])
+}
+
+model SalePayment {
+  id             String       @id @default(uuid())
+  organizationId String
+  invoiceId      String
+  ref            String
+  method         String
+  amountLabel    String
+  displayDate    String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoice        SaleInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([invoiceId])
+}
+
+model SaleReturn {
+  id             String       @id @default(uuid())
+  organizationId String
+  invoiceId      String
+  number         String
+  displayDate    String
+  amountLabel    String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoice        SaleInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, number])
+  @@index([organizationId])
+  @@index([invoiceId])
+}
+
+model SaleInvoiceLine {
+  id          String      @id @default(uuid())
+  invoiceId   String
+  sortOrder   Int         @default(0)
+  description String
+  weight      String
+  purity      String
+  dailyRate   String
+  goldValue   String
+  wage        String
+  profit      String
+  tax         String
+  lineTotal   String
+  invoice     SaleInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+}
+
+enum PurchasePaymentStatus {
+  unpaid
+  partial
+  paid
+}
+
+model Purchase {
+  id              String                @id @default(uuid())
+  organizationId  String
+  supplierId      String
+  number          String
+  displayDate     String                @default("")
+  goldWeightGrams Decimal               @db.Decimal(12, 3)
+  amountLabel     String
+  paymentStatus   PurchasePaymentStatus @default(unpaid)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  supplier        Supplier              @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  lines           PurchaseLine[]
+  returns         PurchaseReturn[]
+
+  @@unique([organizationId, number])
+  @@index([organizationId])
+  @@index([supplierId])
+}
+
+model PurchaseLine {
+  id          String   @id @default(uuid())
+  purchaseId  String
+  description String
+  weight      String   @default("")
+  purity      String   @default("")
+  amountLabel String
+  purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+
+  @@index([purchaseId])
+}
+
+model PurchaseReturn {
+  id             String       @id @default(uuid())
+  organizationId String
+  purchaseId     String
+  number         String
+  displayDate    String
+  amountLabel    String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  purchase       Purchase     @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, number])
+  @@index([organizationId])
+  @@index([purchaseId])
+}
+
+enum InventoryItemStatus {
+  available
+  reserved
+  low
+}
+
+enum InventoryItemKind {
+  gold
+  jewelry
+  coin
+  raw
+}
+
+model InventoryItem {
+  id             String              @id @default(uuid())
+  organizationId String
+  warehouseId    String?
+  name           String
+  sku            String
+  barcode        String
+  weight         String
+  purity         String
+  qty            Int
+  location       String
+  valueLabel     String
+  unitCostLabel  String              @default("")
+  status         InventoryItemStatus @default(available)
+  kind           InventoryItemKind   @default(jewelry)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  warehouse      Warehouse?          @relation(fields: [warehouseId], references: [id], onDelete: SetNull)
+  movements      StockMovement[]
+  commerceListings CommerceListing[]
+  jewelryPieces  JewelryPiece[]
+
+  @@unique([organizationId, sku])
+  @@index([organizationId])
+  @@index([organizationId, barcode])
+  @@index([warehouseId])
+}
+
+enum StockMovementKind {
+  IN
+  OUT
+  TRANSFER
+  ADJUST
+}
+
+model Warehouse {
+  id             String          @id @default(uuid())
+  organizationId String
+  name           String
+  city           String          @default("")
+  createdAt      DateTime        @default(now())
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  items          InventoryItem[]
+  movementsFrom  StockMovement[] @relation("MovementFrom")
+  movementsTo    StockMovement[] @relation("MovementTo")
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model StockMovement {
+  id             String            @id @default(uuid())
+  organizationId String
+  itemId         String
+  kind           StockMovementKind
+  qty            Int
+  note           String            @default("")
+  displayDate    String
+  fromWarehouseId String?
+  toWarehouseId   String?
+  createdAt      DateTime          @default(now())
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  item           InventoryItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  fromWarehouse  Warehouse?        @relation("MovementFrom", fields: [fromWarehouseId], references: [id], onDelete: SetNull)
+  toWarehouse    Warehouse?        @relation("MovementTo", fields: [toWarehouseId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([itemId])
+}
+
+model GoldTxn {
+  id             String       @id @default(uuid())
+  organizationId String
+  displayDate    String
+  typeLabel      String
+  weight         String
+  purity         String
+  fineGold       String
+  counterparty   String
+  reference      String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model WorkshopOrder {
+  id             String       @id @default(uuid())
+  organizationId String
+  orderNumber    String
+  customerId     String?
+  customerName   String
+  product        String
+  artisan        String
+  artisanId      String?
+  dueLabel       String
+  statusLabel    String
+  progress       Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer       Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  artisanRef     Artisan?     @relation(fields: [artisanId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, orderNumber])
+  @@index([organizationId])
+  @@index([artisanId])
+}
+
+model Artisan {
+  id             String          @id @default(uuid())
+  organizationId String
+  name           String
+  skill          String          @default("")
+  statusLabel    String          @default("active")
+  createdAt      DateTime        @default(now())
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  orders         WorkshopOrder[]
+
+  @@index([organizationId])
+}
+
+model ProductionBatch {
+  id             String       @id @default(uuid())
+  organizationId String
+  code           String
+  product        String
+  progressLabel  String       @default("0%")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+}
+
+model LedgerEntry {
+  id             String       @id @default(uuid())
+  organizationId String
+  displayDate    String
+  description    String
+  debitLabel     String       @default("—")
+  creditLabel    String       @default("—")
+  balanceLabel   String
+  sortOrder      Int          @default(0)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model RefreshSession {
+  id               String    @id @default(uuid())
+  userId           String
+  tokenHash        String    @unique
+  familyId         String
+  clientDeviceId   String?
+  deviceName       String?
+  deviceType       String?
+  os               String?
+  browser          String?
+  label            String?
+  userAgent        String?
+  ip               String?
+  lastSeenAt       DateTime  @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([userId, revokedAt])
+  @@index([userId, clientDeviceId])
+  @@index([clientDeviceId])
+}
+
+enum DeviceBanScope {
+  user
+  global
+}
+
+model AuthLoginEvent {
+  id               String    @id @default(uuid())
+  userId           String
+  organizationId   String
+  familyId         String?
+  clientDeviceId   String?
+  deviceName       String?
+  deviceType       String?
+  os               String?
+  browser          String?
+  ip               String?
+  userAgent        String?
+  createdAt        DateTime  @default(now())
+  endedAt          DateTime?
+  endReason        String?
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([organizationId, createdAt])
+  @@index([clientDeviceId])
+  @@index([familyId])
+}
+
+model DeviceBan {
+  id               String         @id @default(uuid())
+  clientDeviceId   String
+  scope            DeviceBanScope
+  userId           String?
+  organizationId   String?
+  reason           String?
+  bannedById       String
+  createdAt        DateTime       @default(now())
+  liftedAt         DateTime?
+  liftedById       String?
+  user             User?          @relation("BannedUser", fields: [userId], references: [id], onDelete: Cascade)
+  organization     Organization?  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  bannedBy         User           @relation("BanAuthor", fields: [bannedById], references: [id], onDelete: Cascade)
+  liftedBy         User?          @relation("BanLifter", fields: [liftedById], references: [id], onDelete: SetNull)
+
+  @@index([clientDeviceId, liftedAt])
+  @@index([userId, clientDeviceId, liftedAt])
+  @@index([scope, liftedAt])
+}
+
+model UserInvite {
+  id             String    @id @default(uuid())
+  email          String
+  organizationId String
+  roleId         String
+  tokenHash      String    @unique
+  invitedById    String
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  invitedBy      User      @relation("Inviter", fields: [invitedById], references: [id])
+  createdAt      DateTime  @default(now())
+}
+
+model Plan {
+  id            String         @id @default(uuid())
+  code          String         @unique
+  name          String
+  entitlements  Json
+  isActive      Boolean        @default(true)
+  prices        PlanPrice[]
+  subscriptions Subscription[]
+}
+
+model PlanPrice {
+  id            String  @id @default(uuid())
+  planId        String
+  interval      String
+  amountCents   Int
+  currency      String  @default("usd")
+  stripePriceId String?
+  plan          Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id                   String       @id @default(uuid())
+  organizationId       String       @unique
+  planId               String
+  status               String
+  source               String       @default("manual")
+  stripeSubscriptionId String?
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean      @default(false)
+  organization         Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plan                 Plan         @relation(fields: [planId], references: [id])
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+}
+
+model SubscriptionAlert {
+  id             String   @id @default(uuid())
+  organizationId String
+  kind           String
+  periodEnd      DateTime
+  sentAt         DateTime @default(now())
+
+  @@unique([organizationId, kind, periodEnd])
+  @@index([organizationId])
+}
+
+model BillingCustomer {
+  id               String       @id @default(uuid())
+  organizationId   String       @unique
+  stripeCustomerId String       @unique
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id              String       @id @default(uuid())
+  organizationId  String
+  stripeInvoiceId String?      @unique
+  amountCents     Int
+  currency        String       @default("usd")
+  status          String
+  hostedUrl       String?
+  pdfUrl          String?
+  createdAt       DateTime     @default(now())
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model WebhookEvent {
+  id          String   @id @default(uuid())
+  provider    String
+  eventId     String   @unique
+  type        String
+  processedAt DateTime @default(now())
+}
+
+model EntitlementOverride {
+  id             String   @id @default(uuid())
+  organizationId String
+  entitlements   Json
+  reason         String?
+  createdAt      DateTime @default(now())
+}
+
+model AuditLog {
+  id             String       @id @default(uuid())
+  organizationId String?
+  userId         String?
+  action         String
+  meta           Json?
+  createdAt      DateTime     @default(now())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId])
+}
+
+enum NotificationAudience {
+  USERS
+  ORG_ALL
+  ORGS
+  PLATFORM_ALL
+}
+
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+model Notification {
+  id               String                 @id @default(uuid())
+  title            String
+  body             String
+  audience         NotificationAudience
+  priority         NotificationPriority   @default(NORMAL)
+  type             String?
+  metadata         Json?
+  organizationId   String?
+  targetOrgIds     Json?
+  createdById      String
+  createdAt        DateTime               @default(now())
+  organization     Organization?          @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  createdBy        User                   @relation("NotificationAuthor", fields: [createdById], references: [id], onDelete: Cascade)
+  recipients       NotificationRecipient[]
+
+  @@index([createdById])
+  @@index([organizationId])
+  @@index([createdAt])
+  @@index([priority])
+  @@index([type])
+}
+
+model NotificationRecipient {
+  id             String       @id @default(uuid())
+  notificationId String
+  userId         String
+  organizationId String
+  readAt         DateTime?
+  acknowledgedAt DateTime?
+  createdAt      DateTime     @default(now())
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([notificationId, userId])
+  @@index([userId, readAt])
+  @@index([userId, acknowledgedAt])
+  @@index([organizationId])
+}
+
+enum AccountType {
+  asset
+  liability
+  equity
+  income
+  expense
+}
+
+model ChartAccount {
+  id             String       @id @default(uuid())
+  organizationId String
+  code           String
+  name           String
+  type           AccountType
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lines          JournalLine[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+  @@index([organizationId, type])
+}
+
+model JournalEntry {
+  id             String        @id @default(uuid())
+  organizationId String
+  number         String
+  displayDate    String
+  description    String
+  createdAt      DateTime      @default(now())
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lines          JournalLine[]
+
+  @@unique([organizationId, number])
+  @@index([organizationId])
+}
+
+model JournalLine {
+  id             String       @id @default(uuid())
+  journalId      String
+  accountId      String
+  debitLabel     String       @default("۰")
+  creditLabel    String       @default("۰")
+  debitAmount    Decimal      @default(0) @db.Decimal(18, 0)
+  creditAmount   Decimal      @default(0) @db.Decimal(18, 0)
+  memo           String       @default("")
+  journal        JournalEntry @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  account        ChartAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+
+  @@index([journalId])
+  @@index([accountId])
+}
+
+model GoldPurity {
+  id             String       @id @default(uuid())
+  organizationId String
+  name           String
+  karat          String
+  ratioLabel     String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lots           GoldLot[]
+  balances       GoldBalance[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model GoldLot {
+  id             String       @id @default(uuid())
+  organizationId String
+  code           String
+  purityId       String?
+  weightLabel    String
+  statusLabel    String       @default("open")
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  purity         GoldPurity?  @relation(fields: [purityId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+}
+
+model GoldBalance {
+  id             String       @id @default(uuid())
+  organizationId String
+  partyName      String
+  purityId       String?
+  weightLabel    String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  purity         GoldPurity?  @relation(fields: [purityId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+}
+
+model GoldOrgRate {
+  id             String       @id @default(uuid())
+  organizationId String
+  label          String
+  buyLabel       String
+  sellLabel      String
+  sortOrder      Int          @default(0)
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model OrgSetting {
+  id             String       @id @default(uuid())
+  organizationId String
+  section        String
+  values         Json
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, section])
+  @@index([organizationId])
+}
+
+enum IntegrationKind {
+  device
+  scale
+  api
+  webhook
+}
+
+enum IntegrationStatus {
+  healthy
+  degraded
+  offline
+  unknown
+}
+
+model Integration {
+  id             String            @id @default(uuid())
+  organizationId String
+  kind           IntegrationKind
+  code           String
+  status         IntegrationStatus @default(unknown)
+  detail         String            @default("")
+  config         Json?
+  lastCheckedAt  DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, kind, code])
+  @@index([organizationId])
+}
+
+model OrgApiKey {
+  id             String       @id @default(uuid())
+  organizationId String
+  name           String
+  keyHash        String       @unique
+  keyPrefix      String
+  createdAt      DateTime     @default(now())
+  revokedAt      DateTime?
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum CommerceChannelType {
+  storefront
+  whatsapp
+  instagram
+  other
+}
+
+enum CommerceChannelStatus {
+  draft
+  active
+  paused
+}
+
+model CommerceChannel {
+  id             String                @id @default(uuid())
+  organizationId String
+  name           String
+  type           CommerceChannelType   @default(other)
+  status         CommerceChannelStatus @default(draft)
+  config         Json?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  organization   Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  listings       CommerceListing[]
+
+  @@index([organizationId])
+}
+
+model CommerceListing {
+  id              String          @id @default(uuid())
+  channelId       String
+  inventoryItemId String
+  status          String          @default("active")
+  externalSku     String          @default("")
+  syncedAt        DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  channel         CommerceChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  inventoryItem   InventoryItem   @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, inventoryItemId])
+  @@index([channelId])
+  @@index([inventoryItemId])
+}
+
+enum TaxPeriodStatus {
+  open
+  closed
+}
+
+enum TaxFilingStatus {
+  draft
+  ready
+  exported
+  submitted
+}
+
+enum TaxFilingKind {
+  vat
+  seasonal
+  other
+}
+
+model TaxPeriod {
+  id             String          @id @default(uuid())
+  organizationId String
+  label          String
+  fromDate       DateTime
+  toDate         DateTime
+  status         TaxPeriodStatus @default(open)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  filings        TaxFiling[]
+
+  @@index([organizationId])
+}
+
+model TaxFiling {
+  id          String          @id @default(uuid())
+  periodId    String
+  kind        TaxFilingKind   @default(vat)
+  status      TaxFilingStatus @default(draft)
+  totals      Json
+  exportedAt  DateTime?
+  artifact    String          @default("")
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  period      TaxPeriod       @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  lines       TaxFilingLine[]
+
+  @@index([periodId])
+}
+
+model TaxFilingLine {
+  id          String    @id @default(uuid())
+  filingId    String
+  label       String
+  amount      String
+  meta        Json?
+  filing      TaxFiling @relation(fields: [filingId], references: [id], onDelete: Cascade)
+
+  @@index([filingId])
+}
+
+enum JewelryPieceStatus {
+  showcase
+  reserved
+  sold
+  workshop
+}
+
+model JewelryPiece {
+  id              String              @id @default(uuid())
+  organizationId  String
+  title           String
+  sku             String
+  status          JewelryPieceStatus  @default(showcase)
+  weight          String              @default("")
+  purity          String              @default("")
+  notes           String              @default("")
+  inventoryItemId String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  organization    Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  inventoryItem   InventoryItem?      @relation(fields: [inventoryItemId], references: [id], onDelete: SetNull)
+  bomLines        JewelryBomLine[]
+  reservations    JewelryReservation[]
+
+  @@unique([organizationId, sku])
+  @@index([organizationId])
+}
+
+model JewelryBomLine {
+  id            String       @id @default(uuid())
+  pieceId       String
+  componentType String
+  description   String
+  weight        String       @default("")
+  carat         String       @default("")
+  qty           Int          @default(1)
+  piece         JewelryPiece @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+
+  @@index([pieceId])
+}
+
+model JewelryReservation {
+  id            String       @id @default(uuid())
+  pieceId       String
+  customerId    String?
+  reservedUntil DateTime
+  status        String       @default("active")
+  createdAt     DateTime     @default(now())
+  piece         JewelryPiece @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+
+  @@index([pieceId])
+}
+
+enum AiInsightSource {
+  rules
+  llm
+}
+
+enum AiInsightSeverity {
+  info
+  warning
+  critical
+}
+
+model AiInsight {
+  id             String            @id @default(uuid())
+  organizationId String
+  code           String
+  title          String
+  body           String
+  severity       AiInsightSeverity @default(info)
+  source         AiInsightSource   @default(rules)
+  payload        Json?
+  createdAt      DateTime          @default(now())
+  dismissedAt    DateTime?
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, dismissedAt])
+  @@index([organizationId, code])
+}
+
+

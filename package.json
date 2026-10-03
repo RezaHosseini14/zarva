@@ -1,0 +1,42 @@
+{
+  "name": "zarva",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ZARVA — Gold Business OS",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run env:sync && concurrently -n backend,frontend -c yellow,cyan \"npm run dev -w @zarva/backend\" \"npm run dev -w @zarva/frontend\"",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:cov": "npm run test:cov --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "check:no-mock-rows": "npm run check:no-mock-rows -w @zarva/frontend",
+    "env:sync": "node scripts/env-sync.mjs",
+    "db:generate": "npm run env:sync && npm run db:generate -w @zarva/backend",
+    "db:migrate": "npm run env:sync && npm run db:migrate -w @zarva/backend",
+    "db:seed": "npm run env:sync && npm run db:seed -w @zarva/backend",
+    "dev:backend": "npm run env:sync && npm run dev -w @zarva/backend",
+    "dev:frontend": "npm run env:sync && npm run dev -w @zarva/frontend",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md,css}\"",
+    "graphify": "graphify extract . --code-only",
+    "graphify:update": "graphify update .",
+    "postinstall": "npm run build -w @zarva/shared && npm run db:generate -w @zarva/backend"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.62.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

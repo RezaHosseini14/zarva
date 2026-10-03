@@ -1,0 +1,8 @@
+---
+description: Documentation requirements.
+alwaysApply: false
+---
+
+# Documentation
+
+Every shipped feature has `docs/features/<name>.md`. Ops under `docs/ops/`. Update index in `docs/README.md`.

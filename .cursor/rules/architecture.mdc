@@ -1,0 +1,8 @@
+---
+description: Architecture — feature-first layers.
+alwaysApply: false
+---
+
+# Architecture
+
+Feature modules under `features/<domain>/`. UI → service → repository → DB. Shared contracts in `@zarva/shared`. No circular deps. Named exports.

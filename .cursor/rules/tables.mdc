@@ -1,0 +1,17 @@
+---
+description: Data tables pattern — DomainListPage / DataTable.
+globs: "apps/frontend/**/*.tsx"
+alwaysApply: false
+---
+
+# Tables
+
+Canonical: Sales / Purchases via `DomainListPage` → `DataTable`.
+
+- Outer wrapper: `.zarva-glass-card`; thead `bg-nested` + `border-border` (see `DataTable`)
+- Scrollbar: `.zarva-scrollbar` only — never `jaryan-scrollbar`
+- Fill remaining viewport height; scroll inside the table box
+- Footer: total + prev/next only (no page X/Y)
+- Prefer `DataTable` over raw `<table>` for new list pages
+- Small screens: horizontal scroll (table `min-w`) or card list
+- **Status / payment / read chips:** always `StatusBadge` with `icon` + `tone` — see `.cursor/rules/status-chip.mdc`. No text-only pills.

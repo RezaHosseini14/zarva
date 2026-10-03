@@ -1,0 +1,9 @@
+---
+description: Form dialogs pattern.
+globs: "apps/frontend/**/*.tsx"
+alwaysApply: false
+---
+
+# Dialogs
+
+Sticky header + scrollable body + sticky footer always (including loading skeleton). Dialog body/surface uses `.zarva-glass-card`; form fields use `.zarva-glass-input`; menus use `.zarva-glass-popover` (`surfaces.mdc`). No `glass-select` invent — use `zarva-glass-input` on `<select>` / FilterSelect.

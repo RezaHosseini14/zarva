@@ -1,0 +1,15 @@
+---
+description: Frontend i18n fa/en/ar.
+globs: "apps/frontend/**/*.{tsx,ts}"
+alwaysApply: false
+---
+
+# i18n
+
+Locales: `fa` (default, RTL), `en` (LTR), `ar` (RTL). Copy only in `apps/frontend/messages/{en,fa,ar}.json`.
+
+1. No hardcoded user-facing strings — use `t('namespace.key')`.
+2. Always update en + fa + ar together.
+3. Register new root namespaces on the dictionary type.
+4. Never render raw API English descriptions as labels — map via message keys.
+5. Dots in domain keys → underscores for message paths.

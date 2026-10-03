@@ -1,0 +1,1268 @@
+{
+  "common": {
+    "appName": "ZARVA",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search",
+    "prev": "Previous",
+    "next": "Next",
+    "total": "Total",
+    "export": "Export",
+    "new": "New",
+    "close": "Close",
+    "menu": "Menu",
+    "empty": "Nothing here yet",
+    "retry": "Try again",
+    "sectionErrorTitle": "This section failed",
+    "sectionErrorDescription": "Something went wrong here. The rest of the page is still available — try again.",
+    "sectionErrorAuthTitle": "Sign-in required",
+    "sectionErrorAuthDescription": "Your session expired or is missing. Sign in again, then reopen this page.",
+    "sectionErrorPlanTitle": "Not in your plan",
+    "sectionErrorPlanDescription": "This module is not included in the organization subscription. Upgrade the plan or ask an admin.",
+    "sectionErrorPermissionTitle": "No access",
+    "sectionErrorPermissionDescription": "Your role cannot open this section. Ask an admin for permission.",
+    "pageErrorTitle": "Page could not load",
+    "pageErrorDescription": "An unexpected error stopped this page. Try again, or go back and open another screen.",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "This address does not exist or was moved. Head home and navigate from there.",
+    "goHome": "Go home",
+    "navLoading": "Loading page"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "sales": "Sales",
+    "purchases": "Purchases",
+    "inventory": "Inventory",
+    "gold": "Gold",
+    "customers": "Customers",
+    "suppliers": "Suppliers",
+    "accounting": "Accounting",
+    "reports": "Reports",
+    "settings": "Settings",
+    "billing": "Billing",
+    "roles": "Roles",
+    "notifications": "Notifications",
+    "jewelry": "Jewelry",
+    "tax": "Tax",
+    "workshop": "Workshop",
+    "branches": "Branches",
+    "ai": "AI",
+    "commerce": "Commerce",
+    "integrations": "Integrations",
+    "appearance": "Appearance",
+    "tagline": "Gold Business OS",
+    "groupGeneral": "General",
+    "groupBusiness": "Business",
+    "groupCommerce": "Commerce",
+    "groupIntegrations": "Integrations",
+    "groupSystem": "System",
+    "organization": "Organization",
+    "audit": "Audit",
+    "search": "Search",
+    "platformOrgs": "Organizations",
+    "platformSessions": "Sessions"
+  },
+  "auth": {
+    "login": "Sign in",
+    "signup": "Start free trial",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Mobile phone",
+    "address": "Address",
+    "name": "Full name",
+    "organizationName": "Business name",
+    "logout": "Sign out",
+    "settings": "Settings",
+    "tabPassword": "Password",
+    "tabOtp": "SMS code",
+    "sendOtp": "Send code",
+    "resendOtp": "Resend code",
+    "otpCode": "Verification code",
+    "loginWithOtp": "Sign in with code",
+    "otpHint": "Dev: SMS is logged on the server; code 000000 works with console provider.",
+    "signupOtpHint": "Verify your mobile with SMS before creating the workspace. Dev code: 000000.",
+    "invalidPhone": "Enter a valid Iranian mobile (09XXXXXXXXX)",
+    "invalidOtp": "Invalid or expired code",
+    "otpRequestFailed": "Could not send SMS code",
+    "signupFailed": "Signup failed — check details and OTP",
+    "roles": {
+      "SUPER_ADMIN": "Super admin",
+      "PLATFORM_ADMIN": "Platform admin",
+      "ORG_ADMIN": "Organization admin",
+      "CASHIER": "Cashier"
+    },
+    "noAccount": "New to ZARVA?",
+    "hasAccount": "Already have an account?",
+    "invalidCredentials": "Invalid email or password",
+    "networkError": "Could not reach the server. Check your connection and try again.",
+    "seedHint": "Demo: admin@zarva.dev / Password123! · cashier@zarva.dev · phones 09120000001 / 09120000002",
+    "enterAsAdmin": "Enter as super admin",
+    "enterAsCashier": "Enter as cashier",
+    "welcomeBack": "Back to the atelier",
+    "welcomeSub": "Sign in to run sales, stock, and gold ledgers.",
+    "createOrg": "Open your workshop on ZARVA",
+    "createOrgSub": "One workspace for gold shops — weight, price, and people in sync.",
+    "devicesMenu": "Active devices",
+    "devices": {
+      "title": "Active devices",
+      "description": "Manage where your account is signed in.",
+      "activeTab": "Active",
+      "current": "This device",
+      "lastSeen": "Last active {when}",
+      "terminate": "Terminate",
+      "revokeOthers": "Terminate other sessions",
+      "emptyTitle": "No active devices",
+      "emptyDescription": "Sign-ins will appear here.",
+      "errorTitle": "Could not load devices",
+      "errorDescription": "Try again in a moment.",
+      "newLoginEyebrow": "Account security",
+      "newLoginTitle": "New login detected",
+      "newLoginBody": "A sign-in just happened on another device. Confirm it was you.",
+      "newLoginDevice": "Device",
+      "newLoginIp": "IP address",
+      "newLoginHint": "If this wasn’t you, terminate that session right away.",
+      "newLoginYes": "Yes, it was me",
+      "newLoginNo": "No, terminate",
+      "newLoginDenying": "Terminating…",
+      "limitTitle": "Device limit reached",
+      "limitBody": "Choose a device to sign out before continuing.",
+      "banned": "This device is banned from signing in.",
+      "devicesMenu": "Active devices"
+    },
+    "loginHistory": {
+      "title": "Login history",
+      "emptyTitle": "No history yet",
+      "emptyDescription": "Past logins will show up here.",
+      "active": "Active",
+      "endReason": {
+        "logout": "Signed out",
+        "revoked_by_user": "Terminated",
+        "revoked_by_admin": "Terminated by admin",
+        "replaced": "Replaced",
+        "denied_not_me": "Denied",
+        "banned": "Banned",
+        "expired": "Expired"
+      }
+    }
+  },
+  "landing": {
+    "eyebrow": "Gold Business OS",
+    "headline": "Run the shop with the precision of the metal",
+    "sub": "Sales, inventory, and gold ledgers in one calm dark workspace — built for fa, en, and ar floors.",
+    "ctaLogin": "Sign in",
+    "ctaPricing": "See plans",
+    "ctaTrial": "Start trial"
+  },
+  "units": {
+    "millionRial": "million rials",
+    "millionRialCompact": "M IRR",
+    "kg": "kg",
+    "kgCompact": "kg",
+    "gram": "gram",
+    "gramCompact": "g",
+    "ounce": "ounce",
+    "ounceCompact": "oz",
+    "millionPerGram": "M/g",
+    "millionPerGramCompact": "M/g"
+  },
+  "dashboard": {
+    "title": "Overview",
+    "subtitle": "Today on the floor",
+    "kpi": {
+      "salesToday": "Sales today",
+      "goldStock": "Gold stock",
+      "customers": "Customers",
+      "margin": "Margin"
+    },
+    "liveRates": {
+      "title": "Live rates",
+      "xau_usd": "Global gold",
+      "iran_gold_24k": "Iran gold 24K",
+      "iran_gold_18k": "Iran gold 18K",
+      "usd_irr": "USD (free market)",
+      "perOz": "/ ounce",
+      "perGram": "/ gram",
+      "perOzCompact": "/ oz",
+      "perGramCompact": "/ g",
+      "toman": "Toman",
+      "usd": "USD",
+      "up": "Up",
+      "down": "Down",
+      "flat": "Unchanged",
+      "updated": "Updated",
+      "unavailable": "Unavailable",
+      "stale": "Stale"
+    },
+    "forecast": "Seven-day sales pace",
+    "weekdays": {
+      "sat": "Sat",
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri"
+    },
+    "aiTitle": "Insights",
+    "aiBody": "Suggestions appear when your plan includes analytics modules.",
+    "activity": "Recent activity",
+    "activityEmptyTitle": "No recent activity",
+    "activityEmptyDescription": "Sales, purchases, and stock changes will show up here.",
+    "overviewErrorTitle": "Dashboard data unavailable",
+    "overviewErrorDescription": "We could not load overview metrics. Try again.",
+    "ratesErrorTitle": "Live rates unavailable",
+    "ratesErrorDescription": "Market rates could not be refreshed. Try again.",
+    "activityItems": {
+      "saleCompleted": "Sale completed",
+      "purchaseReceived": "Purchase received",
+      "stockAdjust": "Stock adjusted"
+    }
+  },
+  "pricing": {
+    "title": "Plans sized for the bench",
+    "subtitle": "Trial first. Upgrade when the floor needs more seats and modules.",
+    "cta": "Get started",
+    "monthly": "mo",
+    "yearly": "yr",
+    "free": "Free",
+    "empty": "Plans load when billing is online.",
+    "emptyTitle": "No plans available",
+    "emptyDescription": "Billing is offline or no plans are published yet. Try again in a moment.",
+    "errorTitle": "Could not load plans",
+    "errorDescription": "We could not fetch pricing. Check your connection and try again."
+  },
+  "billing": {
+    "title": "Billing",
+    "description": "View your plan, renewals, and upgrade options.",
+    "currentPlan": "Current plan",
+    "upgrade": "Upgrade",
+    "errorTitle": "Billing unavailable",
+    "errorDescription": "We could not load your subscription. Try again.",
+    "emptyTitle": "No active plan",
+    "emptyDescription": "No subscription details yet. Upgrade when you are ready.",
+    "manage": "Manage billing",
+    "status": "Status",
+    "periodEnd": "Renews / ends",
+    "source": "Billing source",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "selectPlan": "Choose a plan",
+    "noPrice": "No price available for this interval",
+    "statuses": {
+      "trialing": "Trial",
+      "active": "Active",
+      "past_due": "Past due",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "paused": "Paused"
+    },
+    "sources": {
+      "stripe": "Stripe",
+      "manual": "Manual"
+    }
+  },
+  "platform": {
+    "title": "Organizations",
+    "description": "Assign plans, renewals, and themes for every organization.",
+    "search": "Search organizations…",
+    "kpiOrgs": "Organizations",
+    "kpiActive": "Active",
+    "kpiExpiring": "Expiring soon",
+    "orgs": "Organizations",
+    "plan": "Plan",
+    "status": "Status",
+    "expires": "Expires",
+    "theme": "Theme",
+    "assign": "Assign subscription",
+    "save": "Save",
+    "interval": "Interval",
+    "months": "Months",
+    "years": "Years",
+    "emptyTitle": "No organizations",
+    "emptyDescription": "Organizations appear here after signup.",
+    "errorTitle": "Platform unavailable",
+    "errorDescription": "Could not load organizations.",
+    "themeSaved": "Theme updated",
+    "subSaved": "Subscription updated",
+    "themes": {
+      "zarva-gold": "Gold",
+      "zarva-noir": "Noir",
+      "zarva-emerald": "Emerald",
+      "zarva-sapphire": "Sapphire",
+      "zarva-rose": "Rose",
+      "zarva-copper": "Copper",
+      "zarva-pearl": "Pearl",
+      "zarva-obsidian": "Obsidian",
+      "zarva-amber": "Amber",
+      "zarva-slate": "Slate"
+    },
+    "maxDevices": "Max devices per user",
+    "maxDevicesHint": "Leave empty for unlimited. Applies to every user in this org.",
+    "unlimited": "Unlimited",
+    "savePolicy": "Save policy",
+    "policySaved": "Security policy updated",
+    "sessions": {
+      "title": "Sessions",
+      "description": "Monitor active logins and history across organizations.",
+      "activeTab": "Active",
+      "historyTab": "History",
+      "search": "Search users…",
+      "emptyTitle": "No active sessions",
+      "emptyDescription": "No one is signed in right now.",
+      "emptyHistoryTitle": "No login history",
+      "emptyHistoryDescription": "Logins will appear here.",
+      "colOrg": "Organization",
+      "colUser": "User",
+      "colDevice": "Device",
+      "colIp": "IP",
+      "colLastSeen": "Last seen",
+      "revoke": "Revoke"
+    },
+    "deviceBans": {
+      "title": "Device bans",
+      "ban": "Ban device",
+      "banTitle": "Ban this device",
+      "scope": {
+        "user": "This user only",
+        "global": "All accounts"
+      },
+      "reason": "Reason (optional)",
+      "cancel": "Cancel",
+      "confirm": "Ban",
+      "unban": "Unban",
+      "emptyTitle": "No bans",
+      "emptyDescription": "Banned devices appear here."
+    }
+  },
+  "roles": {
+    "title": "Roles & permissions",
+    "description": "Manage who can do what in your organization.",
+    "permissions": "Permissions",
+    "edit": "Edit",
+    "locked": "Locked",
+    "editTitle": "Edit {name}",
+    "saveError": "Could not save permissions.",
+    "loadErrorTitle": "Roles unavailable",
+    "loadErrorDescription": "We could not load roles. Try again.",
+    "emptyTitle": "No roles yet",
+    "emptyDescription": "Roles will appear here when the organization is set up.",
+    "perm": {
+      "notifications_read": "Read notifications",
+      "notifications_send": "Open compose",
+      "notifications_send_low": "Send low priority",
+      "notifications_send_normal": "Send normal priority",
+      "notifications_send_high": "Send high priority",
+      "notifications_send_critical": "Send critical priority",
+      "notifications_broadcast_platform": "Platform broadcast"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "appearanceDescription": "Theme and display preferences for your workspace.",
+    "themePreset": "Theme preset",
+    "themeLocked": "Theme is assigned by your plan or platform admin.",
+    "compactUnits": "Compact units",
+    "compactUnitsHint": "Show amounts and weights abbreviated (e.g. M IRR)"
+  },
+  "shell": {
+    "comingSoon": "This module is wired for your plan.",
+    "sampleTable": "Sample rows while the API is offline",
+    "emptyTitle": "No rows yet",
+    "emptyDescription": "Data appears here once records exist for this module.",
+    "colId": "ID",
+    "colName": "Name",
+    "colStatus": "Status",
+    "colUpdated": "Updated",
+    "header": {
+      "quickCreateAria": "Quick create",
+      "quickCreateTitle": "Create",
+      "newSale": "New sale",
+      "newPurchase": "New purchase",
+      "customers": "Customers",
+      "searchAria": "Search",
+      "liveRatesAria": "Live rates",
+      "liveRatesTitle": "Live rates",
+      "liveRatesError": "Could not load rates",
+      "notificationsTooltip": "Notifications",
+      "breadcrumbAria": "Breadcrumb"
+    }
+  },
+  "modules": {
+    "sales": {
+      "title": "Sales",
+      "description": "Invoices, POS checkout, returns, and customer payments.",
+      "search": "Search invoices…",
+      "emptyTitle": "No sales yet",
+      "emptyDescription": "Create a sale from the POS screen.",
+      "newSale": "New sale",
+      "posTitle": "POS sale",
+      "posDescription": "Scan or add items, then settle payment.",
+      "posScan": "Barcode / SKU",
+      "posAdd": "Add",
+      "posItem": "Item",
+      "posSampleItem": "18k chain",
+      "posCartTitle": "Cart",
+      "posCartCount": "{count} items",
+      "posCheckout": "Checkout",
+      "posCheckoutHint": "Customer and payment",
+      "posCustomerPh": "Customer name or phone",
+      "posSubtotal": "Subtotal",
+      "posTax": "Tax",
+      "posTotal": "Total",
+      "posPay": "Take payment",
+      "returnsTitle": "Sales returns",
+      "returnsDescription": "Returned merchandise linked to original invoices.",
+      "paymentsTitle": "Sales payments",
+      "paymentsDescription": "Settlements against open invoices.",
+      "nav": {
+        "invoices": "Invoices",
+        "pos": "POS",
+        "returns": "Returns",
+        "payments": "Payments"
+      },
+      "kpi": {
+        "today": "Sales today",
+        "count": "Invoices",
+        "avg": "Average ticket",
+        "unpaid": "Unpaid",
+        "returns": "Returns",
+        "returnValue": "Return value",
+        "paymentsToday": "Payments today",
+        "pending": "Pending"
+      },
+      "cols": {
+        "number": "Number",
+        "customer": "Customer",
+        "date": "Date",
+        "weight": "Gold wt",
+        "amount": "Amount",
+        "payment": "Payment",
+        "seller": "Seller",
+        "status": "Status",
+        "invoice": "Invoice",
+        "method": "Method"
+      },
+      "payment": {
+        "paid": "Paid",
+        "partial": "Partial",
+        "unpaid": "Unpaid"
+      },
+      "status": {
+        "completed": "Completed",
+        "draft": "Draft",
+        "void": "Void",
+        "confirmed": "Confirmed",
+        "ready": "Ready"
+      },
+      "loadErrorTitle": "Could not load sales",
+      "loadErrorDescription": "Check your connection and try again.",
+      "print": {
+        "print": "Print / Save PDF",
+        "preview": "Print preview",
+        "back": "Back to invoice",
+        "shopPhone": "Tel",
+        "guildId": "Guild ID",
+        "documentTitle": "Gold sales invoice",
+        "invoiceNumber": "Invoice no.",
+        "date": "Date",
+        "customer": "Buyer",
+        "phone": "Phone",
+        "nationalId": "National ID",
+        "seller": "Seller",
+        "totalWeight": "Total weight",
+        "grandTotal": "Grand total",
+        "amountInWords": "Amount in words",
+        "grams": "g",
+        "warranty": "Original gold value is VAT-exempt. VAT applies only to making charge and seller profit. This invoice is a proof of purchase; keep it for return or resale.",
+        "buyerSign": "Buyer signature & stamp",
+        "sellerSign": "Seller signature & stamp",
+        "cols": {
+          "row": "#",
+          "description": "Item",
+          "weight": "Weight",
+          "purity": "Karat",
+          "dailyRate": "Rate/g",
+          "goldValue": "Gold value",
+          "wage": "Wage",
+          "profit": "Profit",
+          "tax": "VAT",
+          "lineTotal": "Total"
+        }
+      }
+    },
+    "purchases": {
+      "title": "Purchases",
+      "description": "Supplier purchases, receipts, and purchase returns.",
+      "search": "Search purchases…",
+      "emptyTitle": "No purchases",
+      "emptyDescription": "Record a purchase from a supplier.",
+      "newPurchase": "New purchase",
+      "formDescription": "Presentation form — wires to API later.",
+      "supplierPh": "Supplier name",
+      "returnsTitle": "Purchase returns",
+      "returnsDescription": "Goods returned to suppliers.",
+      "nav": {
+        "list": "Purchases",
+        "new": "New",
+        "returns": "Returns"
+      },
+      "kpi": {
+        "month": "This month",
+        "weight": "Gold weight",
+        "open": "Open",
+        "returns": "Returns"
+      },
+      "cols": {
+        "number": "Number",
+        "supplier": "Supplier",
+        "date": "Date",
+        "weight": "Weight",
+        "amount": "Amount",
+        "payment": "Payment",
+        "purity": "Purity",
+        "purchase": "Purchase"
+      },
+      "payment": {
+        "paid": "Paid",
+        "partial": "Partial",
+        "unpaid": "Unpaid"
+      }
+    },
+    "inventory": {
+      "title": "Inventory",
+      "description": "Stock overview across gold, jewelry, coins, and raw material.",
+      "search": "Search products…",
+      "emptyTitle": "Empty inventory",
+      "emptyDescription": "Add products or receive a purchase.",
+      "productsDescription": "All sellable and raw SKUs.",
+      "movementsDescription": "Stock in / out movements.",
+      "warehousesDescription": "Warehouse and showcase locations.",
+      "lowStockDescription": "Items at or below reorder point.",
+      "valuationDescription": "Inventory valuation by method.",
+      "adjustmentsDescription": "Manual quantity / weight adjustments.",
+      "barcodesDescription": "Barcode assignments.",
+      "nav": {
+        "overview": "Overview",
+        "products": "Products",
+        "movements": "Movements",
+        "warehouses": "Warehouses",
+        "lowStock": "Low stock",
+        "valuation": "Valuation",
+        "adjustments": "Adjustments",
+        "barcodes": "Barcodes"
+      },
+      "kpi": {
+        "skus": "SKUs",
+        "value": "Value",
+        "low": "Low stock",
+        "weight": "Total weight",
+        "rows": "Rows"
+      },
+      "cols": {
+        "name": "Name",
+        "sku": "SKU",
+        "weight": "Weight",
+        "purity": "Purity",
+        "qty": "Qty",
+        "location": "Location",
+        "value": "Value",
+        "status": "Status"
+      },
+      "status": {
+        "available": "Available",
+        "reserved": "Reserved",
+        "low": "Low"
+      }
+    },
+    "gold": {
+      "title": "Gold",
+      "description": "Fine gold position, lots, purities, and ledger.",
+      "search": "Search gold…",
+      "emptyTitle": "No gold movements",
+      "emptyDescription": "Sales and purchases will appear here.",
+      "ledgerDescription": "Rial/gold dual ledger presentation.",
+      "calculatorDescription": "Presentation-only calculator — not an authoritative engine.",
+      "calculatorDisclaimer": "Results are illustrative mock output for UI review only.",
+      "calculatorResult": "Estimated total",
+      "calculate": "Calculate",
+      "ratesDescription": "Displayed rates (not live market feeds).",
+      "txDescription": "Gold weight transactions.",
+      "balanceDescription": "Fine gold balance summary.",
+      "rawDescription": "Raw gold stock.",
+      "meltedDescription": "Melted batches.",
+      "lotsDescription": "Gold lots.",
+      "puritiesDescription": "Purity standards.",
+      "nav": {
+        "overview": "Overview",
+        "rates": "Rates",
+        "transactions": "Transactions",
+        "ledger": "Ledger",
+        "balance": "Balance",
+        "raw": "Raw",
+        "melted": "Melted",
+        "lots": "Lots",
+        "purities": "Purities",
+        "calculator": "Calculator"
+      },
+      "kpi": {
+        "fine": "Fine gold",
+        "raw": "Raw",
+        "melted": "Melted",
+        "rate": "Rate",
+        "opening": "Opening",
+        "closing": "Closing",
+        "rows": "Rows"
+      },
+      "cols": {
+        "date": "Date",
+        "type": "Type",
+        "weight": "Weight",
+        "purity": "Purity",
+        "fine": "Fine",
+        "counterparty": "Counterparty",
+        "reference": "Reference",
+        "name": "Name",
+        "description": "Description",
+        "debit": "Debit",
+        "credit": "Credit",
+        "balance": "Balance",
+        "fee": "Fee"
+      }
+    },
+    "customers": {
+      "title": "Customers",
+      "description": "Customer profiles, balances, and receivables.",
+      "search": "Search customers…",
+      "emptyTitle": "No customers",
+      "emptyDescription": "Add a customer to start selling on account.",
+      "nav": {
+        "list": "Customers",
+        "balances": "Receivables",
+        "profile": "Profile"
+      },
+      "kpi": {
+        "count": "Customers",
+        "balance": "Open AR",
+        "total": "Lifetime volume"
+      },
+      "cols": {
+        "name": "Name",
+        "contact": "Contact",
+        "balance": "Balance",
+        "lastTxn": "Last txn",
+        "total": "Lifetime",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "loadErrorTitle": "Could not load customers",
+      "loadErrorDescription": "Check your connection and try again."
+    },
+    "suppliers": {
+      "title": "Suppliers",
+      "description": "Supplier profiles, balances, and payables.",
+      "search": "Search suppliers…",
+      "emptyTitle": "No suppliers",
+      "emptyDescription": "Add a supplier before recording purchases.",
+      "nav": {
+        "list": "Suppliers",
+        "balances": "Payables",
+        "profile": "Profile"
+      },
+      "kpi": {
+        "count": "Suppliers",
+        "balance": "Open AP",
+        "total": "Lifetime volume"
+      },
+      "cols": {
+        "name": "Name",
+        "contact": "Contact",
+        "balance": "Balance",
+        "lastTxn": "Last txn",
+        "total": "Lifetime",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "loadErrorTitle": "Could not load suppliers",
+      "loadErrorDescription": "Check your connection and try again."
+    },
+    "accounting": {
+      "title": "Accounting",
+      "description": "Cash, ledgers, income, expenses, AR/AP, and transactions.",
+      "search": "Search…",
+      "emptyTitle": "No entries",
+      "emptyDescription": "Accounting entries will appear here.",
+      "sampleDesc": "Sale settlement",
+      "sampleDesc2": "Purchase settlement",
+      "nav": {
+        "dashboard": "Dashboard",
+        "rialLedger": "Rial ledger",
+        "cashBank": "Cash & bank",
+        "income": "Income",
+        "expenses": "Expenses",
+        "receivables": "Receivables",
+        "payables": "Payables",
+        "transactions": "Transactions"
+      },
+      "hub": {
+        "rial": "General ledger in IRR.",
+        "cash": "Cash drawers and bank accounts.",
+        "income": "Income categories and entries.",
+        "expenses": "Operating expenses.",
+        "ar": "Customer receivables.",
+        "ap": "Supplier payables.",
+        "tx": "Journal and payment transactions."
+      },
+      "kpi": {
+        "cash": "Cash",
+        "ar": "Receivables",
+        "ap": "Payables",
+        "pl": "P&L",
+        "opening": "Opening",
+        "closing": "Closing",
+        "rows": "Rows"
+      },
+      "cols": {
+        "date": "Date",
+        "description": "Description",
+        "debit": "Debit",
+        "credit": "Credit",
+        "balance": "Balance",
+        "ref": "Ref",
+        "amount": "Amount"
+      }
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "See how sales, stock, gold, and profit are moving — pick a report to explore.",
+      "hubIntroTitle": "Your business at a glance",
+      "hubIntroDesc": "Each report pulls live numbers from your organization. Open one to dig into the details.",
+      "openReport": "Open",
+      "chartEmpty": "No data in this period",
+      "chartEmptyDesc": "When invoices or stock movements land, the chart fills in automatically.",
+      "seriesTitle": "Trend",
+      "seriesSubtitle": "Values for the selected period",
+      "seriesValue": "Value",
+      "summaryLabel": "Headline total",
+      "summaryHint": "Aggregated from live organization records",
+      "periodBadge": "Period · {period}",
+      "bodyErrorTitle": "Report data unavailable",
+      "bodyErrorDescription": "We could not load this report. Try again.",
+      "nav": {
+        "hub": "All reports"
+      },
+      "cards": {
+        "sales": "Sales",
+        "salesDesc": "Invoices, settlements, and sales performance over time.",
+        "purchases": "Purchases",
+        "purchasesDesc": "Supplier spend and gold weight purchased.",
+        "inventory": "Inventory",
+        "inventoryDesc": "SKU counts, low stock, and stock levels.",
+        "gold": "Gold",
+        "goldDesc": "Fine-gold transactions and movement.",
+        "profit": "Profit",
+        "profitDesc": "Sales versus cost — margin overview."
+      },
+      "kpi": {
+        "period": "Period",
+        "thisMonth": "This month",
+        "total": "Total"
+      },
+      "kpiLabels": {
+        "count": "Records",
+        "paid": "Paid",
+        "skus": "SKUs",
+        "low": "Low stock",
+        "txns": "Transactions",
+        "sales": "Sales",
+        "cogs": "Cost of goods"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Configure business rules, invoices, gold, and security.",
+      "fields": {
+        "value": "Value",
+        "placeholder": "Enter value",
+        "note": "Note"
+      },
+      "sections": {
+        "general": {
+          "title": "General",
+          "description": "Organization defaults."
+        },
+        "business": {
+          "title": "Business",
+          "description": "Trading and branch defaults."
+        },
+        "invoices": {
+          "title": "Invoices",
+          "description": "Numbering and print options."
+        },
+        "gold": {
+          "title": "Gold",
+          "description": "Purity and rate display settings."
+        },
+        "inventory": {
+          "title": "Inventory",
+          "description": "Valuation and reorder rules."
+        },
+        "accounting": {
+          "title": "Accounting",
+          "description": "Fiscal year and accounts."
+        },
+        "tax": {
+          "title": "Tax",
+          "description": "Tax codes and filing prefs."
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Alert channels."
+        },
+        "security": {
+          "title": "Security",
+          "description": "Sessions and 2FA policy."
+        },
+        "appearance": {
+          "title": "Appearance",
+          "description": "Theme and density."
+        },
+        "language": {
+          "title": "Language",
+          "description": "Locale and calendar."
+        },
+        "backup": {
+          "title": "Backup",
+          "description": "Export and restore (UI only)."
+        },
+        "billing": {
+          "title": "Billing",
+          "description": "Subscription and plan."
+        }
+      }
+    },
+    "organization": {
+      "title": "Organization",
+      "description": "Profile, users, roles, and audit trail.",
+      "search": "Search…",
+      "emptyTitle": "No rows",
+      "emptyDescription": "Nothing to show.",
+      "nav": {
+        "profile": "Profile",
+        "users": "Users",
+        "roles": "Roles",
+        "audit": "Audit"
+      },
+      "hub": {
+        "profile": "Legal name and tax identity.",
+        "users": "People with access.",
+        "roles": "CASL roles and permissions.",
+        "audit": "Security and change log."
+      },
+      "fields": {
+        "name": "Legal name",
+        "taxId": "Tax ID",
+        "phone": "Phone"
+      },
+      "status": {
+        "active": "Active"
+      },
+      "kpi": {
+        "rows": "Rows"
+      },
+      "cols": {
+        "a": "Item",
+        "b": "Detail",
+        "c": "Meta"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "System and operational alerts.",
+      "search": "Search alerts…",
+      "emptyTitle": "Inbox clear",
+      "emptyDescription": "You are up to date.",
+      "sentEmptyTitle": "Nothing sent yet",
+      "sentEmptyDescription": "Notifications you send will appear here.",
+      "unread": "Unread",
+      "read": "Read",
+      "markAllRead": "Mark all read",
+      "viewAll": "View all",
+      "bellAria": "Notifications, {count} unread",
+      "tabs": {
+        "inbox": "Inbox",
+        "sent": "Sent"
+      },
+      "kpi": {
+        "unread": "Unread",
+        "today": "Today",
+        "inbox": "Inbox",
+        "sent": "Sent"
+      },
+      "cols": {
+        "title": "Alert",
+        "author": "From",
+        "time": "Time",
+        "status": "Status",
+        "receipts": "Read"
+      },
+      "errors": {
+        "loadInbox": "Could not load notifications.",
+        "loadSent": "Could not load sent notifications."
+      },
+      "receipts": {
+        "title": "Who read this",
+        "close": "Close",
+        "loading": "Loading…",
+        "error": "Could not load receipts.",
+        "counter": "{read} of {total}",
+        "read": "Read",
+        "unread": "Unread",
+        "noneRead": "No one has read this yet.",
+        "noneUnread": "Everyone has read this."
+      },
+      "priority": {
+        "low": {
+          "label": "Low",
+          "hint": "Quiet update — no interruption."
+        },
+        "normal": {
+          "label": "Normal",
+          "hint": "Standard inbox alert."
+        },
+        "high": {
+          "label": "High",
+          "hint": "Highlighted in lists and the bell."
+        },
+        "critical": {
+          "label": "Critical",
+          "hint": "Blocks the UI until acknowledged."
+        }
+      },
+      "critical": {
+        "eyebrow": "Critical alert",
+        "ack": "I understand",
+        "acking": "Confirming…",
+        "queue": "{current} of {total}"
+      },
+      "compose": {
+        "open": "Send notification",
+        "title": "New notification",
+        "close": "Close",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending…",
+        "loading": "Loading…",
+        "emptyUsers": "No users available.",
+        "error": "Could not send notification.",
+        "validation": {
+          "required": "Title and message are required.",
+          "users": "Select at least one user.",
+          "orgs": "Select at least one organization.",
+          "network": "Cannot reach the server. Check your connection.",
+          "forbidden": "You do not have permission to send this notification.",
+          "loadUsers": "Could not load users.",
+          "loadOrgs": "Could not load organizations.",
+          "priority": "You cannot send this priority level.",
+          "noPriority": "No send priority is assigned to your role."
+        },
+        "fields": {
+          "title": "Title",
+          "body": "Message",
+          "audience": "Audience",
+          "priority": "Priority",
+          "users": "Users",
+          "orgs": "Organizations"
+        },
+        "audience": {
+          "orgAll": "Everyone in my organization",
+          "users": "Selected users",
+          "platformAll": "Everyone on the platform",
+          "orgs": "Selected organizations"
+        }
+      },
+      "terminateSession": "Terminate session"
+    },
+    "search": {
+      "title": "Search",
+      "description": "Find invoices, products, parties, and gold lots.",
+      "placeholder": "Type to search…",
+      "emptyTitle": "Start typing",
+      "emptyDescription": "Results will appear here."
+    },
+    "workshop": {
+      "title": "Workshop",
+      "description": "Custom production orders and artisan workload.",
+      "search": "Search orders…",
+      "emptyTitle": "No workshop orders",
+      "emptyDescription": "Create a production order to begin.",
+      "nav": {
+        "orders": "Orders",
+        "production": "Production",
+        "artisans": "Artisans"
+      },
+      "kpi": {
+        "open": "Open",
+        "late": "Late",
+        "done": "Completed"
+      },
+      "cols": {
+        "order": "Order",
+        "customer": "Customer",
+        "product": "Product",
+        "artisan": "Artisan",
+        "due": "Due",
+        "status": "Status",
+        "progress": "Progress"
+      }
+    },
+    "workshopProduction": {
+      "title": "Production",
+      "description": "Workshop batches in progress.",
+      "search": "Search batches…",
+      "emptyTitle": "No batches",
+      "emptyDescription": "No production batches.",
+      "kpi": {
+        "a": "Batches",
+        "aValue": "2",
+        "b": "Avg progress",
+        "bValue": "52%"
+      },
+      "cols": {
+        "a": "Batch",
+        "b": "Product",
+        "c": "Progress"
+      }
+    },
+    "workshopArtisans": {
+      "title": "Artisans",
+      "description": "Craftspeople assigned to workshop work.",
+      "search": "Search artisans…",
+      "emptyTitle": "No artisans",
+      "emptyDescription": "Add artisans to assign work.",
+      "kpi": {
+        "a": "Artisans",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "Name",
+        "b": "Skill",
+        "c": "Status"
+      }
+    },
+    "jewelry": {
+      "title": "Jewelry",
+      "description": "Finished jewelry pieces and showcase stock.",
+      "search": "Search jewelry…",
+      "emptyTitle": "No jewelry",
+      "emptyDescription": "Add finished pieces from workshop or purchase.",
+      "kpi": {
+        "a": "Pieces",
+        "aValue": "2",
+        "b": "On floor",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Piece",
+        "b": "SKU",
+        "c": "Location"
+      }
+    },
+    "tax": {
+      "title": "Tax",
+      "description": "Tax returns and filing stubs.",
+      "search": "Search filings…",
+      "emptyTitle": "No filings",
+      "emptyDescription": "Tax periods will appear here.",
+      "kpi": {
+        "a": "Open",
+        "aValue": "1",
+        "b": "Filed",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Period",
+        "b": "Status",
+        "c": "Filed"
+      }
+    },
+    "branches": {
+      "title": "Branches",
+      "description": "Multi-branch locations and status.",
+      "search": "Search branches…",
+      "emptyTitle": "No branches",
+      "emptyDescription": "Add a branch to expand.",
+      "kpi": {
+        "a": "Branches",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "Branch",
+        "b": "City",
+        "c": "Status"
+      }
+    },
+    "commerce": {
+      "title": "Commerce",
+      "description": "Online and messaging sales channels.",
+      "search": "Search channels…",
+      "emptyTitle": "No channels",
+      "emptyDescription": "Connect a commerce channel.",
+      "kpi": {
+        "a": "Channels",
+        "aValue": "2",
+        "b": "Live",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Channel",
+        "b": "Status",
+        "c": "SKUs"
+      }
+    },
+    "ai": {
+      "title": "AI insights",
+      "description": "Insight cards only — no fake reasoning engine.",
+      "insightLowStock": "Watch low-stock coins",
+      "insightLowStockBody": "Two Bahar Azadi coins remain; consider a purchase order.",
+      "insightMargin": "Margin attention",
+      "insightMarginBody": "Wholesale draft invoice is unpaid — review credit terms.",
+      "insightLabel": "Presentation insight"
+    },
+    "integrations": {
+      "title": "Integrations",
+      "description": "Devices, scales, API keys, and webhooks (UI only).",
+      "kpi": {
+        "a": "Connected",
+        "aValue": "0",
+        "b": "Pending",
+        "bValue": "4"
+      },
+      "hub": {
+        "devices": "Devices",
+        "devicesDesc": "POS and printer endpoints.",
+        "scale": "Scale",
+        "scaleDesc": "Weight scale pairing UI.",
+        "api": "API",
+        "apiDesc": "API keys and scopes.",
+        "webhooks": "Webhooks",
+        "webhooksDesc": "Outbound event hooks."
+      }
+    },
+    "integrationsDevices": {
+      "title": "Devices",
+      "description": "Registered devices.",
+      "search": "Search…",
+      "emptyTitle": "No devices",
+      "emptyDescription": "Pair a device to continue.",
+      "kpi": {
+        "a": "Devices",
+        "aValue": "2",
+        "b": "Online",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Device",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsScale": {
+      "title": "Scale",
+      "description": "Scale connection UI.",
+      "search": "Search…",
+      "emptyTitle": "No scales",
+      "emptyDescription": "Connect a scale.",
+      "kpi": {
+        "a": "Scales",
+        "aValue": "2",
+        "b": "Ready",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Scale",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsApi": {
+      "title": "API",
+      "description": "API credentials (display only).",
+      "search": "Search…",
+      "emptyTitle": "No keys",
+      "emptyDescription": "Create an API key.",
+      "kpi": {
+        "a": "Keys",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Key",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsWebhooks": {
+      "title": "Webhooks",
+      "description": "Webhook endpoints.",
+      "search": "Search…",
+      "emptyTitle": "No webhooks",
+      "emptyDescription": "Add a webhook URL.",
+      "kpi": {
+        "a": "Hooks",
+        "aValue": "2",
+        "b": "OK",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Hook",
+        "b": "Status",
+        "c": "Note"
+      }
+    }
+  },
+  "authExtras": {
+    "forgot": {
+      "title": "Forgot password",
+      "description": "We will email a reset link when mail is configured.",
+      "email": "Email",
+      "submit": "Send link",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "Reset password",
+      "description": "Choose a new password for your account.",
+      "email": "Email",
+      "password": "New password",
+      "submit": "Update password",
+      "back": "Back to sign in"
+    },
+    "twofa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the code from your authenticator app.",
+      "code": "Code",
+      "submit": "Verify",
+      "back": "Back to sign in"
+    },
+    "invite": {
+      "title": "Accept invite",
+      "description": "Set your name and password to join the organization.",
+      "name": "Full name",
+      "password": "Password",
+      "submit": "Join",
+      "back": "Back to sign in"
+    }
+  }
+}

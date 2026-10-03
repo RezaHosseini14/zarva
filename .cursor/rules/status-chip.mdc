@@ -1,0 +1,49 @@
+---
+description: Table/detail status chips — nested icon square + label (StatusBadge).
+globs: "apps/frontend/**/*.{tsx,ts}"
+alwaysApply: false
+---
+
+# Status chips
+
+**Canonical:** [`StatusBadge`](apps/frontend/src/components/page/status-badge.tsx) — nested `size-5` icon square + label inside `h-8` ringed chip.
+
+Use for every table/detail status, payment, read/unread, draft/complete, subscription state, etc. Do **not** invent parallel pills (`rounded px-2 py-0.5` text-only badges).
+
+## API
+
+```tsx
+<StatusBadge label={t('payment.paid')} tone="success" icon="check-read-bold" />
+
+{/* Interactive — shadcn Button, same chrome */}
+<StatusBadge
+  label={t('receipts.counter', { read, total })}
+  tone="info"
+  icon="users-group-rounded-bold"
+  onClick={() => open()}
+/>
+```
+
+| Prop | Rule |
+|------|------|
+| `label` | i18n string (never raw English API enums) |
+| `tone` | `success` \| `danger` \| `warning` \| `info` \| `neutral` \| `gold` |
+| `icon` | **Required** — Solar `*-bold` semantic to the state |
+| `onClick` | Optional — when present, renders shadcn `Button` with identical chip look |
+
+## Icon picks (examples)
+
+| State | tone | icon |
+|-------|------|------|
+| Paid / read / active / available | success | `check-read-bold` |
+| Unpaid / low / banned / expired | danger | `danger-triangle-bold` |
+| Partial / unread / past_due | warning | `bell-bing-bold` or `notification-unread-lines-bold` |
+| Draft / inactive / neutral | neutral | `notes-bold` |
+| Completed / gold / current | gold | `medal-star-bold` |
+| Info / receipts / trial | info / gold | `users-group-rounded-bold` / `crown-star-bold` |
+
+## Must not
+
+- Plain `StatusBadge` without `icon`
+- Ad-hoc status `<span className="rounded px-2 …">` in tables
+- Native `<button>` chips that skip shadcn `Button` when clickable

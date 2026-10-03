@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="zarvaRim" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0D878"/>
+      <stop offset="0.4" stop-color="#C9A227"/>
+      <stop offset="1" stop-color="#8A7012"/>
+    </linearGradient>
+    <linearGradient id="zarvaGold" x1="32" y1="28" x2="96" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3DF8A"/>
+      <stop offset="0.35" stop-color="#E0BC3E"/>
+      <stop offset="0.7" stop-color="#C9A227"/>
+      <stop offset="1" stop-color="#9A7A14"/>
+    </linearGradient>
+    <linearGradient id="zarvaGoldDeep" x1="88" y1="40" x2="40" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A88316"/>
+      <stop offset="1" stop-color="#6E5A0E"/>
+    </linearGradient>
+    <linearGradient id="zarvaSheen" x1="24" y1="24" x2="72" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF6C8" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#E8C766" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="#080b0f"/>
+  <rect x="10" y="10" width="108" height="108" rx="24" fill="#0A0D12"/>
+  <rect x="10" y="10" width="108" height="108" rx="24" fill="none" stroke="url(#zarvaRim)" stroke-width="3.5"/>
+  <rect x="18" y="18" width="56" height="48" rx="16" fill="url(#zarvaSheen)" opacity="0.2"/>
+
+  <path d="M36 35H92V46.2L48.8 81.8H92V93H36V81.8L79.2 46.2H36V35Z" fill="url(#zarvaGold)"/>
+  <path d="M82.4 46.2 92 46.2 57.6 81.8h-8.8L82.4 46.2Z" fill="url(#zarvaGoldDeep)" opacity="0.5"/>
+  <path d="M36.6 35.6H91.4V38.6H36.6V35.6Z" fill="#FFF1B0" opacity="0.4"/>
+</svg>

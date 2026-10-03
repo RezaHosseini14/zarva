@@ -1,0 +1,54 @@
+---
+description: Progressive loading — 1 data source = 1 Suspense = UI-faithful skeleton inside main. Canonical: dashboard.
+globs: apps/frontend/src/app/**/*.tsx,apps/frontend/src/features/**/*.tsx,apps/frontend/src/lib/lists/**/*.tsx
+alwaysApply: false
+---
+
+# Progressive loading
+
+**Canonical:** [`dashboard/page.tsx`](apps/frontend/src/app/[locale]/(app)/dashboard/page.tsx) + [`dashboard-skeletons.tsx`](apps/frontend/src/features/dashboard/dashboard-skeletons.tsx).  
+**Full guide:** [`docs/frontend/progressive-loading.md`](docs/frontend/progressive-loading.md).
+
+## Law
+
+```text
+1 independent data source = 1 Suspense = 1 UI-faithful section skeleton
+```
+
+Data dependency decides the boundary — not visual grouping.
+
+## Must
+
+1. Loading starts **inside** `<main>` only. Never skeleton Sidebar / Header / AppShellFrame.
+2. Static UI (titles, icons, SubNav, CTAs, i18n labels) renders **immediately** — outside Suspense.
+3. Each independent server fetch / async RSC section gets its **own** Suspense + matching skeleton.
+4. Skeleton mirrors real UI (padding, grids, metric footer rail, table, filters). Use `.zarva-shimmer` (gold wash).
+5. Shared API → `React.cache` → **one** Suspense (boxes may resolve together). Do not invent endpoints to fake independence.
+6. **No** `(app)/loading.tsx` and **no** route `loading.tsx` when the page has section Suspense (double flash).
+7. **Search / FilterSearch skeleton = full width** — same as live `FilterSearch` (`w-full`). Never `max-w-md` (or any narrower cap) on the loading search shell; width must not jump when Suspense resolves.
+
+## Must not
+
+- One Suspense / page-level `await` / `Promise.all` around unrelated fetches
+- Generic full-page skeleton
+- Skeletonizing static titles/icons from i18n
+- Blank `<main>` while data loads
+- Narrow search skeleton (`max-w-md` / fixed small width) that expands after load
+
+## Checklist
+
+1. List fetches → group shared vs independent
+2. One Suspense + skeleton per independent source
+3. Static chrome outside
+4. No route `loading.tsx` ahead of section skeletons
+5. RTL + responsive parity with loaded UI
+
+## Patterns
+
+| Kind | Do |
+|------|-----|
+| Dashboard-like hubs | Copy dashboard: page wires Suspense; feature `*-skeletons.tsx` |
+| Domain lists | `StreamedDomainChrome` + body Suspense + `DomainListBodySkeleton` (+ real `skeletonKpiLabels`) |
+| Section loaders / hubs | Chrome outside Suspense; body `DomainBodySkeleton` (`list`/`form`/`hub`); island `chrome="body"` |
+| Detail / form | Chrome/SubNav outside; `showHeader={false}` when title is data-dependent; form body skeleton |
+| Client Query only | Pending UI inside the page — not segment `loading.tsx` |

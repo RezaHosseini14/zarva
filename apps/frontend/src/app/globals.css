@@ -1,0 +1,1620 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root,
+[data-theme="zarva-gold"] {
+  --background: #080b0f;
+  --foreground: #f5f3ed;
+  --foreground-secondary: #b4b7bd;
+  --foreground-muted: #7d838c;
+  --foreground-disabled: #555b64;
+  --primary: #c9a227;
+  --primary-secondary: #ddba45;
+  --primary-highlight: #e8c766;
+  --primary-dark: #a88316;
+  --primary-foreground: #080b0f;
+  --accent: #e8c766;
+  --accent-foreground: #080b0f;
+  --muted: #1a2028;
+  --muted-foreground: #7d838c;
+  --secondary: #1a2028;
+  --secondary-foreground: #f5f3ed;
+  --card: rgba(17, 22, 28, 0.92);
+  --card-foreground: #f5f3ed;
+  --popover: rgba(21, 27, 34, 0.98);
+  --popover-foreground: #f5f3ed;
+  --elevated: rgba(21, 27, 34, 0.96);
+  --nested: rgba(26, 32, 40, 0.98);
+  --hover: rgba(32, 39, 49, 0.95);
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: rgba(201, 162, 39, 0.45);
+  --glass-blur: 24px;
+  --glass-saturate: 1.4;
+  --glass-bg: rgba(10, 13, 17, 0.42);
+  --glass-border: color-mix(in oklab, var(--primary) 20%, rgba(255, 255, 255, 0.12));
+  --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --sidebar: var(--glass-bg);
+  --sidebar-foreground: #f5f3ed;
+  --sidebar-primary: #c9a227;
+  --sidebar-primary-foreground: #080b0f;
+  --sidebar-accent: rgba(32, 39, 49, 0.95);
+  --sidebar-accent-foreground: #f5f3ed;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: rgba(201, 162, 39, 0.45);
+  --success: #22c55e;
+  --danger: #ef4444;
+  --destructive: #ef4444;
+  --warning: #eab308;
+  --info: #3b82f6;
+  --chart-1: #c9a227;
+  --chart-2: #ddba45;
+  --chart-3: #22c55e;
+  --chart-4: #3b82f6;
+  --chart-5: #eab308;
+  --radius: 1.25rem;
+  --radius-control: 0.75rem;
+  --shell-inset: 1rem;
+  --focus-ring: rgba(201, 162, 39, 0.45);
+  --duration-fast: 150ms;
+  --duration-shell: 200ms;
+  --space-page: 1.5rem;
+}
+
+[data-theme="zarva-noir"] {
+  --background: #050607;
+  --foreground: #e8e8ea;
+  --primary: #a8a8b0;
+  --primary-secondary: #c0c0c8;
+  --primary-highlight: #d8d8e0;
+  --primary-dark: #787880;
+  --primary-foreground: #050607;
+  --accent: #c0c0c8;
+  --accent-foreground: #050607;
+  --muted: #141418;
+  --secondary: #141418;
+  --card: rgba(12, 12, 14, 0.94);
+  --elevated: rgba(16, 16, 20, 0.96);
+  --nested: rgba(20, 20, 24, 0.98);
+  --ring: rgba(168, 168, 176, 0.4);
+  --sidebar-primary: #a8a8b0;
+  --chart-1: #a8a8b0;
+  --chart-2: #c0c0c8;
+  --focus-ring: rgba(168, 168, 176, 0.4);
+}
+
+[data-theme="zarva-emerald"] {
+  --background: #06110c;
+  --foreground: #e8f5ef;
+  --primary: #2dd4a0;
+  --primary-secondary: #4ae0b0;
+  --primary-highlight: #6eebc2;
+  --primary-dark: #1a9a72;
+  --primary-foreground: #06110c;
+  --accent: #4ae0b0;
+  --accent-foreground: #06110c;
+  --muted: #0e1f18;
+  --secondary: #0e1f18;
+  --card: rgba(10, 24, 18, 0.94);
+  --elevated: rgba(12, 28, 20, 0.96);
+  --nested: rgba(14, 32, 24, 0.98);
+  --ring: rgba(45, 212, 160, 0.4);
+  --sidebar-primary: #2dd4a0;
+  --chart-1: #2dd4a0;
+  --chart-2: #4ae0b0;
+  --focus-ring: rgba(45, 212, 160, 0.4);
+}
+
+[data-theme="zarva-sapphire"] {
+  --background: #070b14;
+  --foreground: #e8eef8;
+  --primary: #4a8dff;
+  --primary-secondary: #6aa3ff;
+  --primary-highlight: #8abafe;
+  --primary-dark: #2f6ad4;
+  --primary-foreground: #070b14;
+  --accent: #6aa3ff;
+  --accent-foreground: #070b14;
+  --muted: #101828;
+  --secondary: #101828;
+  --card: rgba(12, 18, 32, 0.94);
+  --elevated: rgba(14, 22, 38, 0.96);
+  --nested: rgba(16, 26, 44, 0.98);
+  --ring: rgba(74, 141, 255, 0.4);
+  --sidebar-primary: #4a8dff;
+  --chart-1: #4a8dff;
+  --chart-2: #6aa3ff;
+  --focus-ring: rgba(74, 141, 255, 0.4);
+}
+
+[data-theme="zarva-rose"] {
+  --background: #12080c;
+  --foreground: #f8ecef;
+  --primary: #e8a0b0;
+  --primary-secondary: #f0b8c4;
+  --primary-highlight: #f8d0d8;
+  --primary-dark: #c47888;
+  --primary-foreground: #12080c;
+  --accent: #f0b8c4;
+  --accent-foreground: #12080c;
+  --muted: #241018;
+  --secondary: #241018;
+  --card: rgba(28, 14, 20, 0.94);
+  --elevated: rgba(32, 16, 24, 0.96);
+  --nested: rgba(36, 18, 28, 0.98);
+  --ring: rgba(232, 160, 176, 0.4);
+  --sidebar-primary: #e8a0b0;
+  --chart-1: #e8a0b0;
+  --chart-2: #f0b8c4;
+  --focus-ring: rgba(232, 160, 176, 0.4);
+}
+
+[data-theme="zarva-copper"] {
+  --background: #100a06;
+  --foreground: #f5ebe3;
+  --primary: #c47a4a;
+  --primary-secondary: #d49262;
+  --primary-highlight: #e4aa7a;
+  --primary-dark: #9a5a32;
+  --primary-foreground: #100a06;
+  --accent: #d49262;
+  --accent-foreground: #100a06;
+  --muted: #221810;
+  --secondary: #221810;
+  --card: rgba(26, 18, 12, 0.94);
+  --elevated: rgba(30, 20, 14, 0.96);
+  --nested: rgba(34, 24, 16, 0.98);
+  --ring: rgba(196, 122, 74, 0.4);
+  --sidebar-primary: #c47a4a;
+  --chart-1: #c47a4a;
+  --chart-2: #d49262;
+  --focus-ring: rgba(196, 122, 74, 0.4);
+}
+
+[data-theme="zarva-pearl"] {
+  --background: #12141a;
+  --foreground: #f2f0ea;
+  --primary: #d4cfc4;
+  --primary-secondary: #e4dfd4;
+  --primary-highlight: #f0ebe0;
+  --primary-dark: #a8a398;
+  --primary-foreground: #12141a;
+  --accent: #e4dfd4;
+  --accent-foreground: #12141a;
+  --muted: #1e222a;
+  --secondary: #1e222a;
+  --card: rgba(24, 26, 32, 0.94);
+  --elevated: rgba(28, 30, 36, 0.96);
+  --nested: rgba(32, 34, 42, 0.98);
+  --ring: rgba(212, 207, 196, 0.4);
+  --sidebar-primary: #d4cfc4;
+  --chart-1: #d4cfc4;
+  --chart-2: #e4dfd4;
+  --focus-ring: rgba(212, 207, 196, 0.4);
+}
+
+[data-theme="zarva-obsidian"] {
+  --background: #030303;
+  --foreground: #f0f0f0;
+  --primary: #6b5cff;
+  --primary-secondary: #8578ff;
+  --primary-highlight: #a098ff;
+  --primary-dark: #4a3fd4;
+  --primary-foreground: #030303;
+  --accent: #8578ff;
+  --accent-foreground: #030303;
+  --muted: #121214;
+  --secondary: #121214;
+  --card: rgba(10, 10, 12, 0.96);
+  --elevated: rgba(14, 14, 16, 0.98);
+  --nested: rgba(18, 18, 20, 0.98);
+  --ring: rgba(107, 92, 255, 0.4);
+  --sidebar-primary: #6b5cff;
+  --chart-1: #6b5cff;
+  --chart-2: #8578ff;
+  --focus-ring: rgba(107, 92, 255, 0.4);
+}
+
+[data-theme="zarva-amber"] {
+  --background: #0e0c06;
+  --foreground: #f7f1e0;
+  --primary: #f0a020;
+  --primary-secondary: #f5b448;
+  --primary-highlight: #fac870;
+  --primary-dark: #c07810;
+  --primary-foreground: #0e0c06;
+  --accent: #f5b448;
+  --accent-foreground: #0e0c06;
+  --muted: #1c1810;
+  --secondary: #1c1810;
+  --card: rgba(22, 18, 10, 0.94);
+  --elevated: rgba(26, 22, 12, 0.96);
+  --nested: rgba(30, 26, 14, 0.98);
+  --ring: rgba(240, 160, 32, 0.4);
+  --sidebar-primary: #f0a020;
+  --chart-1: #f0a020;
+  --chart-2: #f5b448;
+  --focus-ring: rgba(240, 160, 32, 0.4);
+}
+
+[data-theme="zarva-slate"] {
+  --background: #0a0e14;
+  --foreground: #e6ebf2;
+  --primary: #7a90a8;
+  --primary-secondary: #94a8bc;
+  --primary-highlight: #aec0d0;
+  --primary-dark: #5a7088;
+  --primary-foreground: #0a0e14;
+  --accent: #94a8bc;
+  --accent-foreground: #0a0e14;
+  --muted: #141c28;
+  --secondary: #141c28;
+  --card: rgba(16, 22, 30, 0.94);
+  --elevated: rgba(18, 26, 36, 0.96);
+  --nested: rgba(20, 30, 40, 0.98);
+  --ring: rgba(122, 144, 168, 0.4);
+  --sidebar-primary: #7a90a8;
+  --chart-1: #7a90a8;
+  --chart-2: #94a8bc;
+  --focus-ring: rgba(122, 144, 168, 0.4);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-secondary: var(--primary-secondary);
+  --color-primary-highlight: var(--primary-highlight);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-elevated: var(--elevated);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-hover: var(--hover);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --font-sans: var(--font-yekan-bakh), Tahoma, Arial, sans-serif;
+  --font-heading: var(--font-yekan-bakh), Tahoma, Arial, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* App canvas — static CSS wash only (no WebGL / animated mesh).
+   Do NOT use `isolation: isolate` here — it creates a backdrop root and
+   kills backdrop-filter on every card / header / sidebar inside. */
+.zarva-app-canvas {
+  position: relative;
+  min-height: 100dvh;
+  background-color: var(--background);
+}
+
+.zarva-app-canvas::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--background);
+  background-image:
+    radial-gradient(
+      100% 70% at 12% -8%,
+      color-mix(in oklab, var(--primary-highlight) 28%, transparent) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      70% 55% at 88% 8%,
+      color-mix(in oklab, var(--primary) 12%, transparent) 0%,
+      transparent 48%
+    ),
+    radial-gradient(
+      85% 65% at 92% 105%,
+      color-mix(in oklab, var(--primary-dark) 16%, transparent) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      165deg,
+      #0c1016 0%,
+      var(--background) 42%,
+      #06080c 100%
+    );
+}
+
+.zarva-app-canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Metric / KPI tiles (KpiGrid, LiveRateCard, MetricCardShell).
+ * Fixed height + pinned footer so Suspense → data never shifts the header label.
+ */
+.zarva-metric-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 9rem;
+}
+
+@media (min-width: 640px) {
+  .zarva-metric-card {
+    height: 9.5rem;
+  }
+}
+
+.zarva-metric-card__header {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0;
+}
+
+@media (min-width: 640px) {
+  .zarva-metric-card__header {
+    padding: 1.25rem 1.25rem 0;
+  }
+}
+
+.zarva-metric-card__footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  border-top: 1px solid color-mix(in oklab, var(--primary) 12%, transparent);
+  background: color-mix(in oklab, var(--nested) 70%, transparent);
+  padding: 0.75rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .zarva-metric-card__footer {
+    padding-inline: 1.25rem;
+  }
+}
+
+.zarva-metric-card__footer-row {
+  display: flex;
+  min-height: 1.75rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Route / Suspense placeholders — warm gold wash (atelier lamp), not grey pulse */
+.zarva-shimmer {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 0.55);
+  background: linear-gradient(
+    165deg,
+    color-mix(in oklab, var(--nested) 72%, var(--primary) 14%),
+    color-mix(in oklab, var(--nested) 94%, transparent) 70%
+  );
+  box-shadow: inset 0 1px 0 0 color-mix(in oklab, var(--primary-highlight) 12%, transparent);
+}
+
+.zarva-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    color-mix(in oklab, var(--primary-highlight) 14%, transparent) 38%,
+    color-mix(in oklab, var(--primary) 22%, transparent) 52%,
+    transparent 72%
+  );
+  animation: zarva-shimmer-slide 1.85s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes zarva-shimmer-slide {
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* Chart bed: soft area silhouette under the wash */
+.zarva-skeleton-chart {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 0.55);
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in oklab, var(--primary) 14%, transparent),
+      transparent 58%
+    ),
+    color-mix(in oklab, var(--nested) 78%, transparent);
+}
+
+.zarva-skeleton-chart__grid {
+  position: absolute;
+  inset: 0.75rem 0.5rem 1.25rem;
+  background-image: repeating-linear-gradient(
+    to top,
+    color-mix(in oklab, var(--border) 55%, transparent) 0 1px,
+    transparent 1px 22%
+  );
+  opacity: 0.45;
+  mask-image: linear-gradient(to top, transparent, #000 28%);
+}
+
+.zarva-skeleton-chart__area {
+  position: absolute;
+  inset-inline: 0.35rem;
+  bottom: 0.35rem;
+  height: 58%;
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--primary) 28%, transparent),
+    color-mix(in oklab, var(--primary-highlight) 8%, transparent) 70%,
+    transparent
+  );
+  clip-path: polygon(
+    0% 72%,
+    14% 58%,
+    28% 64%,
+    42% 38%,
+    56% 46%,
+    70% 22%,
+    84% 34%,
+    100% 12%,
+    100% 100%,
+    0% 100%
+  );
+  opacity: 0.85;
+}
+
+.zarva-skeleton-chart__wash {
+  position: absolute;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zarva-shimmer::after {
+    animation: none;
+    opacity: 0.28;
+    transform: none;
+  }
+}
+
+/* Content panels: solid elevated surface */
+.zarva-panel {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Top edge highlight only (vertical ::after removed — stuck out past rounded corners) */
+.zarva-glass-card::before,
+.zarva-glass-popover::before,
+.zarva-glass-sidebar::before,
+.zarva-glass-input::before,
+.zarva-breadcrumb::before {
+  content: '';
+  position: absolute;
+  inset-inline: 1px;
+  top: 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--primary-highlight) 55%, rgba(255, 255, 255, 0.5)),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Glass surfaces — NEVER put overflow/transform/isolation on these same nodes.
+   overflow:hidden and transform both disable backdrop-filter in Chromium. */
+.zarva-glass-card,
+.zarva-glass-popover,
+.zarva-glass-shell,
+.zarva-glass-sidebar {
+  position: relative;
+  color: var(--foreground);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+}
+
+.zarva-glass-card,
+.zarva-glass-popover,
+.zarva-glass-sidebar {
+  border-radius: var(--radius);
+}
+
+.zarva-glass-input {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-control);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.zarva-glass-input:focus,
+.zarva-glass-input:focus-visible {
+  outline: none;
+  border-color: var(--glass-border);
+  box-shadow:
+    0 0 0 3px var(--focus-ring),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+}
+
+/* Dropdown triggers — gold hover / open (profile / menus; header actions have their own skin) */
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell),
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell) {
+  transition:
+    color var(--duration-shell) ease,
+    background-color var(--duration-shell) ease,
+    box-shadow var(--duration-shell) ease;
+}
+
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell):hover,
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell):focus-visible,
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell)[data-state='open'],
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell):hover,
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell):focus-visible,
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell)[data-state='open'] {
+  color: var(--primary-highlight);
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent),
+    0 0 18px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell):focus-visible,
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell):focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--primary) 36%, transparent),
+    0 0 0 3px var(--focus-ring);
+}
+
+.zarva-dropdown-trigger:not(.zarva-header-action):not(.zarva-notif-bell)[data-state='open'],
+[data-slot='dropdown-menu-trigger']:not(.zarva-header-action):not(.zarva-notif-bell)[data-state='open'] {
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--primary) 38%, transparent),
+    0 0 22px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+/* Tooltip — compact glass chip (matches shell chrome) */
+.zarva-tooltip {
+  border-radius: var(--radius-control);
+  border: 1px solid color-mix(in oklab, var(--primary) 28%, var(--glass-border));
+  background: color-mix(in oklab, var(--elevated) 88%, var(--primary) 12%);
+  color: var(--foreground);
+  backdrop-filter: blur(14px) saturate(1.3);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 14px color-mix(in oklab, var(--primary) 14%, transparent);
+}
+
+/* Header icon actions — glass surface like page cards */
+.zarva-header-action,
+.zarva-notif-bell,
+button.zarva-header-action,
+a.zarva-header-action {
+  position: relative;
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  color: var(--primary-highlight);
+  cursor: pointer;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+  transition:
+    color var(--duration-shell) ease,
+    background-color var(--duration-shell) ease,
+    border-color var(--duration-shell) ease,
+    box-shadow var(--duration-shell) ease,
+    transform var(--duration-fast) ease;
+}
+
+.zarva-header-action__icon,
+.zarva-notif-bell__icon {
+  display: block;
+  line-height: 1;
+  color: inherit;
+  transition: transform var(--duration-shell) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zarva-header-action:hover,
+.zarva-notif-bell:hover,
+button.zarva-header-action:hover,
+a.zarva-header-action:hover {
+  color: var(--primary-highlight);
+  background: color-mix(in oklab, var(--glass-bg) 70%, var(--primary) 12%);
+  border-color: color-mix(in oklab, var(--primary) 36%, var(--glass-border));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 22%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 12%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--primary) 10%, transparent);
+}
+
+.zarva-header-action:hover .zarva-header-action__icon,
+.zarva-notif-bell:hover .zarva-notif-bell__icon {
+  transform: translateY(-1px);
+}
+
+.zarva-header-action:active,
+.zarva-notif-bell:active {
+  transform: scale(0.96);
+}
+
+.zarva-header-action:focus-visible,
+.zarva-notif-bell:focus-visible {
+  outline: none;
+  color: var(--primary-highlight);
+  border-color: color-mix(in oklab, var(--primary) 40%, var(--glass-border));
+  box-shadow:
+    0 0 0 3px var(--focus-ring),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+}
+
+.zarva-header-action[data-state='open'],
+.zarva-notif-bell[data-state='open'] {
+  color: var(--primary-highlight);
+  background: color-mix(in oklab, var(--glass-bg) 65%, var(--primary) 16%);
+  border-color: color-mix(in oklab, var(--primary) 42%, var(--glass-border));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 24%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 14%, transparent);
+}
+
+.zarva-header-action[data-state='open'] .zarva-header-action__icon,
+.zarva-notif-bell[data-state='open'] .zarva-notif-bell__icon {
+  transform: scale(0.92);
+}
+
+.zarva-header-action[data-unread],
+.zarva-notif-bell[data-unread] {
+  color: var(--primary-highlight);
+  background: color-mix(in oklab, var(--glass-bg) 72%, var(--primary) 14%);
+  border-color: color-mix(in oklab, var(--primary) 38%, var(--glass-border));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 22%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 12%, transparent),
+    0 0 12px color-mix(in oklab, var(--primary) 16%, transparent);
+}
+
+.zarva-header-action__badge,
+.zarva-notif-bell__badge {
+  position: absolute;
+  inset-inline-end: -0.125rem;
+  top: -0.125rem;
+  z-index: 1;
+  display: inline-flex;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.3rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    165deg,
+    var(--primary-highlight) 0%,
+    var(--primary) 55%,
+    var(--primary-dark) 100%
+  );
+  color: var(--background);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, var(--glass-bg) 85%, var(--background)),
+    0 2px 6px color-mix(in oklab, var(--primary) 40%, transparent);
+  animation: zarva-notif-badge-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes zarva-notif-badge-in {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zarva-header-action,
+  .zarva-header-action__icon,
+  .zarva-header-action__badge,
+  .zarva-notif-bell,
+  .zarva-notif-bell__icon,
+  .zarva-notif-bell__badge {
+    transition: none;
+    animation: none;
+  }
+
+  .zarva-header-action:hover .zarva-header-action__icon,
+  .zarva-header-action[data-state='open'] .zarva-header-action__icon,
+  .zarva-header-action:active,
+  .zarva-notif-bell:hover .zarva-notif-bell__icon,
+  .zarva-notif-bell[data-state='open'] .zarva-notif-bell__icon,
+  .zarva-notif-bell:active {
+    transform: none;
+  }
+
+  .zarva-breadcrumb__home,
+  .zarva-breadcrumb__link,
+  .zarva-breadcrumb__page {
+    transition: none;
+  }
+}
+
+/* Atelier trail — header breadcrumb (same glass as content boxes) */
+.zarva-breadcrumb {
+  position: relative;
+  display: inline-flex;
+  max-width: min(100%, 28rem);
+  min-width: 0;
+  align-items: center;
+  height: 2.5rem;
+  padding-inline: 0.3rem 0.75rem;
+  border-radius: var(--radius-control);
+  color: var(--foreground);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 18%, transparent),
+    inset 0 0 8px 2px color-mix(in oklab, var(--primary-highlight) 8%, transparent);
+}
+
+.zarva-breadcrumb__list {
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.zarva-breadcrumb__home {
+  display: inline-flex;
+  width: 1.85rem;
+  height: 1.85rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--radius-control) - 0.15rem);
+  color: var(--primary-highlight);
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 42%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    background-color var(--duration-shell) ease,
+    border-color var(--duration-shell) ease,
+    box-shadow var(--duration-shell) ease,
+    transform var(--duration-fast) ease;
+}
+
+a.zarva-breadcrumb__home:hover {
+  background: color-mix(in srgb, var(--primary) 30%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 58%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 14px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+a.zarva-breadcrumb__home:active {
+  transform: scale(0.96);
+}
+
+.zarva-breadcrumb__home-icon {
+  display: block;
+  line-height: 1;
+  color: inherit;
+}
+
+.zarva-breadcrumb__sep {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-inline: 0.05rem;
+}
+
+.zarva-breadcrumb__gem {
+  display: block;
+  width: 0.28rem;
+  height: 0.28rem;
+  rotate: 45deg;
+  border-radius: 0.05rem;
+  background: linear-gradient(
+    145deg,
+    var(--primary-highlight) 0%,
+    var(--primary) 55%,
+    var(--primary-dark) 100%
+  );
+  box-shadow: 0 0 6px color-mix(in oklab, var(--primary) 35%, transparent);
+  opacity: 0.85;
+}
+
+.zarva-breadcrumb__link,
+.zarva-breadcrumb__page {
+  display: block;
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.zarva-breadcrumb__link {
+  color: var(--muted-foreground);
+  transition: color var(--duration-fast) ease;
+}
+
+.zarva-breadcrumb__link:hover {
+  color: var(--primary-highlight);
+}
+
+.zarva-breadcrumb__page {
+  position: relative;
+  font-weight: 500;
+  color: var(--foreground);
+  padding-block-end: 0.1rem;
+}
+
+.zarva-breadcrumb__page::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.1rem;
+  bottom: -0.05rem;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--primary-highlight) 70%, transparent),
+    transparent
+  );
+}
+
+@media (min-width: 640px) {
+  .zarva-breadcrumb {
+    max-width: min(100%, 36rem);
+    padding-inline: 0.35rem 0.9rem;
+  }
+
+  .zarva-breadcrumb__link,
+  .zarva-breadcrumb__page {
+    max-width: 14rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Sidebar nav — hover + active */
+.zarva-nav-item {
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  transition:
+    color var(--duration-shell) ease,
+    background-color var(--duration-shell) ease,
+    box-shadow var(--duration-shell) ease,
+    transform var(--duration-shell) ease;
+}
+
+.zarva-nav-item::before {
+  content: '';
+  position: absolute;
+  inset-block: 20%;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    var(--primary-highlight),
+    var(--primary),
+    var(--primary-dark)
+  );
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition:
+    opacity var(--duration-shell) ease,
+    transform var(--duration-shell) cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.zarva-nav-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--primary) 22%, transparent),
+    color-mix(in srgb, var(--primary) 6%, transparent) 55%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-shell) ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[dir='rtl'] .zarva-nav-item::after {
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--primary) 22%, transparent),
+    color-mix(in srgb, var(--primary) 6%, transparent) 55%,
+    transparent 100%
+  );
+}
+
+.zarva-nav-item:hover:not([data-active='true']),
+.zarva-nav-item:focus-visible:not([data-active='true']) {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--hover) 75%, transparent);
+  transform: translateX(2px);
+}
+
+.zarva-nav-item:hover::before,
+.zarva-nav-item:focus-visible::before {
+  opacity: 0.7;
+  transform: scaleY(0.85);
+}
+
+.zarva-nav-item:hover::after,
+.zarva-nav-item:focus-visible::after {
+  opacity: 0.55;
+}
+
+/* Active — solid gold presence */
+.zarva-nav-item[data-active='true'] {
+  color: var(--primary-highlight);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--primary) 28%, transparent),
+    0 0 24px color-mix(in srgb, var(--primary) 12%, transparent);
+  font-weight: 600;
+}
+
+.zarva-nav-item[data-active='true']::before {
+  opacity: 1;
+  transform: scaleY(1);
+  inset-block: 16%;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+.zarva-nav-item[data-active='true']::after {
+  opacity: 1;
+}
+
+.zarva-nav-item:focus-visible {
+  outline: none;
+}
+
+.zarva-nav-item:focus-visible:not([data-active='true']) {
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.zarva-nav-item .zarva-nav-item-icon {
+  transition: transform var(--duration-shell) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zarva-nav-item:hover .zarva-nav-item-icon,
+.zarva-nav-item:focus-visible .zarva-nav-item-icon,
+.zarva-nav-item[data-active='true'] .zarva-nav-item-icon {
+  transform: scale(1.08);
+}
+
+[dir='rtl'] .zarva-nav-item:hover:not([data-active='true']),
+[dir='rtl'] .zarva-nav-item:focus-visible:not([data-active='true']) {
+  transform: translateX(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zarva-nav-item,
+  .zarva-nav-item::before,
+  .zarva-nav-item::after,
+  .zarva-nav-item .zarva-nav-item-icon {
+    transition: none;
+  }
+
+  .zarva-nav-item:hover:not([data-active='true']),
+  .zarva-nav-item:focus-visible:not([data-active='true']),
+  [dir='rtl'] .zarva-nav-item:hover:not([data-active='true']),
+  [dir='rtl'] .zarva-nav-item:focus-visible:not([data-active='true']) {
+    transform: none;
+  }
+
+  .zarva-nav-item:hover .zarva-nav-item-icon,
+  .zarva-nav-item:focus-visible .zarva-nav-item-icon,
+  .zarva-nav-item[data-active='true'] .zarva-nav-item-icon {
+    transform: none;
+  }
+}
+
+.zarva-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+@keyframes zarva-tick-up {
+  0% {
+    background-color: color-mix(in oklab, var(--success) 28%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes zarva-tick-down {
+  0% {
+    background-color: color-mix(in oklab, var(--danger) 28%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.zarva-tick-flash-up {
+  animation: zarva-tick-up 700ms ease-out;
+  border-radius: 0.35rem;
+}
+
+.zarva-tick-flash-down {
+  animation: zarva-tick-down 700ms ease-out;
+  border-radius: 0.35rem;
+}
+
+.zarva-brand-mark {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.zarva-brand-mark > svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* Soft page enter/exit — fade only (shell stays put) */
+.zarva-page-transition {
+  opacity: 1;
+}
+
+.zarva-page-transition--enter {
+  opacity: 1;
+  animation: zarva-page-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.zarva-page-transition--exit {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease-in;
+}
+
+@keyframes zarva-page-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zarva-page-transition--enter {
+    animation: none;
+    opacity: 1;
+  }
+
+  .zarva-page-transition--exit {
+    transition-duration: 0ms;
+  }
+}
+
+/* Dashboard nav loader — quiet center mark, non-blocking */
+.zarva-nav-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.zarva-nav-loader__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 28% 24% at 50% 46%,
+      color-mix(in oklab, var(--primary) 12%, transparent) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 50% 42% at 50% 48%,
+      color-mix(in oklab, var(--background) 90%, transparent) 0%,
+      color-mix(in oklab, var(--background) 58%, transparent) 48%,
+      transparent 76%
+    ),
+    color-mix(in oklab, var(--background) 30%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: zarva-nav-loader-fade-in 220ms ease both;
+}
+
+.zarva-nav-loader__brand {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border-radius: 1.05rem;
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      color-mix(in oklab, var(--primary-highlight) 14%, transparent) 0%,
+      transparent 58%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--elevated) 70%, var(--primary) 8%) 0%,
+      color-mix(in oklab, var(--background) 92%, transparent) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, var(--primary-highlight) 26%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--primary) 36%, transparent),
+    0 12px 32px -14px color-mix(in oklab, var(--background) 80%, transparent),
+    0 0 36px -10px color-mix(in oklab, var(--primary) 28%, transparent);
+  animation: zarva-nav-loader-enter 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.zarva-nav-loader__brand > svg {
+  width: 86%;
+  height: 86%;
+}
+
+.zarva-nav-loader__brand::after {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background: linear-gradient(
+    112deg,
+    transparent 32%,
+    color-mix(in oklab, var(--primary-highlight) 58%, transparent) 47%,
+    color-mix(in oklab, var(--primary) 24%, transparent) 53%,
+    transparent 68%
+  );
+  transform: translateX(-145%) rotate(12deg);
+  animation: zarva-nav-loader-sheen 900ms cubic-bezier(0.33, 1, 0.4, 1) 80ms both;
+  pointer-events: none;
+}
+
+.zarva-nav-loader--exit .zarva-nav-loader__vignette {
+  animation: zarva-nav-loader-fade-out 160ms ease both;
+}
+
+.zarva-nav-loader--exit .zarva-nav-loader__brand {
+  animation: zarva-nav-loader-exit 160ms ease both;
+}
+
+.zarva-nav-loader--exit .zarva-nav-loader__brand::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes zarva-nav-loader-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zarva-nav-loader-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes zarva-nav-loader-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zarva-nav-loader-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes zarva-nav-loader-sheen {
+  from {
+    transform: translateX(-140%) rotate(10deg);
+  }
+  to {
+    transform: translateX(140%) rotate(10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zarva-nav-loader__vignette,
+  .zarva-nav-loader__brand,
+  .zarva-nav-loader--exit .zarva-nav-loader__vignette,
+  .zarva-nav-loader--exit .zarva-nav-loader__brand {
+    animation: zarva-nav-loader-fade-in 100ms ease both;
+  }
+
+  .zarva-nav-loader--exit .zarva-nav-loader__vignette,
+  .zarva-nav-loader--exit .zarva-nav-loader__brand {
+    animation-name: zarva-nav-loader-fade-out;
+  }
+
+  .zarva-nav-loader__brand::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Thin brand scrollbars — gold thumb, invisible track */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--primary) 42%, transparent) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--primary) 38%, transparent);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--primary-secondary) 72%, transparent);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: color-mix(in oklab, var(--primary-highlight) 85%, transparent);
+  background-clip: padding-box;
+}
+
+.zarva-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--primary) 42%, transparent) transparent;
+}
+
+/* Route / state tabs — match SubNav chrome */
+.zarva-tabs-list {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem;
+  border-radius: var(--radius-control, 0.65rem);
+  border: 1px solid var(--glass-border);
+  background: color-mix(in oklab, var(--glass-bg) 88%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.zarva-tabs-trigger {
+  display: inline-flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: calc(var(--radius-control, 0.65rem) - 2px);
+  border: 1px solid transparent;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground-secondary);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.zarva-tabs-trigger:hover:not([data-active='true']):not([data-state='active']) {
+  color: var(--foreground);
+  border-color: color-mix(in oklab, var(--primary) 28%, rgba(255, 255, 255, 0.1));
+  background: color-mix(in oklab, var(--primary) 10%, var(--glass-bg));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 color-mix(in oklab, var(--primary) 16%, transparent);
+}
+
+.zarva-tabs-trigger:hover:not([data-active='true']):not([data-state='active']) .zarva-tabs-trigger-icon {
+  opacity: 1;
+  color: var(--primary-secondary);
+}
+
+.zarva-tabs-trigger[data-active='true'],
+.zarva-tabs-trigger[data-state='active'] {
+  color: var(--foreground);
+  border-color: var(--glass-border);
+  background: color-mix(in oklab, var(--primary) 14%, transparent);
+}
+
+.zarva-tabs-trigger[data-active='true']:hover,
+.zarva-tabs-trigger[data-state='active']:hover {
+  background: color-mix(in oklab, var(--primary) 18%, transparent);
+  border-color: color-mix(in oklab, var(--primary) 36%, rgba(255, 255, 255, 0.12));
+}
+
+.zarva-tabs-trigger-icon {
+  font-size: 1rem;
+  opacity: 0.85;
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+/* Notification priority tokens */
+:root {
+  --notify-priority-low: var(--foreground-muted);
+  --notify-priority-normal: var(--primary);
+  --notify-priority-high: var(--warning);
+  --notify-priority-critical: var(--danger);
+}
+
+.notify-priority-badge.notify-priority-low {
+  color: var(--notify-priority-low);
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--border) 80%, transparent);
+}
+
+.notify-priority-badge.notify-priority-normal {
+  color: var(--notify-priority-normal);
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 28%, transparent);
+}
+
+.notify-priority-badge.notify-priority-high {
+  color: var(--notify-priority-high);
+  background: color-mix(in oklab, var(--warning) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--warning) 32%, transparent);
+}
+
+.notify-priority-badge.notify-priority-critical {
+  color: var(--notify-priority-critical);
+  background: color-mix(in oklab, var(--danger) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--danger) 36%, transparent);
+}
+
+.notify-priority-row-low {
+  opacity: 0.78;
+}
+
+.notify-priority-row-high {
+  box-shadow: inset 3px 0 0 0 color-mix(in oklab, var(--warning) 75%, transparent);
+}
+
+.notify-priority-row-critical {
+  box-shadow: inset 3px 0 0 0 color-mix(in oklab, var(--danger) 85%, transparent);
+}
+
+.notify-priority-card-selected-low {
+  border-color: color-mix(in oklab, var(--foreground-muted) 40%, transparent);
+  background: color-mix(in oklab, var(--muted) 55%, transparent);
+}
+
+.notify-priority-card-selected-normal {
+  border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+}
+
+.notify-priority-card-selected-high {
+  border-color: color-mix(in oklab, var(--warning) 50%, transparent);
+  background: color-mix(in oklab, var(--warning) 12%, transparent);
+}
+
+.notify-priority-card-selected-critical {
+  border-color: color-mix(in oklab, var(--danger) 55%, transparent);
+  background: color-mix(in oklab, var(--danger) 14%, transparent);
+}
+
+@keyframes notify-critical-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.notify-critical-card {
+  animation: notify-critical-in 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notify-critical-card {
+    animation: none;
+  }
+}
+
+.text-secondary {
+  color: var(--foreground-secondary);
+}
+
+.text-muted-fg {
+  color: var(--foreground-muted);
+}
+
+/* Header / glass dropdown item hover — soft gold wash matching theme */
+.zarva-glass-popover [data-slot='dropdown-menu-item'] {
+  transition:
+    background-color var(--duration-shell) ease,
+    box-shadow var(--duration-shell) ease,
+    color var(--duration-shell) ease;
+}
+
+.zarva-glass-popover [data-slot='dropdown-menu-item']:not([data-variant='destructive']):is(
+    :focus,
+    [data-highlighted]
+  ) {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--primary) 20%, transparent),
+    color-mix(in srgb, var(--primary) 8%, transparent) 60%,
+    transparent
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 26%, transparent);
+  color: var(--foreground);
+}
+
+[dir='rtl']
+  .zarva-glass-popover
+  [data-slot='dropdown-menu-item']:not([data-variant='destructive']):is(:focus, [data-highlighted]) {
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--primary) 20%, transparent),
+    color-mix(in srgb, var(--primary) 8%, transparent) 60%,
+    transparent
+  );
+}
+
+.zarva-glass-popover [data-slot='dropdown-menu-item'][data-variant='destructive']:is(
+    :focus,
+    [data-highlighted]
+  ) {
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--danger) 28%, transparent);
+  color: var(--danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Do NOT disable backdrop-filter here — glass is not animation. */
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

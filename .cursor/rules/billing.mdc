@@ -1,0 +1,14 @@
+---
+description: SaaS billing and entitlements.
+globs: "**/billing/**/*.{ts,tsx},**/plans/**/*.{ts,tsx},**/subscriptions/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Billing
+
+- Tenant = Organization; one active subscription
+- `IBillingProvider`: Stripe or Mock; never store raw cards
+- Webhooks idempotent (`WebhookEvent` dedupe)
+- Never trust client-claimed plan/entitlements
+- Past due → grace → read-only → lock except Billing+Auth
+- Seat/branch/module checks on invite and module access

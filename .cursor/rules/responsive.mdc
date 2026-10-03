@@ -1,0 +1,22 @@
+---
+description: Mobile-first responsive — all Tailwind breakpoints.
+globs: "apps/frontend/**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Responsive
+
+Mobile-first. Verify at base, `sm`, `md`, `lg`, `xl`, `2xl`.
+
+- base (&lt;640): single column, drawer nav
+- sm 640+: larger phone
+- md 768+: tablet grids; drawer until lg
+- lg 1024+: persistent sidebar
+- xl 1280+: denser tables / max-width
+- 2xl 1536+: avoid ultra-stretch
+
+Shell: drawer below `lg`. No horizontal page scroll. Logical props for RTL (`ps`/`pe`/`ms`/`me`).
+
+Tables: internal scroll or card list on small screens. Touch targets ~44px. Recharts `ResponsiveContainer`.
+
+Forbidden: desktop-first only, fixed `w-[1440px]` shells, hover-only critical actions, clipped tables.

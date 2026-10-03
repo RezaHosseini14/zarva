@@ -1,0 +1,1268 @@
+{
+  "common": {
+    "appName": "ZARVA",
+    "loading": "جارٍ التحميل…",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "search": "بحث",
+    "prev": "السابق",
+    "next": "التالي",
+    "total": "الإجمالي",
+    "export": "تصدير",
+    "new": "جديد",
+    "close": "إغلاق",
+    "menu": "القائمة",
+    "empty": "لا شيء بعد",
+    "retry": "أعد المحاولة",
+    "sectionErrorTitle": "فشل هذا القسم",
+    "sectionErrorDescription": "حدث خطأ هنا. بقية الصفحة ما زالت متاحة — حاول مرة أخرى.",
+    "sectionErrorAuthTitle": "يلزم تسجيل الدخول",
+    "sectionErrorAuthDescription": "انتهت جلستك أو غير موجودة. سجّل الدخول ثم افتح الصفحة مرة أخرى.",
+    "sectionErrorPlanTitle": "غير مدرج في خطتك",
+    "sectionErrorPlanDescription": "هذه الوحدة غير مشمولة في اشتراك المؤسسة. رقِّ الخطة أو اطلب من المسؤول.",
+    "sectionErrorPermissionTitle": "لا يوجد وصول",
+    "sectionErrorPermissionDescription": "دورك لا يسمح بفتح هذا القسم. اطلب صلاحية من المسؤول.",
+    "pageErrorTitle": "تعذّر تحميل الصفحة",
+    "pageErrorDescription": "خطأ غير متوقع أوقف هذه الصفحة. حاول مرة أخرى أو افتح شاشة أخرى.",
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundDescription": "هذا العنوان غير موجود أو نُقل. ارجع للرئيسية وتصفح من هناك.",
+    "goHome": "العودة للرئيسية",
+    "navLoading": "جارٍ تحميل الصفحة"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "sales": "المبيعات",
+    "purchases": "المشتريات",
+    "inventory": "المخزون",
+    "gold": "الذهب",
+    "customers": "العملاء",
+    "suppliers": "الموردون",
+    "accounting": "المحاسبة",
+    "reports": "التقارير",
+    "settings": "الإعدادات",
+    "billing": "الاشتراك",
+    "roles": "الأدوار",
+    "notifications": "الإشعارات",
+    "jewelry": "المجوهرات",
+    "tax": "الضرائب",
+    "workshop": "الورشة",
+    "branches": "الفروع",
+    "ai": "الذكاء الاصطناعي",
+    "commerce": "التجارة",
+    "integrations": "التكاملات",
+    "appearance": "المظهر",
+    "tagline": "نظام أعمال الذهب",
+    "groupGeneral": "عام",
+    "groupBusiness": "الأعمال",
+    "groupCommerce": "التجارة",
+    "groupIntegrations": "التكاملات",
+    "groupSystem": "النظام",
+    "organization": "المنظمة",
+    "audit": "التدقيق",
+    "search": "بحث",
+    "platformOrgs": "المنظمات",
+    "platformSessions": "الجلسات"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "signup": "ابدأ التجربة",
+    "email": "البريد",
+    "password": "كلمة المرور",
+    "phone": "رقم الجوال",
+    "address": "العنوان",
+    "name": "الاسم الكامل",
+    "organizationName": "اسم النشاط",
+    "logout": "خروج",
+    "settings": "الإعدادات",
+    "tabPassword": "كلمة المرور",
+    "tabOtp": "رمز الرسائل",
+    "sendOtp": "إرسال الرمز",
+    "resendOtp": "إعادة إرسال الرمز",
+    "otpCode": "رمز التحقق",
+    "loginWithOtp": "دخول بالرمز",
+    "otpHint": "في التطوير تُسجَّل الرسالة في السيرفر؛ الرمز 000000 يعمل مع مزود console.",
+    "signupOtpHint": "أكد جوالك عبر SMS قبل إنشاء مساحة العمل. رمز التطوير: 000000.",
+    "invalidPhone": "أدخل جوالاً إيرانياً صالحاً (09XXXXXXXXX)",
+    "invalidOtp": "رمز غير صالح أو منتهٍ",
+    "otpRequestFailed": "تعذر إرسال رمز SMS",
+    "signupFailed": "فشل التسجيل — تحقق من البيانات والرمز",
+    "roles": {
+      "SUPER_ADMIN": "مدير عام",
+      "PLATFORM_ADMIN": "مدير المنصة",
+      "ORG_ADMIN": "مدير المؤسسة",
+      "CASHIER": "أمين صندوق"
+    },
+    "noAccount": "جديد على ZARVA؟",
+    "hasAccount": "لديك حساب؟",
+    "invalidCredentials": "البريد أو كلمة المرور غير صحيحة",
+    "networkError": "تعذّر الوصول إلى الخادم. تحقق من الاتصال وحاول مرة أخرى.",
+    "seedHint": "تجريبي: admin@zarva.dev / Password123! · cashier@zarva.dev · 09120000001 / 09120000002",
+    "enterAsAdmin": "دخول كمدير عام",
+    "enterAsCashier": "دخول كأمين صندوق",
+    "welcomeBack": "عد إلى الورشة",
+    "welcomeSub": "سجّل الدخول لإدارة المبيعات والمخزون ودفاتر الذهب.",
+    "createOrg": "افتح ورشتك على ZARVA",
+    "createOrgSub": "مساحة واحدة لمحلات الذهب — الوزن والسعر والفريق متزامنون.",
+    "devicesMenu": "الأجهزة النشطة",
+    "devices": {
+      "title": "الأجهزة النشطة",
+      "description": "إدارة جلسات تسجيل الدخول.",
+      "activeTab": "نشط",
+      "current": "هذا الجهاز",
+      "lastSeen": "آخر نشاط {when}",
+      "terminate": "إنهاء",
+      "revokeOthers": "إنهاء الجلسات الأخرى",
+      "emptyTitle": "لا أجهزة",
+      "emptyDescription": "ستظهر عمليات الدخول هنا.",
+      "errorTitle": "تعذر التحميل",
+      "errorDescription": "حاول مرة أخرى.",
+      "newLoginEyebrow": "أمان الحساب",
+      "newLoginTitle": "تم رصد تسجيل دخول جديد",
+      "newLoginBody": "حدث تسجيل دخول من جهاز آخر للتو. هل كنت أنت؟",
+      "newLoginDevice": "الجهاز",
+      "newLoginIp": "عنوان IP",
+      "newLoginHint": "إن لم تكن أنت، أنهِ تلك الجلسة فوراً.",
+      "newLoginYes": "نعم، أنا",
+      "newLoginNo": "لا، أنهِ الجلسة",
+      "newLoginDenying": "جارٍ الإنهاء…",
+      "limitTitle": "تم بلوغ حد الأجهزة",
+      "limitBody": "اختر جهازاً لتسجيل الخروج منه أولاً.",
+      "banned": "هذا الجهاز محظور.",
+      "devicesMenu": "الأجهزة النشطة"
+    },
+    "loginHistory": {
+      "title": "سجل الدخول",
+      "emptyTitle": "لا سجل بعد",
+      "emptyDescription": "ستظهر عمليات الدخول السابقة هنا.",
+      "active": "نشط",
+      "endReason": {
+        "logout": "تسجيل خروج",
+        "revoked_by_user": "مُنهى",
+        "revoked_by_admin": "مُنهى بواسطة المشرف",
+        "replaced": "مستبدل",
+        "denied_not_me": "مرفوض",
+        "banned": "محظور",
+        "expired": "منتهي"
+      }
+    }
+  },
+  "landing": {
+    "eyebrow": "نظام أعمال الذهب",
+    "headline": "أدِر المحل بدقة المعدن",
+    "sub": "مبيعات ومخزون ودفاتر ذهب في مساحة هادئة داكنة — للطوابق بالفارسية والإنجليزية والعربية.",
+    "ctaLogin": "تسجيل الدخول",
+    "ctaPricing": "عرض الخطط",
+    "ctaTrial": "ابدأ التجربة"
+  },
+  "units": {
+    "millionRial": "مليون ريال",
+    "millionRialCompact": "م.ريال",
+    "kg": "كيلوغرام",
+    "kgCompact": "كغ",
+    "gram": "غرام",
+    "gramCompact": "g",
+    "ounce": "أونصة",
+    "ounceCompact": "oz",
+    "millionPerGram": "م/غرام",
+    "millionPerGramCompact": "م/g"
+  },
+  "dashboard": {
+    "title": "نظرة عامة",
+    "subtitle": "اليوم في الطابق",
+    "kpi": {
+      "salesToday": "مبيعات اليوم",
+      "goldStock": "مخزون الذهب",
+      "customers": "العملاء",
+      "margin": "الهامش"
+    },
+    "liveRates": {
+      "title": "أسعار مباشرة",
+      "xau_usd": "الذهب العالمي",
+      "iran_gold_24k": "ذهب إيران عيار 24",
+      "iran_gold_18k": "ذهب إيران عيار 18",
+      "usd_irr": "دولار السوق الحر",
+      "perOz": "/ أونصة",
+      "perGram": "/ غرام",
+      "perOzCompact": "/ oz",
+      "perGramCompact": "/ g",
+      "toman": "تومان",
+      "usd": "دولار",
+      "up": "ارتفاع",
+      "down": "انخفاض",
+      "flat": "بدون تغيير",
+      "updated": "تحديث",
+      "unavailable": "غير متاح",
+      "stale": "قديم"
+    },
+    "forecast": "وتيرة المبيعات لسبعة أيام",
+    "weekdays": {
+      "sat": "السبت",
+      "sun": "الأحد",
+      "mon": "الإثنين",
+      "tue": "الثلاثاء",
+      "wed": "الأربعاء",
+      "thu": "الخميس",
+      "fri": "الجمعة"
+    },
+    "aiTitle": "رؤى",
+    "aiBody": "تظهر الاقتراحات عند تفعيل وحدات التحليل.",
+    "activity": "النشاط الأخير",
+    "activityEmptyTitle": "لا نشاط حديث",
+    "activityEmptyDescription": "ستظهر هنا المبيعات والمشتريات وتغييرات المخزون.",
+    "overviewErrorTitle": "بيانات اللوحة غير متاحة",
+    "overviewErrorDescription": "تعذّر تحميل مؤشرات النظرة العامة. حاول مرة أخرى.",
+    "ratesErrorTitle": "الأسعار الحية غير متاحة",
+    "ratesErrorDescription": "تعذّر تحديث أسعار السوق. حاول مرة أخرى.",
+    "activityItems": {
+      "saleCompleted": "اكتملت عملية بيع",
+      "purchaseReceived": "تم استلام شراء",
+      "stockAdjust": "تعديل المخزون"
+    }
+  },
+  "pricing": {
+    "title": "خطط بحجم طاولة العمل",
+    "subtitle": "جرّب أولاً. قم بالترقية عندما يحتاج الطابق لمقاعد ووحدات أكثر.",
+    "cta": "ابدأ الآن",
+    "monthly": "شهر",
+    "yearly": "سنة",
+    "free": "مجاني",
+    "empty": "تُحمَّل الخطط عند اتصال الفوترة.",
+    "emptyTitle": "لا خطط متاحة",
+    "emptyDescription": "الفوترة غير متصلة أو لم تُنشر خطط بعد. حاول بعد قليل.",
+    "errorTitle": "تعذّر تحميل الخطط",
+    "errorDescription": "تعذّر جلب الأسعار. تحقق من الاتصال وحاول مرة أخرى."
+  },
+  "billing": {
+    "title": "الفوترة",
+    "description": "اعرض خطتك والتجديد وخيارات الترقية.",
+    "currentPlan": "الخطة الحالية",
+    "upgrade": "ترقية",
+    "errorTitle": "الفوترة غير متاحة",
+    "errorDescription": "تعذّر تحميل اشتراكك. حاول مرة أخرى.",
+    "emptyTitle": "لا خطة نشطة",
+    "emptyDescription": "لا تفاصيل اشتراك بعد. قم بالترقية عندما تكون جاهزاً.",
+    "manage": "إدارة الفوترة",
+    "status": "الحالة",
+    "periodEnd": "التجديد / الانتهاء",
+    "source": "مصدر الفوترة",
+    "monthly": "شهري",
+    "yearly": "سنوي",
+    "selectPlan": "اختر خطة",
+    "noPrice": "لا سعر لهذه الفترة",
+    "statuses": {
+      "trialing": "تجريبي",
+      "active": "نشط",
+      "past_due": "متأخر",
+      "canceled": "ملغى",
+      "expired": "منتهٍ",
+      "paused": "موقوف"
+    },
+    "sources": {
+      "stripe": "Stripe",
+      "manual": "يدوي"
+    }
+  },
+  "platform": {
+    "title": "المنظمات",
+    "description": "عيّن الخطط والتجديد والسمات لكل منظمة.",
+    "search": "بحث المنظمات…",
+    "kpiOrgs": "المنظمات",
+    "kpiActive": "نشط",
+    "kpiExpiring": "ينتهي قريباً",
+    "orgs": "المنظمات",
+    "plan": "الخطة",
+    "status": "الحالة",
+    "expires": "ينتهي",
+    "theme": "السمة",
+    "assign": "تعيين الاشتراك",
+    "save": "حفظ",
+    "interval": "الفترة",
+    "months": "أشهر",
+    "years": "سنوات",
+    "emptyTitle": "لا منظمات",
+    "emptyDescription": "تظهر بعد التسجيل.",
+    "errorTitle": "المنصة غير متاحة",
+    "errorDescription": "تعذّر تحميل المنظمات.",
+    "themeSaved": "تم تحديث السمة",
+    "subSaved": "تم تحديث الاشتراك",
+    "themes": {
+      "zarva-gold": "ذهبي",
+      "zarva-noir": "داكن",
+      "zarva-emerald": "زمردي",
+      "zarva-sapphire": "ياقوتي",
+      "zarva-rose": "وردي",
+      "zarva-copper": "نحاسي",
+      "zarva-pearl": "لؤلؤي",
+      "zarva-obsidian": "أوبسيديان",
+      "zarva-amber": "كهرماني",
+      "zarva-slate": "رمادي"
+    },
+    "maxDevices": "الحد الأقصى للأجهزة لكل مستخدم",
+    "maxDevicesHint": "اتركه فارغاً بلا حد. يُطبق على كل مستخدمي المؤسسة.",
+    "unlimited": "غير محدود",
+    "savePolicy": "حفظ السياسة",
+    "policySaved": "تم تحديث سياسة الأمان",
+    "sessions": {
+      "title": "الجلسات",
+      "description": "مراقبة عمليات الدخول عبر المؤسسات.",
+      "activeTab": "نشط",
+      "historyTab": "السجل",
+      "search": "بحث عن مستخدم…",
+      "emptyTitle": "لا جلسات",
+      "emptyDescription": "لا أحد مسجل الدخول.",
+      "emptyHistoryTitle": "لا سجل",
+      "emptyHistoryDescription": "ستظهر عمليات الدخول هنا.",
+      "colOrg": "المؤسسة",
+      "colUser": "المستخدم",
+      "colDevice": "الجهاز",
+      "colIp": "IP",
+      "colLastSeen": "آخر ظهور",
+      "revoke": "إبطال"
+    },
+    "deviceBans": {
+      "title": "حظر الأجهزة",
+      "ban": "حظر الجهاز",
+      "banTitle": "حظر هذا الجهاز",
+      "scope": {
+        "user": "هذا المستخدم فقط",
+        "global": "كل الحسابات"
+      },
+      "reason": "السبب (اختياري)",
+      "cancel": "إلغاء",
+      "confirm": "حظر",
+      "unban": "رفع الحظر",
+      "emptyTitle": "لا حظر",
+      "emptyDescription": "تظهر الأجهزة المحظورة هنا."
+    }
+  },
+  "roles": {
+    "title": "الأدوار والصلاحيات",
+    "description": "إدارة صلاحيات الأدوار في منظمتك.",
+    "permissions": "الصلاحيات",
+    "edit": "تعديل",
+    "locked": "مقفل",
+    "editTitle": "تعديل {name}",
+    "saveError": "تعذر حفظ الصلاحيات.",
+    "loadErrorTitle": "الأدوار غير متاحة",
+    "loadErrorDescription": "تعذّر تحميل الأدوار. حاول مرة أخرى.",
+    "emptyTitle": "لا أدوار بعد",
+    "emptyDescription": "ستظهر الأدوار هنا بعد إعداد المنظمة.",
+    "perm": {
+      "notifications_read": "قراءة الإشعارات",
+      "notifications_send": "فتح الإرسال",
+      "notifications_send_low": "إرسال أولوية منخفضة",
+      "notifications_send_normal": "إرسال أولوية عادية",
+      "notifications_send_high": "إرسال أولوية مرتفعة",
+      "notifications_send_critical": "إرسال أولوية حرجة",
+      "notifications_broadcast_platform": "بث على مستوى المنصة"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "appearance": "المظهر",
+    "appearanceDescription": "سمة الواجهة وتفضيلات العرض لمساحة العمل.",
+    "themePreset": "سمة الواجهة",
+    "themeLocked": "تُعيَّن السمة من الخطة أو مدير المنصة.",
+    "compactUnits": "وحدات مختصرة",
+    "compactUnitsHint": "عرض المبالغ والأوزان مختصرة (مثل م.ريال)"
+  },
+  "shell": {
+    "comingSoon": "هذه الوحدة جاهزة لخطتك.",
+    "sampleTable": "صفوف تجريبية بينما الـ API غير متصل",
+    "emptyTitle": "لا صفوف بعد",
+    "emptyDescription": "تظهر البيانات هنا بعد تسجيل سجلات لهذه الوحدة.",
+    "colId": "المعرّف",
+    "colName": "الاسم",
+    "colStatus": "الحالة",
+    "colUpdated": "آخر تحديث",
+    "header": {
+      "quickCreateAria": "إنشاء سريع",
+      "quickCreateTitle": "إنشاء",
+      "newSale": "بيع جديد",
+      "newPurchase": "شراء جديد",
+      "customers": "العملاء",
+      "searchAria": "بحث",
+      "liveRatesAria": "أسعار مباشرة",
+      "liveRatesTitle": "أسعار مباشرة",
+      "liveRatesError": "تعذّر تحميل الأسعار",
+      "notificationsTooltip": "الإشعارات",
+      "breadcrumbAria": "مسار التنقل"
+    }
+  },
+  "modules": {
+    "sales": {
+      "title": "المبيعات",
+      "description": "الفواتير ونقطة البيع والمرتجعات والمدفوعات.",
+      "search": "Search invoices…",
+      "emptyTitle": "لا مبيعات",
+      "emptyDescription": "أنشئ بيعًا من نقطة البيع.",
+      "newSale": "بيع جديد",
+      "posTitle": "نقطة البيع",
+      "posDescription": "امسح أو أضف الأصناف ثم أكمل الدفع.",
+      "posScan": "باركود / SKU",
+      "posAdd": "إضافة",
+      "posItem": "الصنف",
+      "posSampleItem": "سلسلة عيار ١٨",
+      "posCartTitle": "سلة البيع",
+      "posCartCount": "{count} أصناف",
+      "posCheckout": "الدفع",
+      "posCheckoutHint": "العميل واستلام المبلغ",
+      "posCustomerPh": "اسم العميل أو الجوال",
+      "posSubtotal": "المجموع الفرعي",
+      "posTax": "الضريبة",
+      "posTotal": "الإجمالي",
+      "posPay": "استلام المبلغ",
+      "returnsTitle": "Sales returns",
+      "returnsDescription": "Returned merchandise linked to original invoices.",
+      "paymentsTitle": "Sales payments",
+      "paymentsDescription": "Settlements against open invoices.",
+      "nav": {
+        "invoices": "Invoices",
+        "pos": "POS",
+        "returns": "Returns",
+        "payments": "Payments"
+      },
+      "kpi": {
+        "today": "Sales today",
+        "count": "Invoices",
+        "avg": "Average ticket",
+        "unpaid": "Unpaid",
+        "returns": "Returns",
+        "returnValue": "Return value",
+        "paymentsToday": "Payments today",
+        "pending": "Pending"
+      },
+      "cols": {
+        "number": "Number",
+        "customer": "Customer",
+        "date": "Date",
+        "weight": "Gold wt",
+        "amount": "Amount",
+        "payment": "Payment",
+        "seller": "Seller",
+        "status": "Status",
+        "invoice": "Invoice",
+        "method": "Method"
+      },
+      "payment": {
+        "paid": "Paid",
+        "partial": "Partial",
+        "unpaid": "Unpaid"
+      },
+      "status": {
+        "completed": "Completed",
+        "draft": "Draft",
+        "void": "Void",
+        "confirmed": "مؤكد",
+        "ready": "جاهز"
+      },
+      "loadErrorTitle": "تعذر تحميل المبيعات",
+      "loadErrorDescription": "تحقق من الاتصال وحاول مرة أخرى.",
+      "print": {
+        "print": "طباعة / حفظ PDF",
+        "preview": "معاينة الطباعة",
+        "back": "العودة إلى الفاتورة",
+        "shopPhone": "هاتف",
+        "guildId": "رقم النقابة",
+        "documentTitle": "فاتورة بيع ذهب ومجوهرات",
+        "invoiceNumber": "رقم الفاتورة",
+        "date": "التاريخ",
+        "customer": "المشتري",
+        "phone": "الهاتف",
+        "nationalId": "الرقم الوطني",
+        "seller": "البائع",
+        "totalWeight": "إجمالي الوزن",
+        "grandTotal": "المبلغ المستحق",
+        "amountInWords": "المبلغ كتابةً",
+        "grams": "غرام",
+        "warranty": "قيمة الذهب الأصلية معفاة من ضريبة القيمة المضافة؛ تُحسب الضريبة فقط على أجرة التصنيع وربح البائع. احتفظ بهذه الفاتورة كإثبات شراء.",
+        "buyerSign": "توقيع وختم المشتري",
+        "sellerSign": "توقيع وختم البائع",
+        "cols": {
+          "row": "#",
+          "description": "الصنف",
+          "weight": "الوزن",
+          "purity": "العيار",
+          "dailyRate": "سعر اليوم",
+          "goldValue": "قيمة الذهب",
+          "wage": "الأجرة",
+          "profit": "الربح",
+          "tax": "الضريبة",
+          "lineTotal": "المجموع"
+        }
+      }
+    },
+    "purchases": {
+      "title": "المشتريات",
+      "description": "Supplier purchases, receipts, and purchase returns.",
+      "search": "Search purchases…",
+      "emptyTitle": "لا مشتريات",
+      "emptyDescription": "Record a purchase from a supplier.",
+      "newPurchase": "New purchase",
+      "formDescription": "Presentation form — wires to API later.",
+      "supplierPh": "Supplier name",
+      "returnsTitle": "Purchase returns",
+      "returnsDescription": "Goods returned to suppliers.",
+      "nav": {
+        "list": "Purchases",
+        "new": "New",
+        "returns": "Returns"
+      },
+      "kpi": {
+        "month": "This month",
+        "weight": "Gold weight",
+        "open": "Open",
+        "returns": "Returns"
+      },
+      "cols": {
+        "number": "Number",
+        "supplier": "Supplier",
+        "date": "Date",
+        "weight": "Weight",
+        "amount": "Amount",
+        "payment": "Payment",
+        "purity": "Purity",
+        "purchase": "Purchase"
+      },
+      "payment": {
+        "paid": "Paid",
+        "partial": "Partial",
+        "unpaid": "Unpaid"
+      }
+    },
+    "inventory": {
+      "title": "المخزون",
+      "description": "Stock overview across gold, jewelry, coins, and raw material.",
+      "search": "Search products…",
+      "emptyTitle": "مخزون فارغ",
+      "emptyDescription": "Add products or receive a purchase.",
+      "productsDescription": "All sellable and raw SKUs.",
+      "movementsDescription": "Stock in / out movements.",
+      "warehousesDescription": "Warehouse and showcase locations.",
+      "lowStockDescription": "Items at or below reorder point.",
+      "valuationDescription": "Inventory valuation by method.",
+      "adjustmentsDescription": "Manual quantity / weight adjustments.",
+      "barcodesDescription": "Barcode assignments.",
+      "nav": {
+        "overview": "Overview",
+        "products": "Products",
+        "movements": "Movements",
+        "warehouses": "Warehouses",
+        "lowStock": "Low stock",
+        "valuation": "Valuation",
+        "adjustments": "Adjustments",
+        "barcodes": "Barcodes"
+      },
+      "kpi": {
+        "skus": "SKUs",
+        "value": "Value",
+        "low": "Low stock",
+        "weight": "Total weight",
+        "rows": "Rows"
+      },
+      "cols": {
+        "name": "Name",
+        "sku": "SKU",
+        "weight": "Weight",
+        "purity": "Purity",
+        "qty": "Qty",
+        "location": "Location",
+        "value": "Value",
+        "status": "Status"
+      },
+      "status": {
+        "available": "Available",
+        "reserved": "Reserved",
+        "low": "Low"
+      }
+    },
+    "gold": {
+      "title": "الذهب",
+      "description": "Fine gold position, lots, purities, and ledger.",
+      "search": "Search gold…",
+      "emptyTitle": "لا حركة ذهب",
+      "emptyDescription": "Sales and purchases will appear here.",
+      "ledgerDescription": "Rial/gold dual ledger presentation.",
+      "calculatorDescription": "Presentation-only calculator — not an authoritative engine.",
+      "calculatorDisclaimer": "Results are illustrative mock output for UI review only.",
+      "calculatorResult": "Estimated total",
+      "calculate": "Calculate",
+      "ratesDescription": "Displayed rates (not live market feeds).",
+      "txDescription": "Gold weight transactions.",
+      "balanceDescription": "Fine gold balance summary.",
+      "rawDescription": "Raw gold stock.",
+      "meltedDescription": "Melted batches.",
+      "lotsDescription": "Gold lots.",
+      "puritiesDescription": "Purity standards.",
+      "nav": {
+        "overview": "Overview",
+        "rates": "Rates",
+        "transactions": "Transactions",
+        "ledger": "Ledger",
+        "balance": "Balance",
+        "raw": "Raw",
+        "melted": "Melted",
+        "lots": "Lots",
+        "purities": "Purities",
+        "calculator": "Calculator"
+      },
+      "kpi": {
+        "fine": "Fine gold",
+        "raw": "Raw",
+        "melted": "Melted",
+        "rate": "Rate",
+        "opening": "Opening",
+        "closing": "Closing",
+        "rows": "Rows"
+      },
+      "cols": {
+        "date": "Date",
+        "type": "Type",
+        "weight": "Weight",
+        "purity": "Purity",
+        "fine": "Fine",
+        "counterparty": "Counterparty",
+        "reference": "Reference",
+        "name": "Name",
+        "description": "Description",
+        "debit": "Debit",
+        "credit": "Credit",
+        "balance": "Balance",
+        "fee": "Fee"
+      }
+    },
+    "customers": {
+      "title": "العملاء",
+      "description": "Customer profiles, balances, and receivables.",
+      "search": "Search customers…",
+      "emptyTitle": "No customers",
+      "emptyDescription": "Add a customer to start selling on account.",
+      "nav": {
+        "list": "Customers",
+        "balances": "Receivables",
+        "profile": "Profile"
+      },
+      "kpi": {
+        "count": "Customers",
+        "balance": "Open AR",
+        "total": "Lifetime volume"
+      },
+      "cols": {
+        "name": "Name",
+        "contact": "Contact",
+        "balance": "Balance",
+        "lastTxn": "Last txn",
+        "total": "Lifetime",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "loadErrorTitle": "تعذر تحميل العملاء",
+      "loadErrorDescription": "تحقق من الاتصال وحاول مرة أخرى."
+    },
+    "suppliers": {
+      "title": "الموردون",
+      "description": "Supplier profiles, balances, and payables.",
+      "search": "Search suppliers…",
+      "emptyTitle": "No suppliers",
+      "emptyDescription": "Add a supplier before recording purchases.",
+      "nav": {
+        "list": "Suppliers",
+        "balances": "Payables",
+        "profile": "Profile"
+      },
+      "kpi": {
+        "count": "Suppliers",
+        "balance": "Open AP",
+        "total": "Lifetime volume"
+      },
+      "cols": {
+        "name": "Name",
+        "contact": "Contact",
+        "balance": "Balance",
+        "lastTxn": "Last txn",
+        "total": "Lifetime",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "loadErrorTitle": "تعذر تحميل الموردين",
+      "loadErrorDescription": "تحقق من الاتصال وحاول مرة أخرى."
+    },
+    "accounting": {
+      "title": "المحاسبة",
+      "description": "Cash, ledgers, income, expenses, AR/AP, and transactions.",
+      "search": "Search…",
+      "emptyTitle": "No entries",
+      "emptyDescription": "Accounting entries will appear here.",
+      "sampleDesc": "Sale settlement",
+      "sampleDesc2": "Purchase settlement",
+      "nav": {
+        "dashboard": "Dashboard",
+        "rialLedger": "Rial ledger",
+        "cashBank": "Cash & bank",
+        "income": "Income",
+        "expenses": "Expenses",
+        "receivables": "Receivables",
+        "payables": "Payables",
+        "transactions": "Transactions"
+      },
+      "hub": {
+        "rial": "General ledger in IRR.",
+        "cash": "Cash drawers and bank accounts.",
+        "income": "Income categories and entries.",
+        "expenses": "Operating expenses.",
+        "ar": "Customer receivables.",
+        "ap": "Supplier payables.",
+        "tx": "Journal and payment transactions."
+      },
+      "kpi": {
+        "cash": "Cash",
+        "ar": "Receivables",
+        "ap": "Payables",
+        "pl": "P&L",
+        "opening": "Opening",
+        "closing": "Closing",
+        "rows": "Rows"
+      },
+      "cols": {
+        "date": "Date",
+        "description": "Description",
+        "debit": "Debit",
+        "credit": "Credit",
+        "balance": "Balance",
+        "ref": "Ref",
+        "amount": "Amount"
+      }
+    },
+    "reports": {
+      "title": "التقارير",
+      "description": "تابع المبيعات والمخزون والذهب والربح — اختر تقريراً للاستكشاف.",
+      "hubIntroTitle": "نظرة عامة على نشاطك",
+      "hubIntroDesc": "كل تقرير يسحب أرقاماً حية من منظمتك. افتح واحداً للتفاصيل.",
+      "openReport": "فتح",
+      "chartEmpty": "لا بيانات في هذه الفترة",
+      "chartEmptyDesc": "عند تسجيل فواتير أو حركات مخزون يمتلئ المخطط تلقائياً.",
+      "seriesTitle": "الاتجاه",
+      "seriesSubtitle": "قيم الفترة المحددة",
+      "seriesValue": "القيمة",
+      "summaryLabel": "الإجمالي الرئيسي",
+      "summaryHint": "مجمّع من سجلات المنظمة الحية",
+      "periodBadge": "الفترة · {period}",
+      "bodyErrorTitle": "بيانات التقرير غير متاحة",
+      "bodyErrorDescription": "تعذّر تحميل هذا التقرير. حاول مرة أخرى.",
+      "nav": {
+        "hub": "كل التقارير"
+      },
+      "cards": {
+        "sales": "المبيعات",
+        "salesDesc": "الفواتير والتسويات وأداء المبيعات عبر الزمن.",
+        "purchases": "المشتريات",
+        "purchasesDesc": "إنفاق الموردين ووزن الذهب المشترى.",
+        "inventory": "المخزون",
+        "inventoryDesc": "عدد الأصناف ونقص المخزون ومستوياته.",
+        "gold": "الذهب",
+        "goldDesc": "حركات ومعاملات الذهب الخالص.",
+        "profit": "الربح",
+        "profitDesc": "المبيعات مقابل التكلفة — نظرة على الهامش."
+      },
+      "kpi": {
+        "period": "الفترة",
+        "thisMonth": "هذا الشهر",
+        "total": "الإجمالي"
+      },
+      "kpiLabels": {
+        "count": "السجلات",
+        "paid": "مدفوع",
+        "skus": "الأصناف",
+        "low": "نقص مخزون",
+        "txns": "المعاملات",
+        "sales": "المبيعات",
+        "cogs": "تكلفة البضاعة"
+      }
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "description": "Configure business rules, invoices, gold, and security.",
+      "fields": {
+        "value": "Value",
+        "placeholder": "Enter value",
+        "note": "Note"
+      },
+      "sections": {
+        "general": {
+          "title": "General",
+          "description": "Organization defaults."
+        },
+        "business": {
+          "title": "Business",
+          "description": "Trading and branch defaults."
+        },
+        "invoices": {
+          "title": "Invoices",
+          "description": "Numbering and print options."
+        },
+        "gold": {
+          "title": "Gold",
+          "description": "Purity and rate display settings."
+        },
+        "inventory": {
+          "title": "Inventory",
+          "description": "Valuation and reorder rules."
+        },
+        "accounting": {
+          "title": "Accounting",
+          "description": "Fiscal year and accounts."
+        },
+        "tax": {
+          "title": "Tax",
+          "description": "Tax codes and filing prefs."
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Alert channels."
+        },
+        "security": {
+          "title": "Security",
+          "description": "Sessions and 2FA policy."
+        },
+        "appearance": {
+          "title": "Appearance",
+          "description": "Theme and density."
+        },
+        "language": {
+          "title": "Language",
+          "description": "Locale and calendar."
+        },
+        "backup": {
+          "title": "Backup",
+          "description": "Export and restore (UI only)."
+        },
+        "billing": {
+          "title": "Billing",
+          "description": "Subscription and plan."
+        }
+      }
+    },
+    "organization": {
+      "title": "المنظمة",
+      "description": "Profile, users, roles, and audit trail.",
+      "search": "Search…",
+      "emptyTitle": "No rows",
+      "emptyDescription": "Nothing to show.",
+      "nav": {
+        "profile": "Profile",
+        "users": "Users",
+        "roles": "Roles",
+        "audit": "Audit"
+      },
+      "hub": {
+        "profile": "Legal name and tax identity.",
+        "users": "People with access.",
+        "roles": "CASL roles and permissions.",
+        "audit": "Security and change log."
+      },
+      "fields": {
+        "name": "Legal name",
+        "taxId": "Tax ID",
+        "phone": "Phone"
+      },
+      "status": {
+        "active": "Active"
+      },
+      "kpi": {
+        "rows": "Rows"
+      },
+      "cols": {
+        "a": "Item",
+        "b": "Detail",
+        "c": "Meta"
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "description": "تنبيهات النظام والتشغيل.",
+      "search": "بحث في الإشعارات…",
+      "emptyTitle": "صندوق فارغ",
+      "emptyDescription": "أنت على اطلاع.",
+      "sentEmptyTitle": "لا إشعارات مُرسلة بعد",
+      "sentEmptyDescription": "ستظهر هنا الإشعارات التي ترسلها.",
+      "unread": "غير مقروء",
+      "read": "مقروء",
+      "markAllRead": "تعيين الكل كمقروء",
+      "viewAll": "عرض الكل",
+      "bellAria": "الإشعارات، {count} غير مقروء",
+      "tabs": {
+        "inbox": "الوارد",
+        "sent": "المرسل"
+      },
+      "kpi": {
+        "unread": "غير مقروء",
+        "today": "اليوم",
+        "inbox": "الوارد",
+        "sent": "المرسل"
+      },
+      "cols": {
+        "title": "تنبيه",
+        "author": "من",
+        "time": "الوقت",
+        "status": "الحالة",
+        "receipts": "القراءة"
+      },
+      "errors": {
+        "loadInbox": "تعذر تحميل الإشعارات.",
+        "loadSent": "تعذر تحميل الإشعارات المرسلة."
+      },
+      "receipts": {
+        "title": "من قرأ هذا",
+        "close": "إغلاق",
+        "loading": "جارٍ التحميل…",
+        "error": "تعذر تحميل إيصالات القراءة.",
+        "counter": "{read} من {total}",
+        "read": "مقروء",
+        "unread": "غير مقروء",
+        "noneRead": "لم يقرأ أحد بعد.",
+        "noneUnread": "قرأ الجميع."
+      },
+      "priority": {
+        "low": {
+          "label": "منخفض",
+          "hint": "تحديث هادئ — بلا مقاطعة."
+        },
+        "normal": {
+          "label": "عادي",
+          "hint": "تنبيه قياسي في الصندوق."
+        },
+        "high": {
+          "label": "مرتفع",
+          "hint": "يبرز في القائمة والجرس."
+        },
+        "critical": {
+          "label": "حرج",
+          "hint": "يقفل الواجهة حتى التأكيد."
+        }
+      },
+      "critical": {
+        "eyebrow": "تنبيه حرج",
+        "ack": "حسناً، فهمت",
+        "acking": "جارٍ التأكيد…",
+        "queue": "{current} من {total}"
+      },
+      "compose": {
+        "open": "إرسال إشعار",
+        "title": "إشعار جديد",
+        "close": "إغلاق",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "sending": "جارٍ الإرسال…",
+        "loading": "جارٍ التحميل…",
+        "emptyUsers": "لا يوجد مستخدمون.",
+        "error": "تعذر إرسال الإشعار.",
+        "validation": {
+          "required": "العنوان والرسالة مطلوبان.",
+          "users": "اختر مستخدماً واحداً على الأقل.",
+          "orgs": "اختر مؤسسة واحدة على الأقل.",
+          "network": "تعذر الاتصال بالخادم.",
+          "forbidden": "ليس لديك صلاحية إرسال هذا الإشعار.",
+          "loadUsers": "تعذر تحميل المستخدمين.",
+          "loadOrgs": "تعذر تحميل المؤسسات.",
+          "priority": "ليست لديك صلاحية هذا المستوى.",
+          "noPriority": "لم يُعيَّن لمهنتك أي مستوى إرسال."
+        },
+        "fields": {
+          "title": "العنوان",
+          "body": "الرسالة",
+          "audience": "الجمهور",
+          "priority": "الأولوية",
+          "users": "المستخدمون",
+          "orgs": "المؤسسات"
+        },
+        "audience": {
+          "orgAll": "الجميع في مؤسستي",
+          "users": "مستخدمون محددون",
+          "platformAll": "الجميع على المنصة",
+          "orgs": "مؤسسات محددة"
+        }
+      },
+      "terminateSession": "إنهاء الجلسة"
+    },
+    "search": {
+      "title": "بحث",
+      "description": "Find invoices, products, parties, and gold lots.",
+      "placeholder": "Type to search…",
+      "emptyTitle": "Start typing",
+      "emptyDescription": "Results will appear here."
+    },
+    "workshop": {
+      "title": "الورشة",
+      "description": "Custom production orders and artisan workload.",
+      "search": "Search orders…",
+      "emptyTitle": "No workshop orders",
+      "emptyDescription": "Create a production order to begin.",
+      "nav": {
+        "orders": "Orders",
+        "production": "Production",
+        "artisans": "Artisans"
+      },
+      "kpi": {
+        "open": "Open",
+        "late": "Late",
+        "done": "Completed"
+      },
+      "cols": {
+        "order": "Order",
+        "customer": "Customer",
+        "product": "Product",
+        "artisan": "Artisan",
+        "due": "Due",
+        "status": "Status",
+        "progress": "Progress"
+      }
+    },
+    "workshopProduction": {
+      "title": "Production",
+      "description": "Workshop batches in progress.",
+      "search": "Search batches…",
+      "emptyTitle": "No batches",
+      "emptyDescription": "No production batches.",
+      "kpi": {
+        "a": "Batches",
+        "aValue": "2",
+        "b": "Avg progress",
+        "bValue": "52%"
+      },
+      "cols": {
+        "a": "Batch",
+        "b": "Product",
+        "c": "Progress"
+      }
+    },
+    "workshopArtisans": {
+      "title": "Artisans",
+      "description": "Craftspeople assigned to workshop work.",
+      "search": "Search artisans…",
+      "emptyTitle": "No artisans",
+      "emptyDescription": "Add artisans to assign work.",
+      "kpi": {
+        "a": "Artisans",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "Name",
+        "b": "Skill",
+        "c": "Status"
+      }
+    },
+    "jewelry": {
+      "title": "المجوهرات",
+      "description": "Finished jewelry pieces and showcase stock.",
+      "search": "Search jewelry…",
+      "emptyTitle": "No jewelry",
+      "emptyDescription": "Add finished pieces from workshop or purchase.",
+      "kpi": {
+        "a": "Pieces",
+        "aValue": "2",
+        "b": "On floor",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Piece",
+        "b": "SKU",
+        "c": "Location"
+      }
+    },
+    "tax": {
+      "title": "الضرائب",
+      "description": "Tax returns and filing stubs.",
+      "search": "Search filings…",
+      "emptyTitle": "No filings",
+      "emptyDescription": "Tax periods will appear here.",
+      "kpi": {
+        "a": "Open",
+        "aValue": "1",
+        "b": "Filed",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Period",
+        "b": "Status",
+        "c": "Filed"
+      }
+    },
+    "branches": {
+      "title": "الفروع",
+      "description": "Multi-branch locations and status.",
+      "search": "Search branches…",
+      "emptyTitle": "No branches",
+      "emptyDescription": "Add a branch to expand.",
+      "kpi": {
+        "a": "Branches",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "2"
+      },
+      "cols": {
+        "a": "Branch",
+        "b": "City",
+        "c": "Status"
+      }
+    },
+    "commerce": {
+      "title": "التجارة",
+      "description": "Online and messaging sales channels.",
+      "search": "Search channels…",
+      "emptyTitle": "No channels",
+      "emptyDescription": "Connect a commerce channel.",
+      "kpi": {
+        "a": "Channels",
+        "aValue": "2",
+        "b": "Live",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Channel",
+        "b": "Status",
+        "c": "SKUs"
+      }
+    },
+    "ai": {
+      "title": "رؤى الذكاء الاصطناعي",
+      "description": "Insight cards only — no fake reasoning engine.",
+      "insightLowStock": "Watch low-stock coins",
+      "insightLowStockBody": "Two Bahar Azadi coins remain; consider a purchase order.",
+      "insightMargin": "Margin attention",
+      "insightMarginBody": "Wholesale draft invoice is unpaid — review credit terms.",
+      "insightLabel": "Presentation insight"
+    },
+    "integrations": {
+      "title": "التكاملات",
+      "description": "Devices, scales, API keys, and webhooks (UI only).",
+      "kpi": {
+        "a": "Connected",
+        "aValue": "0",
+        "b": "Pending",
+        "bValue": "4"
+      },
+      "hub": {
+        "devices": "Devices",
+        "devicesDesc": "POS and printer endpoints.",
+        "scale": "Scale",
+        "scaleDesc": "Weight scale pairing UI.",
+        "api": "API",
+        "apiDesc": "API keys and scopes.",
+        "webhooks": "Webhooks",
+        "webhooksDesc": "Outbound event hooks."
+      }
+    },
+    "integrationsDevices": {
+      "title": "Devices",
+      "description": "Registered devices.",
+      "search": "Search…",
+      "emptyTitle": "No devices",
+      "emptyDescription": "Pair a device to continue.",
+      "kpi": {
+        "a": "Devices",
+        "aValue": "2",
+        "b": "Online",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Device",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsScale": {
+      "title": "Scale",
+      "description": "Scale connection UI.",
+      "search": "Search…",
+      "emptyTitle": "No scales",
+      "emptyDescription": "Connect a scale.",
+      "kpi": {
+        "a": "Scales",
+        "aValue": "2",
+        "b": "Ready",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Scale",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsApi": {
+      "title": "API",
+      "description": "API credentials (display only).",
+      "search": "Search…",
+      "emptyTitle": "No keys",
+      "emptyDescription": "Create an API key.",
+      "kpi": {
+        "a": "Keys",
+        "aValue": "2",
+        "b": "Active",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Key",
+        "b": "Status",
+        "c": "Note"
+      }
+    },
+    "integrationsWebhooks": {
+      "title": "Webhooks",
+      "description": "Webhook endpoints.",
+      "search": "Search…",
+      "emptyTitle": "No webhooks",
+      "emptyDescription": "Add a webhook URL.",
+      "kpi": {
+        "a": "Hooks",
+        "aValue": "2",
+        "b": "OK",
+        "bValue": "1"
+      },
+      "cols": {
+        "a": "Hook",
+        "b": "Status",
+        "c": "Note"
+      }
+    }
+  },
+  "authExtras": {
+    "forgot": {
+      "title": "نسيت كلمة المرور",
+      "description": "سنرسل رابط إعادة التعيين عند تهيئة البريد.",
+      "email": "البريد",
+      "submit": "إرسال الرابط",
+      "back": "العودة لتسجيل الدخول"
+    },
+    "reset": {
+      "title": "إعادة تعيين كلمة المرور",
+      "description": "اختر كلمة مرور جديدة.",
+      "email": "البريد",
+      "password": "كلمة مرور جديدة",
+      "submit": "تحديث",
+      "back": "العودة لتسجيل الدخول"
+    },
+    "twofa": {
+      "title": "المصادقة الثنائية",
+      "description": "أدخل الرمز من تطبيق المصادقة.",
+      "code": "الرمز",
+      "submit": "تحقق",
+      "back": "العودة لتسجيل الدخول"
+    },
+    "invite": {
+      "title": "قبول الدعوة",
+      "description": "عيّن الاسم وكلمة المرور للانضمام.",
+      "name": "الاسم الكامل",
+      "password": "كلمة المرور",
+      "submit": "انضمام",
+      "back": "العودة لتسجيل الدخول"
+    }
+  }
+}

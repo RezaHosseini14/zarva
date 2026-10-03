@@ -1,0 +1,321 @@
+.gold-invoice-print-root {
+  --gi-ink: #1a1510;
+  --gi-gold: #b8860b;
+  --gi-gold-deep: #8b6914;
+  --gi-cream: #faf6ee;
+  --gi-border: #c9a227;
+  --gi-muted: #5c5346;
+  --gi-line: #e8dfc8;
+  min-height: 100vh;
+  background: #e8e4dc;
+  padding: 1.5rem 1rem;
+  font-family: var(--font-yekan-bakh), Tahoma, sans-serif;
+  color: var(--gi-ink);
+}
+
+.gold-invoice-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  background: rgba(250, 246, 238, 0.95);
+  border: 1px solid var(--gi-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(26, 21, 16, 0.08);
+}
+
+.gold-invoice-toolbar button,
+.gold-invoice-toolbar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--gi-gold-deep);
+}
+
+.gold-invoice-toolbar .gi-btn-primary {
+  background: var(--gi-gold-deep);
+  color: #fffef8;
+}
+
+.gold-invoice-toolbar .gi-btn-secondary {
+  background: transparent;
+  color: var(--gi-gold-deep);
+}
+
+.gold-invoice-sheet {
+  width: 100%;
+  max-width: 148mm;
+  margin: 0 auto;
+  background: var(--gi-cream);
+  border: 2px solid var(--gi-gold);
+  box-shadow: 0 8px 24px rgba(26, 21, 16, 0.12);
+  padding: 10mm 8mm;
+  position: relative;
+}
+
+.gold-invoice-sheet::before {
+  content: '';
+  position: absolute;
+  inset: 3mm;
+  border: 1px solid var(--gi-border);
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.gold-invoice-sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+.gi-header {
+  text-align: center;
+  border-bottom: 2px double var(--gi-gold);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.gi-header-ornament {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: var(--gi-gold-deep);
+  margin-bottom: 0.35rem;
+}
+
+.gi-shop-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--gi-gold-deep);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.gi-shop-meta {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--gi-muted);
+  line-height: 1.55;
+}
+
+.gi-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.65rem 0 0.85rem;
+}
+
+.gi-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gi-ink);
+  border: 1px solid var(--gi-gold);
+  padding: 0.2rem 1rem;
+  background: linear-gradient(180deg, #fff9e8 0%, #f0e6c8 100%);
+}
+
+.gi-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+  font-size: 0.72rem;
+  margin-bottom: 0.85rem;
+  padding: 0.5rem 0.35rem;
+  border-top: 1px solid var(--gi-line);
+  border-bottom: 1px solid var(--gi-line);
+}
+
+.gi-meta-item {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.gi-meta-item dt {
+  color: var(--gi-muted);
+  font-weight: 500;
+}
+
+.gi-meta-item dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.gi-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.gi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+}
+
+.gi-table th,
+.gi-table td {
+  border: 1px solid var(--gi-border);
+  padding: 0.28rem 0.2rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.gi-table th {
+  background: linear-gradient(180deg, #e8d48a 0%, #d4b84a 100%);
+  color: var(--gi-ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gi-table tbody tr:nth-child(even) {
+  background: rgba(201, 162, 39, 0.08);
+}
+
+.gi-table .gi-desc {
+  text-align: start;
+  font-weight: 500;
+  min-width: 4.5rem;
+}
+
+.gi-table .gi-num {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.gi-totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  font-size: 0.72rem;
+  margin-bottom: 0.85rem;
+}
+
+.gi-totals-box {
+  border: 1px solid var(--gi-border);
+  padding: 0.45rem 0.55rem;
+  background: rgba(255, 249, 232, 0.6);
+}
+
+.gi-totals-box dl {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.2rem 0;
+}
+
+.gi-totals-box dt {
+  color: var(--gi-muted);
+}
+
+.gi-totals-box dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.gi-grand {
+  grid-column: 1 / -1;
+  border: 2px solid var(--gi-gold-deep);
+  background: linear-gradient(180deg, #fff9e8 0%, #f0e6c8 100%);
+  padding: 0.5rem 0.65rem;
+  text-align: center;
+}
+
+.gi-grand-label {
+  font-size: 0.7rem;
+  color: var(--gi-muted);
+}
+
+.gi-grand-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--gi-gold-deep);
+  margin: 0.15rem 0;
+}
+
+.gi-words {
+  font-size: 0.68rem;
+  color: var(--gi-ink);
+  margin-top: 0.25rem;
+}
+
+.gi-note {
+  font-size: 0.62rem;
+  color: var(--gi-muted);
+  text-align: center;
+  margin: 0.5rem 0 0.85rem;
+  line-height: 1.5;
+}
+
+.gi-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  padding-top: 0.5rem;
+}
+
+.gi-sign {
+  text-align: center;
+  font-size: 0.72rem;
+}
+
+.gi-sign-line {
+  height: 2.75rem;
+  border-bottom: 1px dashed var(--gi-gold);
+  margin-bottom: 0.4rem;
+}
+
+.gi-sign-label {
+  color: var(--gi-muted);
+  font-weight: 600;
+}
+
+@media print {
+  @page {
+    size: A5;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .gold-invoice-print-root {
+    min-height: auto;
+    background: white;
+    padding: 0;
+  }
+
+  .gold-invoice-toolbar {
+    display: none !important;
+  }
+
+  .gold-invoice-sheet {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    border-width: 1.5pt;
+    box-shadow: none;
+    padding: 4mm;
+  }
+
+  .gold-invoice-sheet::before {
+    inset: 2mm;
+  }
+}

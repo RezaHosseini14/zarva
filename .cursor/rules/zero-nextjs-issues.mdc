@@ -1,0 +1,35 @@
+---
+description: After any frontend change, leave zero Next.js/TS/ESLint issues — typecheck + lint + build must pass.
+alwaysApply: true
+---
+
+# Zero Next.js Issues Gate
+
+After **every** change under `apps/frontend` (pages, features, components, lib, messages), do not finish until the tree is clean.
+
+## Required checks (run from `apps/frontend`)
+
+1. `npm run typecheck` — zero TS errors
+2. `npm run lint` — zero ESLint **errors** (fix warnings when cheap)
+3. If you touched routes/pages/layouts or shared UI used by routes: `npm run build` must succeed
+
+## Hard rules
+
+- Never leave known Next.js Problems/Issues (TS, ESLint `error`, failed `next build`) for the user to discover.
+- Do not claim “done” while typecheck, lint errors, or build typecheck fail.
+- Prefer fixing root cause over `eslint-disable` / `@ts-ignore`. Disable only when the rule is wrong for a proven pattern, with a one-line why.
+- Keep `en` / `fa` / `ar` message keys in sync when UI copy changes.
+
+## Common fixes (do these, don’t paper over)
+
+| Symptom | Fix |
+|---------|-----|
+| JSX inside `try/catch` (`react-hooks/error-boundaries`) | Fetch in `try/catch` into locals/`loadFailed`; render JSX **after** the catch |
+| `setState` sync in `useEffect` (`set-state-in-effect`) | Derive from props/query, adjust state during render when props change, or `useSyncExternalStore` |
+| `Date.now()` / impure in render | Capture once (`useState(() => Date.now())`) or move to event/effect |
+| Duplicate `export type` + `export interface` | Export once |
+| Internal nav via `window.location.assign` | `router.replace` / `router.push` |
+
+## Scope
+
+Applies to ZARVA frontend (`apps/frontend`). Backend Nest changes: run that package’s typecheck/tests instead; still do not leave broken frontend imports.

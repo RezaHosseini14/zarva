@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+dist/
+build/
+.next/
+out/
+storybook-static/
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Prisma
+apps/backend/prisma/*.db
+apps/backend/prisma/*.db-journal
+
+# Docker volumes
+docker-data/
+
+# Local storage
+apps/backend/storage/
+
+# Misc
+*.tsbuildinfo
+.turbo
+
+# Graphify (local knowledge graph — rebuild with npm run graphify)
+.graphify/
+graphify-out/
+**/__pycache__/
+*.pyc
+.graphify-memory/
+.graphify-cache/
+
+# claude-skills-founder runtime outputs (see .agents/claude-skills-founder-CURSOR.md)
+founder/
+
+# Founder skill junctions → .agents/claude-skills-founder/skills (recreate via scripts/sync-founder-skills.ps1)
+.agents/skills/validate-idea/
+.agents/skills/product-brief/
+.agents/skills/competitor-matrix/
+.agents/skills/persona-gen/
+.agents/skills/user-interviews/
+.agents/skills/mvp-scope/
+.agents/skills/pricing-strategy/
+.agents/skills/go-to-market/
+.agents/skills/landing-page/
+.agents/skills/email-sequence/
+.agents/skills/pitch-deck/
+.agents/skills/fundraise-prep/
+.agents/skills/metrics-dashboard/

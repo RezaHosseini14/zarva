@@ -1,0 +1,13 @@
+---
+description: Authentication — JWT access/refresh.
+globs: "**/auth/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Authentication
+
+- JWT Access (short) + Refresh (httpOnly, rotation, family revoke)
+- Passwords: argon2id
+- Sessions list + revoke; invite + password reset; TOTP scaffold
+- Rate-limit auth endpoints; audit login success/fail
+- Never session-only without JWT; never expose sensitive user fields

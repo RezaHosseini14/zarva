@@ -1,0 +1,11 @@
+---
+description: Components max 100 lines.
+globs: "apps/frontend/**/*.tsx"
+alwaysApply: false
+---
+
+# Components
+
+- Max ~100 lines per component file; extract subcomponents
+- Reuse `components/ui/*` (shadcn); no parallel primitives
+- Named exports preferred

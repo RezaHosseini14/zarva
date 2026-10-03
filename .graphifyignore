@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.turbo/
+docker-data/
+.graphify/
+graphify-out/
+.graphify-memory/
+.graphify-cache/
+**/__pycache__/
+*.pyc
+storybook-static/
+playwright-report/
+test-results/

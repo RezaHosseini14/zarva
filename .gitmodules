@@ -1,0 +1,3 @@
+[submodule ".agents/claude-skills-founder"]
+	path = .agents/claude-skills-founder
+	url = https://github.com/emotixco/claude-skills-founder.git

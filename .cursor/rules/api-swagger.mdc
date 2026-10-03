@@ -1,0 +1,12 @@
+---
+description: Nest Swagger / OpenAPI standards.
+globs: "apps/backend/**/*.ts"
+alwaysApply: false
+---
+
+# API Swagger
+
+- `@nestjs/swagger` at `/api/docs` and `/api/docs-json`
+- Tag every controller; `@ApiOperation`, `@ApiResponse`, DTOs with `@ApiProperty`
+- Bearer + cookie auth schemes; document required permissions
+- Production: `SWAGGER_ENABLED` flag

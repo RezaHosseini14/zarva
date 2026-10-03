@@ -1,0 +1,9 @@
+---
+description: Theming and white-label tokens.
+globs: "apps/frontend/**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Theming
+
+CSS variables. Default preset `zarva-gold`. Admin Settings/Appearance can override org tokens. No hardcoded hex in components — use vars.

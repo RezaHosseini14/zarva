@@ -1,0 +1,26 @@
+module.exports = {
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  setupFiles: ['<rootDir>/../jest.setup.cjs'],
+  rootDir: 'src',
+  testRegex: '.*\\.spec\\.ts$',
+  transform: { '^.+\\.(t|j)s$': 'ts-jest' },
+  transformIgnorePatterns: ['node_modules/(?!(uuid)/)'],
+  collectCoverageFrom: [
+    'features/billing/mock-billing.provider.ts',
+    'features/health/health.controller.ts',
+    'features/branches/**/*.service.ts',
+    'features/commerce/**/*.service.ts',
+    'features/tax/**/*.service.ts',
+    'features/tax/**/*.adapter.ts',
+    'features/jewelry/**/*.service.ts',
+    'features/ai/**/*.service.ts',
+    'features/ai/**/*.rules.ts',
+  ],
+  coverageDirectory: '../coverage',
+  coverageProvider: 'v8',
+  coverageReporters: ['text', 'text-summary', 'json-summary'],
+  testEnvironment: 'node',
+  coverageThreshold: {
+    global: { branches: 0, functions: 0, lines: 0, statements: 0 },
+  },
+};
