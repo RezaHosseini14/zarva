@@ -58,8 +58,9 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-zarva-secret-key}
       MINIO_API_CORS_ALLOW_ORIGIN: '*'
     ports:
-      - "${MINIO_PUBLIC_PORT:-9020}:9000"
-      - "${MINIO_CONSOLE_PORT:-9021}:9001"
+      # 9020/9021 taken by pooya-minio on shared VPS — keep zarva on 9030/9031
+      - "${MINIO_PUBLIC_PORT:-9030}:9000"
+      - "${MINIO_CONSOLE_PORT:-9031}:9001"
     volumes:
       - zarva_miniodata:/data
     healthcheck:

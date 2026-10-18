@@ -5,7 +5,7 @@
 | nginx | `5032` | `zarva-nginx` |
 | backend | `5030` → `3000` | `zarva-backend` |
 | frontend | `5031` → `3000` | `zarva-frontend` |
-| minio | `9020` / `9021` | `zarva-minio` |
+| minio | `9030` / `9031` | `zarva-minio` |
 | postgres / redis | internal | `zarva-postgres` / `zarva-redis` |
 
 Remote: `/opt/zarva`

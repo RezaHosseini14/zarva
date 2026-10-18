@@ -302,7 +302,7 @@ jobs:
             echo "FRONTEND_IMAGE=${FRONTEND_IMAGE}" >> .env
           fi
 
-          for kv in BACKEND_PORT=5030 FRONTEND_PORT=5031 NGINX_PORT=5032; do
+          for kv in BACKEND_PORT=5030 FRONTEND_PORT=5031 NGINX_PORT=5032 MINIO_PUBLIC_PORT=9030 MINIO_CONSOLE_PORT=9031; do
             key=${kv%%=*}; val=${kv#*=}
             if grep -q "^${key}=" .env; then
               sed -i "s|^${key}=.*|${key}=${val}|" .env
