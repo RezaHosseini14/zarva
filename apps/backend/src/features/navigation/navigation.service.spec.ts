@@ -1,17 +1,22 @@
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
 import { ForbiddenException } from '@nestjs/common';
+
+jest.mock('../auth/auth.service', () => ({
+  AuthService: class AuthService {},
+}));
+jest.mock('../billing/billing.service', () => ({
+  BillingService: class BillingService {},
+}));
+jest.mock('../../prisma/prisma.service', () => ({
+  PrismaService: class PrismaService {},
+}));
 
 import { NavigationService } from './navigation.service';
 
 describe('NavigationService.assertSuperAdmin', () => {
+  const service = new NavigationService({} as never, {} as never, {} as never);
+
   it('allows SUPER_ADMIN', () => {
-    const service = new NavigationService(
-      {} as never,
-      {} as never,
-      {} as never,
-    );
-    assert.doesNotThrow(() =>
+    expect(() =>
       service.assertSuperAdmin({
         id: '1',
         email: 'a@b.c',
@@ -24,30 +29,23 @@ describe('NavigationService.assertSuperAdmin', () => {
         branchId: null,
         locale: 'fa',
       }),
-    );
+    ).not.toThrow();
   });
 
   it('rejects PLATFORM_ADMIN', () => {
-    const service = new NavigationService(
-      {} as never,
-      {} as never,
-      {} as never,
-    );
-    assert.throws(
-      () =>
-        service.assertSuperAdmin({
-          id: '1',
-          email: 'a@b.c',
-          phone: '',
-          address: '',
-          name: 'Admin',
-          roleName: 'PLATFORM_ADMIN',
-          permissions: [],
-          organizationId: 'org',
-          branchId: null,
-          locale: 'fa',
-        }),
-      ForbiddenException,
-    );
+    expect(() =>
+      service.assertSuperAdmin({
+        id: '1',
+        email: 'a@b.c',
+        phone: '',
+        address: '',
+        name: 'Admin',
+        roleName: 'PLATFORM_ADMIN',
+        permissions: [],
+        organizationId: 'org',
+        branchId: null,
+        locale: 'fa',
+      }),
+    ).toThrow(ForbiddenException);
   });
 });

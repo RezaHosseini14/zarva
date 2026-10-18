@@ -10,6 +10,21 @@ jest.mock('@nestjs/config', () => ({
   ConfigModule: { forRoot: () => ({ module: class ConfigModule {} }) },
 }));
 
+jest.mock('@nestjs/jwt', () => ({
+  JwtService: class JwtService {
+    sign() {
+      return 'token';
+    }
+    verify() {
+      return {};
+    }
+  },
+  JwtModule: {
+    register: () => ({ module: class JwtModule {} }),
+    registerAsync: () => ({ module: class JwtModule {} }),
+  },
+}));
+
 jest.mock('@nestjs/common', () => ({
   Injectable: () => (target) => target,
   ForbiddenException: class ForbiddenException extends HttpException {
