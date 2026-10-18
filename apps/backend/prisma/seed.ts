@@ -1,4 +1,8 @@
-import { ALL_PERMISSION_KEYS, type IPlanEntitlements } from '@zarva/shared';
+import {
+  ALL_PERMISSION_KEYS,
+  SIDEBAR_NAV_SEED,
+  type IPlanEntitlements,
+} from '@zarva/shared';
 import { PrismaClient } from '@prisma/client';
 import * as argon2 from 'argon2';
 
@@ -1305,7 +1309,40 @@ async function main(): Promise<void> {
     ],
   });
 
-  console.log('Seeded permissions, roles, plans, demo org + domain data', demo.slug);
+  for (const item of SIDEBAR_NAV_SEED) {
+    await prisma.sidebarNavItem.upsert({
+      where: { key: item.key },
+      create: {
+        key: item.key,
+        href: item.href,
+        labelKey: item.labelKey,
+        icon: item.icon,
+        iconActive: item.iconActive,
+        group: item.group,
+        subject: item.subject,
+        roles: item.roles ? [...item.roles] : [],
+        moduleKey: item.moduleKey ?? null,
+        sortOrder: item.sortOrder,
+        isActive: true,
+        parentId: null,
+      },
+      update: {
+        href: item.href,
+        labelKey: item.labelKey,
+        icon: item.icon,
+        iconActive: item.iconActive,
+        group: item.group,
+        subject: item.subject,
+        roles: item.roles ? [...item.roles] : [],
+        moduleKey: item.moduleKey ?? null,
+        sortOrder: item.sortOrder,
+        isActive: true,
+        parentId: null,
+      },
+    });
+  }
+
+  console.log('Seeded permissions, roles, plans, sidebar nav, demo org + domain data', demo.slug);
   console.log('  admin@zarva.dev / Password123!  (SUPER_ADMIN)');
   console.log('  cashier@zarva.dev / Password123! (CASHIER)');
 }

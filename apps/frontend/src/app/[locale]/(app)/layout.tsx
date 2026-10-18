@@ -1,8 +1,10 @@
-import { type ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import { setRequestLocale } from 'next-intl/server';
 
 import { AuthHydrator } from '@/features/auth/auth-hydrator';
 import { AppShellFrame } from '@/features/shell/app-shell';
+import { SidebarNavSection } from '@/features/shell/sidebar-nav-section';
+import { SidebarNavSkeleton } from '@/features/shell/sidebar-nav-skeleton';
 import { requireUser } from '@/lib/auth/get-current-user';
 
 interface IAppLayoutProps {
@@ -31,7 +33,13 @@ export default async function AppLayout({ children, params }: IAppLayoutProps) {
   setRequestLocale(locale);
 
   return (
-    <AppShellFrame>
+    <AppShellFrame
+      navSlot={
+        <Suspense fallback={<SidebarNavSkeleton />}>
+          <SidebarNavSection />
+        </Suspense>
+      }
+    >
       <AppAuthenticated locale={locale}>{children}</AppAuthenticated>
     </AppShellFrame>
   );

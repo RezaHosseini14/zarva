@@ -20,6 +20,13 @@ export class AiController {
     await this.billing.assertModule(user.organizationId, 'ai');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'AI insight KPI counts' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.ai.summary(user);
+  }
+
   @Get('insights')
   @ApiOperation({ summary: 'List active AI insights' })
   async list(@CurrentUser() user: IAuthUser) {

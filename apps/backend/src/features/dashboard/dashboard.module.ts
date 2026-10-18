@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 
 import { BillingModule } from '../billing/billing.module';
+import { GoldModule } from '../gold/gold.module';
 import { DashboardController } from './dashboard.controller';
+import { DashboardService } from './dashboard.service';
 
 @Module({
-  imports: [BillingModule],
+  imports: [BillingModule, GoldModule],
   controllers: [DashboardController],
+  providers: [DashboardService],
 })
 export class DashboardModule {}

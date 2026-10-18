@@ -28,6 +28,7 @@ export function DashboardOverviewPanel({
     if (labelKey.includes('salesToday')) return t('kpi.salesToday');
     if (labelKey.includes('goldStock')) return t('kpi.goldStock');
     if (labelKey.includes('customers')) return t('kpi.customers');
+    if (labelKey.includes('cashInToday')) return t('kpi.cashInToday');
     return t('kpi.margin');
   };
 
@@ -58,6 +59,12 @@ export function DashboardOverviewPanel({
       return {
         icon: 'users-group-rounded-bold' as const,
         accent: 'bg-info/15 text-info ring-info/25',
+      };
+    }
+    if (labelKey.includes('cashInToday')) {
+      return {
+        icon: 'wallet-money-bold' as const,
+        accent: 'bg-success/15 text-success ring-success/25',
       };
     }
     return {
@@ -104,6 +111,15 @@ export function DashboardOverviewPanel({
           emptyTitle={t('activityEmptyTitle')}
           emptyDescription={t('activityEmptyDescription')}
           items={overview.activity.map((a) => {
+            if (a.titleKey.includes('buyback')) {
+              return {
+                id: a.id,
+                title: t('activityItems.buybackCompleted'),
+                time: a.time,
+                icon: 'hand-money-bold' as const,
+                accent: 'bg-warning/15 text-warning ring-warning/25',
+              };
+            }
             if (a.titleKey.includes('sale')) {
               return {
                 id: a.id,

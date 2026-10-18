@@ -6,13 +6,16 @@ import {
 } from '@nestjs/common';
 import type {
   IInventoryRow,
+  IInventorySummary,
   IInventoryValuationRow,
   IStockMovementRow,
   IWarehouseRow,
 } from '@zarva/shared';
+import { businessDateKey, fineGramsFromKarat } from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
+import { GoldLedgerService } from '../gold/gold-ledger.service';
 import type {
   CreateAdjustmentDto,
   CreateInventoryItemDto,
@@ -22,7 +25,10 @@ import type {
 
 @Injectable()
 export class InventoryService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly goldLedger: GoldLedgerService,
+  ) {}
 
   async listItems(user: IAuthUser): Promise<IInventoryRow[]> {
     this.assertRead(user);
@@ -31,6 +37,60 @@ export class InventoryService {
       orderBy: { name: 'asc' },
     });
     return rows.map((r) => this.mapItem(r));
+  }
+
+  async summary(user: IAuthUser): Promise<IInventorySummary> {
+    this.assertRead(user);
+    const rate = await this.goldLedger.tryGetLockedRate(
+      user.organizationId,
+      businessDateKey(),
+    );
+    const buyRate = rate?.buyRateIrt ?? 0;
+    const rows = await this.prisma.inventoryItem.findMany({
+      where: { organizationId: user.organizationId },
+      select: {
+        qty: true,
+        status: true,
+        weight: true,
+        valueLabel: true,
+        purity: true,
+        kind: true,
+      },
+    });
+    let totalValueIrt = 0;
+    let totalWeightGrams = 0;
+    let lowStockCount = 0;
+    for (const r of rows) {
+      if (r.status === 'low' || r.qty <= 2) lowStockCount += 1;
+      totalValueIrt += this.computeItemValueIrt(r, buyRate);
+      totalWeightGrams += parseLabelNumber(r.weight) * Math.max(r.qty, 0);
+    }
+    return {
+      skuCount: rows.length,
+      lowStockCount,
+      totalValueIrt: Math.round(totalValueIrt),
+      totalWeightGrams: Math.round(totalWeightGrams * 1000) / 1000,
+    };
+  }
+
+  private computeItemValueIrt(
+    r: {
+      qty: number;
+      weight: string;
+      valueLabel: string;
+      purity: string;
+      kind: string;
+    },
+    buyRateIrt: number,
+  ): number {
+    if (r.kind === 'gold' || r.kind === 'raw') {
+      const grams = parseLabelNumber(r.weight) * Math.max(r.qty, 0);
+      const karat = parseLabelNumber(r.purity) || 18;
+      if (grams > 0 && buyRateIrt > 0) {
+        return Math.round(fineGramsFromKarat(grams, karat) * buyRateIrt);
+      }
+    }
+    return Math.round(parseLabelNumber(r.valueLabel));
   }
 
   async getItem(user: IAuthUser, id: string): Promise<IInventoryRow> {
@@ -177,16 +237,24 @@ export class InventoryService {
 
   async valuation(user: IAuthUser): Promise<IInventoryValuationRow[]> {
     this.assertRead(user);
+    const rate = await this.goldLedger.tryGetLockedRate(
+      user.organizationId,
+      businessDateKey(),
+    );
+    const buyRate = rate?.buyRateIrt ?? 0;
     const rows = await this.prisma.inventoryItem.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { name: 'asc' },
     });
-    return rows.map((r) => ({
-      id: r.id,
-      col1: r.name,
-      col2: `${r.qty}`,
-      col3: r.valueLabel,
-    }));
+    return rows.map((r) => {
+      const valueIrt = this.computeItemValueIrt(r, buyRate);
+      return {
+        id: r.id,
+        col1: r.name,
+        col2: `${r.qty}`,
+        col3: String(valueIrt),
+      };
+    });
   }
 
   async findByBarcode(user: IAuthUser, code: string): Promise<IInventoryRow> {
@@ -251,4 +319,13 @@ export class InventoryService {
       user.roleName === 'ORG_ADMIN'
     );
   }
+}
+
+function parseLabelNumber(value: string): number {
+  const normalized = value
+    .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
+    .replace(/[^\d.-]/g, '');
+  const n = Number(normalized);
+  return Number.isFinite(n) ? n : 0;
 }

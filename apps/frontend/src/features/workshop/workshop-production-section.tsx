@@ -1,13 +1,21 @@
 import { getTranslations } from 'next-intl/server';
 
 import { SimpleDomainPage } from '@/features/domain/simple-domain-page';
-import { getWorkshopProduction } from '@/features/workshop/get-workshop-data';
+import { getWorkshopProduction, getWorkshopSummary } from '@/features/workshop/get-workshop-data';
+import { workshopProductionSummaryToKpiItems } from '@/features/workshop/workshop-summary-mapper';
 import { loadServerApiSection } from '@/lib/auth/load-server-api-section';
 import { ACCENT } from '@/lib/lists/skeleton-kpi';
 import { StreamedDomainChrome } from '@/lib/lists/streamed-domain-chrome';
 
 async function WorkshopProductionLoaded() {
-  const result = await loadServerApiSection(() => getWorkshopProduction());
+  const t = await getTranslations('modules.workshopProduction');
+  const result = await loadServerApiSection(async () => {
+    const [rows, summary] = await Promise.all([
+      getWorkshopProduction(),
+      getWorkshopSummary(),
+    ]);
+    return { rows, summary };
+  });
   if (!result.ok) {
     return (
       <SimpleDomainPage
@@ -19,7 +27,17 @@ async function WorkshopProductionLoaded() {
       />
     );
   }
-  return <SimpleDomainPage moduleKey="workshopProduction" rows={result.data} chrome="body" />;
+  return (
+    <SimpleDomainPage
+      moduleKey="workshopProduction"
+      rows={result.data.rows}
+      chrome="body"
+      kpiItems={workshopProductionSummaryToKpiItems(result.data.summary, {
+        batchesLabel: t('kpi.a'),
+        ordersLabel: t('kpi.b'),
+      })}
+    />
+  );
 }
 
 export async function WorkshopProductionSection() {

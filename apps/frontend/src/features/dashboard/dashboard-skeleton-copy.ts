@@ -23,7 +23,7 @@ export async function getDashboardSkeletonCopy(): Promise<{
         salesToday: t('kpi.salesToday'),
         goldStock: t('kpi.goldStock'),
         customers: t('kpi.customers'),
-        margin: t('kpi.margin'),
+        margin: t('kpi.cashInToday'),
       },
     },
     liveRateTitles: {

@@ -45,18 +45,19 @@ function defaultKpis(
   kpiItems?: ReadonlyArray<IKpiItem>,
 ): ReadonlyArray<IKpiItem> {
   if (kpiItems && kpiItems.length > 0) return kpiItems;
+  // Honest empty KPIs — never i18n fake aValue stubs for shipped modules.
   return [
     {
       id: '1',
       label: t('kpi.a'),
-      value: t('kpi.aValue'),
+      value: '0',
       icon: 'chart-bold',
       accent: ACCENT.primary,
     },
     {
       id: '2',
       label: t('kpi.b'),
-      value: t('kpi.bValue'),
+      value: '0',
       icon: 'clipboard-list-bold',
       accent: ACCENT.info,
     },

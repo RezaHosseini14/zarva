@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getWorkshopOrders } from '@/features/workshop/get-workshop-data';
+import { getWorkshopOrders, getWorkshopSummary } from '@/features/workshop/get-workshop-data';
 import { WorkshopPage } from '@/features/workshop/workshop-page';
 import {
   resolveWorkshopColumnHeaders,
@@ -14,11 +14,16 @@ interface IPageProps {
 }
 
 async function Section() {
-  const result = await loadServerApiSection(() => getWorkshopOrders());
+  const result = await loadServerApiSection(async () => {
+    const [rows, summary] = await Promise.all([getWorkshopOrders(), getWorkshopSummary()]);
+    return { rows, summary };
+  });
   if (!result.ok) {
     return <WorkshopPage rows={[]} isError errorKind={result.error.kind} chrome="body" />;
   }
-  return <WorkshopPage rows={result.data} chrome="body" />;
+  return (
+    <WorkshopPage rows={result.data.rows} summary={result.data.summary} chrome="body" />
+  );
 }
 
 export default async function Page({ params }: IPageProps) {

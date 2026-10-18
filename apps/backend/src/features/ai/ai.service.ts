@@ -6,7 +6,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { IAiCapabilities, IAiInsightRow, IAiSummarizeResult } from '@zarva/shared';
+import type {
+  IAiCapabilities,
+  IAiInsightRow,
+  IAiSummary,
+  IAiSummarizeResult,
+} from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
@@ -21,6 +26,17 @@ export class AiService {
     private readonly config: ConfigService,
     private readonly domainNotifications: DomainNotificationPublisher,
   ) {}
+
+  async summary(user: IAuthUser): Promise<IAiSummary> {
+    this.assertRead(user);
+    const where = { organizationId: user.organizationId, dismissedAt: null };
+    const [insights, critical, warnings] = await Promise.all([
+      this.prisma.aiInsight.count({ where }),
+      this.prisma.aiInsight.count({ where: { ...where, severity: 'critical' } }),
+      this.prisma.aiInsight.count({ where: { ...where, severity: 'warning' } }),
+    ]);
+    return { insights, critical, warnings };
+  }
 
   async listInsights(user: IAuthUser): Promise<IAiInsightRow[]> {
     this.assertRead(user);

@@ -1,6 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 
-import { getPurchaseReturns } from '@/features/purchases/get-purchases-data';
+import {
+  getPurchaseReturns,
+  getPurchases,
+} from '@/features/purchases/get-purchases-data';
 import { PurchasesReturnsPage } from '@/features/purchases/purchases-returns-page';
 import {
   PURCHASES_RETURNS_KPI_SLOTS,
@@ -10,11 +13,35 @@ import { loadServerApiSection } from '@/lib/auth/load-server-api-section';
 import { StreamedDomainChrome } from '@/lib/lists/streamed-domain-chrome';
 
 async function PurchasesReturnsLoaded() {
-  const result = await loadServerApiSection(() => getPurchaseReturns());
+  const result = await loadServerApiSection(async () => {
+    const [rows, purchases] = await Promise.all([
+      getPurchaseReturns(),
+      getPurchases(),
+    ]);
+    return { rows, purchases };
+  });
   if (!result.ok) {
-    return <PurchasesReturnsPage rows={[]} chrome="body" isError errorKind={result.error.kind} />;
+    return (
+      <PurchasesReturnsPage
+        rows={[]}
+        purchases={[]}
+        chrome="body"
+        isError
+        errorKind={result.error.kind}
+      />
+    );
   }
-  return <PurchasesReturnsPage rows={result.data} chrome="body" />;
+  return (
+    <PurchasesReturnsPage
+      rows={result.data.rows}
+      purchases={result.data.purchases.map((p) => ({
+        id: p.id,
+        number: p.number,
+        goldWeight: p.goldWeight,
+      }))}
+      chrome="body"
+    />
+  );
 }
 
 export async function PurchasesReturnsSection() {

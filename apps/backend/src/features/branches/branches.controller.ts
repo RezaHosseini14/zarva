@@ -29,6 +29,13 @@ export class BranchesController {
     await this.billing.assertModule(user.organizationId, 'branches');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Branch location KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.branches.summary(user);
+  }
+
   @Get()
   @ApiOperation({ summary: 'List branches' })
   async list(@CurrentUser() user: IAuthUser) {

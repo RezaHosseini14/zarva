@@ -15,17 +15,23 @@ export interface ITaxAuthoritySubmitResult {
 export class TaxAuthorityAdapter {
   constructor(private readonly config: ConfigService) {}
 
-  async submit(input: ITaxAuthoritySubmitInput): Promise<ITaxAuthoritySubmitResult> {
+  isLiveConfigured(): boolean {
     const mode = this.config.get<string>('TAX_AUTHORITY_ADAPTER') ?? 'mock';
-    if (mode !== 'live') {
+    const apiKey = this.config.get<string>('TAX_AUTHORITY_API_KEY') ?? '';
+    return mode === 'live' && apiKey.trim().length > 0;
+  }
+
+  async submit(input: ITaxAuthoritySubmitInput): Promise<ITaxAuthoritySubmitResult> {
+    if (!this.isLiveConfigured()) {
       throw new HttpException(
-        'Tax authority submission is not available in this environment',
-        HttpStatus.NOT_IMPLEMENTED,
+        'Tax authority adapter is not configured. Set TAX_AUTHORITY_ADAPTER=live and TAX_AUTHORITY_API_KEY.',
+        HttpStatus.SERVICE_UNAVAILABLE,
       );
     }
-    return {
-      reference: `TAX-${input.filingId.slice(0, 8)}`,
-      submittedAt: new Date().toISOString(),
-    };
+    // Live protocol integration is infrastructure work; refuse fabricated receipts.
+    throw new HttpException(
+      'Tax authority live protocol is not implemented for this deployment',
+      HttpStatus.SERVICE_UNAVAILABLE,
+    );
   }
 }

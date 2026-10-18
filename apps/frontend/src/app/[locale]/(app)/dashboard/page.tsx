@@ -9,10 +9,24 @@ import {
   DashboardLiveRatesSkeleton,
   DashboardOverviewSkeleton,
 } from '@/features/dashboard/dashboard-skeletons';
+import { getDashboardInsights } from '@/features/dashboard/get-dashboard-overview';
 import { AppShell } from '@/features/shell/app-shell';
+import { loadServerApiSection } from '@/lib/auth/load-server-api-section';
 
 interface IDashboardPageProps {
   readonly params: Promise<{ locale: string }>;
+}
+
+async function DashboardAiSlot({
+  title,
+  emptyBody,
+}: {
+  readonly title: string;
+  readonly emptyBody: string;
+}) {
+  const result = await loadServerApiSection(() => getDashboardInsights());
+  const insights = result.ok ? result.data : [];
+  return <AiPanel title={title} insights={insights} emptyBody={emptyBody} />;
 }
 
 export default async function DashboardPage({ params }: IDashboardPageProps) {
@@ -21,8 +35,8 @@ export default async function DashboardPage({ params }: IDashboardPageProps) {
   const t = await getTranslations('dashboard');
   const { copy, liveRateTitles, liveRateHints } = await getDashboardSkeletonCopy();
   const aiTitle = t('aiTitle');
-  const aiBody = t('aiBody');
-  const aiSlot = <AiPanel title={aiTitle} body={aiBody} />;
+  const emptyBody = t('aiBody');
+  const aiSlot = <DashboardAiSlot title={aiTitle} emptyBody={emptyBody} />;
 
   return (
     <AppShell title={t('title')}>

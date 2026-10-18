@@ -24,6 +24,13 @@ export class WorkshopController {
     await this.billing.assertModule(user.organizationId, 'workshop');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Workshop KPI counts' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.workshop.summary(user);
+  }
+
   @Get('orders')
   @ApiOperation({ summary: 'List workshop orders' })
   async orders(@CurrentUser() user: IAuthUser) {

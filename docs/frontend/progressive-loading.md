@@ -23,8 +23,10 @@ Boundaries follow **data dependencies**, not how many cards sit on screen.
 ## Target shape
 
 ```text
-AppShellFrame          ← layout — do not touch / do not skeleton
+AppShellFrame          ← layout — do not skeleton the whole chrome
 ├── Sidebar
+│   ├── Brand / UserMenu           → immediate
+│   └── Nav list                   → Suspense + SidebarNavSkeleton (API /navigation)
 ├── Header
 └── main
     └── Page
@@ -33,6 +35,8 @@ AppShellFrame          ← layout — do not touch / do not skeleton
         ├── Suspense B             → Skeleton B | async section B (fetch B)
         └── …
 ```
+
+Exception: only the **sidebar nav link list** may Suspense-load (permission-filtered from the API). Do not skeleton the entire `AppShellFrame`, header, or brand block.
 
 ---
 

@@ -131,6 +131,16 @@ export class AuthController {
     return { user: await this.authService.me(user.id) };
   }
 
+  @Get('sessions/pulse')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Cheap session liveness probe (JWT family check only)',
+  })
+  pulse(): { ok: true } {
+    // JwtStrategy already asserted family liveness (cached).
+    return { ok: true };
+  }
+
   @Get('sessions')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'List active sessions for current user' })

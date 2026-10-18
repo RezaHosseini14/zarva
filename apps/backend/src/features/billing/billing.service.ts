@@ -39,6 +39,16 @@ export class BillingService {
     this.stripe = key ? new Stripe(key) : null;
   }
 
+  /** Effective checkout provider for UI labeling (mock vs live Stripe). */
+  getCheckoutProviderLabel(): 'stripe' | 'mock' {
+    const name = this.config.get<string>('BILLING_PROVIDER') ?? 'mock';
+    const key = this.config.get<string>('STRIPE_SECRET_KEY') ?? '';
+    if (name === 'stripe' && key.trim().length > 0) {
+      return 'stripe';
+    }
+    return 'mock';
+  }
+
   async listPlans() {
     return this.prisma.plan.findMany({
       where: { isActive: true },
@@ -99,6 +109,16 @@ export class BillingService {
   }
 
   async createCheckout(user: IAuthUser, priceId: string, successUrl: string, cancelUrl: string) {
+    const providerName = this.config.get<string>('BILLING_PROVIDER') ?? 'mock';
+    if (process.env.NODE_ENV === 'production') {
+      const stripeKey = this.config.get<string>('STRIPE_SECRET_KEY') ?? '';
+      if (providerName !== 'stripe' || !stripeKey.trim()) {
+        throw new BadRequestException(
+          'Production billing requires BILLING_PROVIDER=stripe and STRIPE_SECRET_KEY',
+        );
+      }
+    }
+
     const price = await this.prisma.planPrice.findFirst({
       where: { OR: [{ id: priceId }, { stripePriceId: priceId }] },
       include: { plan: true },

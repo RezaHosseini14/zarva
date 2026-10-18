@@ -1617,4 +1617,9 @@ a.zarva-breadcrumb__home:active {
   html {
     @apply font-sans;
   }
+  /* Tailwind v4 preflight uses cursor: default on buttons — restore pointer for clickable controls */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
 }

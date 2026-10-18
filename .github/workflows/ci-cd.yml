@@ -1,0 +1,585 @@
+name: zarva CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: zarva-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  REMOTE_DIR: /opt/zarva
+  SSH_FLAGS: >-
+    -o ConnectTimeout=20
+    -o ServerAliveInterval=15
+    -o ServerAliveCountMax=20
+    -o TCPKeepAlive=yes
+    -o StrictHostKeyChecking=accept-new
+
+jobs:
+  validate:
+    name: Quality Gate (Build, Lint & Test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint --if-present
+
+      - name: Run Tests
+        run: npm run test --if-present
+
+      - name: Run Build
+        run: npm run build
+
+  build-backend:
+    name: Docker Backend (Build & GHCR Push)
+    needs: [validate]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    outputs:
+      image_ref: ${{ steps.meta.outputs.ref }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: image=mirror.gcr.io/moby/buildkit:buildx-stable-1
+          buildkitd-config-inline: |
+            [registry."docker.io"]
+              mirrors = ["mirror.gcr.io"]
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image coordinates
+        id: meta
+        run: |
+          OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
+          IMAGE="${{ env.REGISTRY }}/${OWNER}/zarva-backend"
+          TAG="${{ github.sha }}"
+          {
+            echo "image=${IMAGE}"
+            echo "tag=${TAG}"
+            echo "ref=${IMAGE}:${TAG}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build & Push Backend Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.backend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.ref }}
+            ${{ steps.meta.outputs.image }}:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+  build-frontend:
+    name: Docker Frontend (Build & GHCR Push)
+    needs: [validate]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    outputs:
+      image_ref: ${{ steps.meta.outputs.ref }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: image=mirror.gcr.io/moby/buildkit:buildx-stable-1
+          buildkitd-config-inline: |
+            [registry."docker.io"]
+              mirrors = ["mirror.gcr.io"]
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image coordinates
+        id: meta
+        run: |
+          OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
+          IMAGE="${{ env.REGISTRY }}/${OWNER}/zarva-frontend"
+          TAG="${{ github.sha }}"
+          {
+            echo "image=${IMAGE}"
+            echo "tag=${TAG}"
+            echo "ref=${IMAGE}:${TAG}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build & Push Frontend Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.frontend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.ref }}
+            ${{ steps.meta.outputs.image }}:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://5.159.49.36:5032/api/v1
+            NEXT_PUBLIC_APP_URL=https://5.159.49.36:5032
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+  preflight:
+    name: Deployment Preflight
+    needs: [build-backend, build-frontend]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    outputs:
+      deploy_enabled: ${{ steps.check.outputs.deploy_enabled }}
+
+    steps:
+      - name: Detect deployment credentials
+        id: check
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          if [ -n "${SSH_PRIVATE_KEY}" ]; then
+            echo "deploy_enabled=true" >> "$GITHUB_OUTPUT"
+            echo "Deployment credentials detected."
+          else
+            echo "deploy_enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::SSH_PRIVATE_KEY is not configured. Skipping production deployment."
+          fi
+
+  deploy:
+    name: Deploy to Production VPS
+    needs: [build-backend, build-frontend, preflight]
+    if: github.event_name != 'pull_request' && needs.preflight.outputs.deploy_enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST || '5.159.49.36' }}
+      SSH_USER: ${{ secrets.SSH_USER || 'root' }}
+      TLS_HOST: ${{ secrets.SSH_HOST || '5.159.49.36' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          test -n "$SSH_HOST" || { echo "::error::Missing SSH_HOST"; exit 1; }
+          test -n "$SSH_USER" || { echo "::error::Missing SSH_USER"; exit 1; }
+          test -n "$SSH_PRIVATE_KEY" || { echo "::error::Missing secret SSH_PRIVATE_KEY"; exit 1; }
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          cat <<'EOF' > ~/.ssh/config
+          Host *
+            ServerAliveInterval 15
+            ServerAliveCountMax 20
+            TCPKeepAlive yes
+            ConnectTimeout 30
+            StrictHostKeyChecking accept-new
+          EOF
+          ssh-keyscan -H -T 20 "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || {
+            echo "WARN: ssh-keyscan failed; host key will be verified via accept-new"
+          }
+          chmod 600 ~/.ssh/known_hosts ~/.ssh/config 2>/dev/null || true
+
+      - name: Sync compose + nginx config to server
+        run: |
+          set -euo pipefail
+
+          retry() {
+            local attempt=1
+            local max=5
+            until "$@"; do
+              if [ "$attempt" -ge "$max" ]; then
+                echo "::error::Command failed after ${max} attempts: $*"
+                return 1
+              fi
+              echo "Attempt ${attempt} failed. Retrying in $((attempt * 5))s..."
+              sleep $((attempt * 5))
+              attempt=$((attempt + 1))
+            done
+          }
+
+          # shellcheck disable=SC2086
+          retry ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "mkdir -p $REMOTE_DIR/docker $REMOTE_DIR/data $REMOTE_DIR/docker/certs && chown -R 1001:1001 $REMOTE_DIR/data 2>/dev/null || true"
+          # shellcheck disable=SC2086
+          retry scp $SSH_FLAGS docker-compose.prod.yml "$SSH_USER@$SSH_HOST:$REMOTE_DIR/docker-compose.yml"
+          # shellcheck disable=SC2086
+          retry scp $SSH_FLAGS docker/nginx.conf "$SSH_USER@$SSH_HOST:$REMOTE_DIR/docker/nginx.conf"
+          # shellcheck disable=SC2086
+          retry ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "test -f $REMOTE_DIR/config.json || printf '{}\n' > $REMOTE_DIR/config.json"
+
+      - name: Pull images & rolling restart on server
+        env:
+          BACKEND_IMAGE: ${{ needs.build-backend.outputs.image_ref }}
+          FRONTEND_IMAGE: ${{ needs.build-frontend.outputs.image_ref }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          run_remote_deploy() {
+            # shellcheck disable=SC2086
+            ssh $SSH_FLAGS \
+              "$SSH_USER@$SSH_HOST" \
+              BACKEND_IMAGE="$BACKEND_IMAGE" FRONTEND_IMAGE="$FRONTEND_IMAGE" \
+              GHCR_USER="$GHCR_USER" GHCR_TOKEN="$GHCR_TOKEN" REMOTE_DIR="$REMOTE_DIR" \
+              TLS_HOST="$TLS_HOST" \
+              bash -s <<'EOF'
+          set -euo pipefail
+          cd "$REMOTE_DIR"
+          unset COMPOSE_FILE COMPOSE_PATH || true
+          export COMPOSE_PROJECT_NAME=zarva
+
+          echo "--> Deploy host: $(hostname) pwd=$(pwd)"
+          echo "--> Compose ports (must include 5030/5031/5032):"
+          grep -nE 'ports:|5030|5031|5032' docker-compose.yml || true
+
+          if [ -n "${GHCR_TOKEN}" ]; then
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          fi
+
+          touch .env
+          if grep -q '^BACKEND_IMAGE=' .env; then
+            sed -i "s|^BACKEND_IMAGE=.*|BACKEND_IMAGE=${BACKEND_IMAGE}|" .env
+          else
+            echo "BACKEND_IMAGE=${BACKEND_IMAGE}" >> .env
+          fi
+
+          if grep -q '^FRONTEND_IMAGE=' .env; then
+            sed -i "s|^FRONTEND_IMAGE=.*|FRONTEND_IMAGE=${FRONTEND_IMAGE}|" .env
+          else
+            echo "FRONTEND_IMAGE=${FRONTEND_IMAGE}" >> .env
+          fi
+
+          for kv in BACKEND_PORT=5030 FRONTEND_PORT=5031 NGINX_PORT=5032; do
+            key=${kv%%=*}; val=${kv#*=}
+            if grep -q "^${key}=" .env; then
+              sed -i "s|^${key}=.*|${key}=${val}|" .env
+            else
+              echo "${key}=${val}" >> .env
+            fi
+          done
+
+          if [ -z "${BACKEND_IMAGE}" ] || [ -z "${FRONTEND_IMAGE}" ]; then
+            echo "::error::Build jobs did not pass backend/frontend image refs"
+            exit 1
+          fi
+          echo "--> Target images: backend=${BACKEND_IMAGE} frontend=${FRONTEND_IMAGE}"
+          echo "--> .env image pins:"
+          grep -E '^(BACKEND_IMAGE|FRONTEND_IMAGE)=' .env
+
+          if ! grep -q '^POSTGRES_PASSWORD=' .env; then
+            echo "POSTGRES_PASSWORD=$(openssl rand -hex 24)" >> .env
+          fi
+          if ! grep -q '^REDIS_PASSWORD=' .env; then
+            echo "REDIS_PASSWORD=$(openssl rand -hex 24)" >> .env
+          fi
+          if ! grep -q '^JWT_SECRET=.\+' .env; then
+            sed -i '/^JWT_SECRET=/d' .env || true
+            echo "JWT_SECRET=$(openssl rand -base64 48)" >> .env
+          fi
+          if ! grep -q '^JWT_REFRESH_SECRET=.\+' .env; then
+            sed -i '/^JWT_REFRESH_SECRET=/d' .env || true
+            echo "JWT_REFRESH_SECRET=$(openssl rand -base64 48)" >> .env
+          fi
+          if ! grep -q '^MINIO_ACCESS_KEY=' .env; then
+            echo "MINIO_ACCESS_KEY=zarva" >> .env
+          fi
+          if ! grep -q '^MINIO_SECRET_KEY=.\+' .env; then
+            sed -i '/^MINIO_SECRET_KEY=/d' .env || true
+            echo "MINIO_SECRET_KEY=$(openssl rand -hex 24)" >> .env
+          fi
+          if ! grep -q '^NEXT_PUBLIC_API_URL=' .env; then
+            echo "NEXT_PUBLIC_API_URL=https://${TLS_HOST:-5.159.49.36}:5032/api/v1" >> .env
+          fi
+          if ! grep -q '^NEXT_PUBLIC_APP_URL=' .env; then
+            echo "NEXT_PUBLIC_APP_URL=https://${TLS_HOST:-5.159.49.36}:5032" >> .env
+          fi
+
+          sed -i '/^API_IMAGE=/d;/^WEB_IMAGE=/d' .env || true
+
+          docker rm -f zarva-api zarva-web 2>/dev/null || true
+
+          mkdir -p docker/certs
+          if [ ! -s docker/certs/server.crt ] || [ ! -s docker/certs/server.key ]; then
+            echo "--> Creating the self-signed TLS certificate on the host..."
+            openssl req -x509 -nodes -days 825 -newkey rsa:2048 \
+              -keyout docker/certs/server.key \
+              -out docker/certs/server.crt \
+              -subj "/CN=${TLS_HOST:-5.159.49.36}" \
+              -addext "subjectAltName=IP:${TLS_HOST:-5.159.49.36}"
+          fi
+
+          echo "--> Pulling latest container images..."
+          pulled=0
+          for attempt in 1 2 3 4 5; do
+            if docker compose -f docker-compose.yml pull backend frontend; then
+              pulled=1
+              break
+            fi
+            echo "compose pull failed (attempt ${attempt}), retrying..."
+            sleep $((attempt * 4))
+          done
+          if [ "$pulled" != 1 ]; then
+            echo "::error::docker compose pull failed after 5 attempts"
+            exit 1
+          fi
+
+          echo "--> Starting Postgres, Redis, and MinIO..."
+          if ! docker compose -f docker-compose.yml up -d postgres redis minio --wait --wait-timeout 90; then
+            echo "::error::Data layer failed to become healthy"
+            docker compose -f docker-compose.yml ps || true
+            docker logs zarva-postgres --tail 50 || true
+            docker logs zarva-redis --tail 50 || true
+            exit 1
+          fi
+
+          echo "--> Executing database migrations..."
+          if ! docker compose -f docker-compose.yml run --rm --no-deps backend \
+            npx prisma migrate deploy --schema=apps/backend/prisma/schema.prisma; then
+            echo "::error::Database migrations failed! Halting deployment to protect uptime."
+            exit 1
+          fi
+
+          up_one() {
+            local service="$1"
+            local timeout="$2"
+            echo "--> Starting ${service}..."
+            if docker compose -f docker-compose.yml up -d --force-recreate --wait --wait-timeout "$timeout" "$service"; then
+              return 0
+            fi
+            echo "--> ${service} failed; removing stale container_name and retrying once..."
+            docker rm -f "zarva-${service}" 2>/dev/null || true
+            docker compose -f docker-compose.yml up -d --force-recreate --wait --wait-timeout "$timeout" "$service"
+          }
+
+          echo "--> Recreating app tier one service at a time (DB left running)..."
+          if ! up_one backend 180; then
+            echo "::error::backend failed to become healthy"
+            docker logs zarva-backend --tail 120 || true
+            exit 1
+          fi
+          if ! up_one frontend 180; then
+            echo "::error::frontend failed to become healthy"
+            docker logs zarva-frontend --tail 120 || true
+            exit 1
+          fi
+          if ! up_one nginx 120; then
+            echo "::error::nginx failed to become healthy"
+            docker logs zarva-nginx --tail 120 || true
+            exit 1
+          fi
+
+          echo "--> Asserting app containers exist and are running..."
+          for c in zarva-backend zarva-frontend zarva-nginx; do
+            if ! docker ps --format '{{.Names}}' | grep -qx "$c"; then
+              echo "::error::Expected running container missing: $c"
+              docker ps -a --filter name=zarva || true
+              exit 1
+            fi
+          done
+
+          echo "--> Verifying the running containers use the freshly built images..."
+          EXPECTED_BACKEND_ID=$(docker image inspect --format '{{.Id}}' "$BACKEND_IMAGE" 2>/dev/null || echo '')
+          EXPECTED_FRONTEND_ID=$(docker image inspect --format '{{.Id}}' "$FRONTEND_IMAGE" 2>/dev/null || echo '')
+          RUNNING_BACKEND_ID=$(docker inspect --format '{{.Image}}' zarva-backend 2>/dev/null || echo '')
+          RUNNING_FRONTEND_ID=$(docker inspect --format '{{.Image}}' zarva-frontend 2>/dev/null || echo '')
+          echo "    backend:  running=${RUNNING_BACKEND_ID} expected=${EXPECTED_BACKEND_ID} (${BACKEND_IMAGE})"
+          echo "    frontend: running=${RUNNING_FRONTEND_ID} expected=${EXPECTED_FRONTEND_ID} (${FRONTEND_IMAGE})"
+          if [ -z "$RUNNING_BACKEND_ID" ] || [ "$RUNNING_BACKEND_ID" != "$EXPECTED_BACKEND_ID" ] \
+            || [ -z "$RUNNING_FRONTEND_ID" ] || [ "$RUNNING_FRONTEND_ID" != "$EXPECTED_FRONTEND_ID" ]; then
+            echo "::error::Running containers are not on the built images; the deployment did not take effect"
+            docker ps --filter name=zarva || true
+            exit 1
+          fi
+
+          echo "--> Verifying published host ports (backend:5030 frontend:5031 nginx:5032)..."
+          docker ps --filter name=zarva --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+          BACKEND_PORTS=$(docker port zarva-backend 3000/tcp 2>/dev/null || true)
+          FRONTEND_PORTS=$(docker port zarva-frontend 3000/tcp 2>/dev/null || true)
+          NGINX_PORTS=$(docker port zarva-nginx 443/tcp 2>/dev/null || true)
+          echo "    backend 3000/tcp -> ${BACKEND_PORTS}"
+          echo "    frontend 3000/tcp -> ${FRONTEND_PORTS}"
+          echo "    nginx 443/tcp -> ${NGINX_PORTS}"
+          echo "$BACKEND_PORTS" | grep -qE '(:|::)5030$' || {
+            echo "::error::backend is not published on host port 5030 (got: ${BACKEND_PORTS})"
+            exit 1
+          }
+          echo "$FRONTEND_PORTS" | grep -qE '(:|::)5031$' || {
+            echo "::error::frontend is not published on host port 5031 (got: ${FRONTEND_PORTS})"
+            exit 1
+          }
+          echo "$NGINX_PORTS" | grep -qE '(:|::)5032$' || {
+            echo "::error::nginx is not published on host port 5032 (got: ${NGINX_PORTS})"
+            exit 1
+          }
+
+          echo "--> Local health probe via nginx on the VPS..."
+          if ! docker exec zarva-nginx wget -qO- http://127.0.0.1/api/v1/health; then
+            echo "::error::nginx local /api/v1/health failed after recreate"
+            docker logs zarva-backend --tail 80 || true
+            docker logs zarva-frontend --tail 80 || true
+            docker logs zarva-nginx --tail 80 || true
+            exit 1
+          fi
+          echo ""
+
+          echo "--> Reloading nginx so the mounted config is applied..."
+          reloaded=0
+          for attempt in $(seq 1 20); do
+            if docker exec zarva-nginx nginx -s reload; then
+              reloaded=1
+              break
+            fi
+            sleep 2
+          done
+          if [ "$reloaded" != 1 ]; then
+            echo "::error::nginx did not accept reload"
+            docker logs zarva-nginx --tail 80 || true
+            exit 1
+          fi
+
+          echo "--> Cleaning up unused dangling images..."
+          docker image prune -f || true
+          EOF
+          }
+
+          attempt=1
+          max=3
+          until run_remote_deploy; do
+            if [ "$attempt" -ge "$max" ]; then
+              echo "::error::Remote rollout failed after ${max} attempts"
+              exit 1
+            fi
+            echo "Remote rollout attempt ${attempt} failed. Retrying in $((attempt * 10))s..."
+            sleep $((attempt * 10))
+            attempt=$((attempt + 1))
+          done
+
+      - name: Production Health Check Verification
+        run: |
+          set -uo pipefail
+
+          echo "--> Confirming app containers exist on the VPS..."
+          # shellcheck disable=SC2086
+          ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" bash -s <<'REMOTE'
+          set -euo pipefail
+          missing=0
+          for c in zarva-backend zarva-frontend zarva-nginx; do
+            if docker ps --format '{{.Names}}' | grep -qx "$c"; then
+              echo "OK running: $c"
+            else
+              echo "::error::Missing running container: $c"
+              missing=1
+            fi
+          done
+          echo "=== docker ps (zarva) ==="
+          docker ps -a --filter name=zarva --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}'
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::App containers are not running — the rolling restart step did not leave a live stack"
+            exit 1
+          fi
+          REMOTE
+
+          echo "Verifying stack at https://${SSH_HOST}:5032 (nginx → frontend + /api/v1/health)..."
+          STACK_UP=false
+          for i in $(seq 1 40); do
+            if curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:5032/api/v1/health" >/dev/null \
+              && curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:5032" >/dev/null; then
+              STACK_UP=true
+              echo "Frontend + Backend (via nginx) healthy on attempt $i"
+              curl -kfsS "https://${SSH_HOST}:5032/api/v1/health"
+              echo ""
+              break
+            fi
+            echo "Waiting for :5032... ($i/40)"
+            sleep 3
+          done
+
+          if [ "$STACK_UP" = false ]; then
+            echo "::error::Deployment health check failed (port 5032 unreachable from GitHub runner)"
+            echo "=== Container status (via SSH, best effort) ==="
+            # shellcheck disable=SC2086
+            ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker ps -a --filter name=zarva" || true
+            # shellcheck disable=SC2086
+            ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker logs zarva-frontend --tail 60" || true
+            # shellcheck disable=SC2086
+            ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker logs zarva-backend --tail 60" || true
+            # shellcheck disable=SC2086
+            ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker logs zarva-nginx --tail 60" || true
+            exit 1
+          fi
+
+          echo "All services deployed and verified successfully!"
+
+      - name: Publish Deployment Summary
+        if: always()
+        run: |
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## zarva Production Deployment Report
+
+          | Component | Status | URL |
+          |---|---|---|
+          | **Gateway** | Live | [https://${{ env.SSH_HOST }}:5032](https://${{ env.SSH_HOST }}:5032) |
+          | **Health Check** | Healthy | [https://${{ env.SSH_HOST }}:5032/api/v1/health](https://${{ env.SSH_HOST }}:5032/api/v1/health) |
+          | **Swagger** | Ready | [https://${{ env.SSH_HOST }}:5032/api/docs](https://${{ env.SSH_HOST }}:5032/api/docs) |
+
+          - **Git SHA**: \`${{ github.sha }}\`
+          - **Triggered By**: @${{ github.actor }}
+          - **Target VPS**: \`${{ env.SSH_HOST }}\` (\`/opt/zarva\`)
+          - **Gateway**: nginx on \`:5032\` → backend \`/api\`+\`/socket.io\`, frontend \`/\`
+          - **Direct ports**: backend \`:5030\`, frontend \`:5031\`
+          - **Backend Image**: \`${{ needs.build-backend.outputs.image_ref }}\`
+          - **Frontend Image**: \`${{ needs.build-frontend.outputs.image_ref }}\`
+          EOF

@@ -41,6 +41,8 @@ model Organization {
   goldLots     GoldLot[]
   goldBalances GoldBalance[]
   goldOrgRates GoldOrgRate[]
+  goldRateCorrections GoldRateCorrection[]
+  dayCloses    DayClose[]
   workshopOrders WorkshopOrder[]
   artisans     Artisan[]
   productionBatches ProductionBatch[]
@@ -184,11 +186,17 @@ enum SalePaymentStatus {
   paid
 }
 
+enum SaleDocumentKind {
+  sale
+  buyback
+}
+
 model SaleInvoice {
   id               String            @id @default(uuid())
   organizationId   String
   customerId       String
   number           String
+  documentKind     SaleDocumentKind  @default(sale)
   status           SaleInvoiceStatus @default(draft)
   paymentStatus    SalePaymentStatus @default(unpaid)
   goldWeightGrams  Decimal           @db.Decimal(12, 3)
@@ -202,6 +210,8 @@ model SaleInvoice {
   shopPhone        String            @default("")
   shopGuildId      String            @default("")
   totalsJson       Json?
+  ledgerPostedAt   DateTime?
+  clientRequestId  String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -211,8 +221,10 @@ model SaleInvoice {
   returns          SaleReturn[]
 
   @@unique([organizationId, number])
+  @@unique([organizationId, clientRequestId])
   @@index([organizationId])
   @@index([customerId])
+  @@index([organizationId, documentKind, status])
 }
 
 model SalePayment {
@@ -222,6 +234,7 @@ model SalePayment {
   ref            String
   method         String
   amountLabel    String
+  amountIrt      Decimal      @default(0) @db.Decimal(18, 0)
   displayDate    String
   createdAt      DateTime     @default(now())
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -248,19 +261,28 @@ model SaleReturn {
 }
 
 model SaleInvoiceLine {
-  id          String      @id @default(uuid())
-  invoiceId   String
-  sortOrder   Int         @default(0)
-  description String
-  weight      String
-  purity      String
-  dailyRate   String
-  goldValue   String
-  wage        String
-  profit      String
-  tax         String
-  lineTotal   String
-  invoice     SaleInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  id           String      @id @default(uuid())
+  invoiceId    String
+  sortOrder    Int         @default(0)
+  description  String
+  weight       String
+  purity       String
+  dailyRate    String
+  goldValue    String
+  wage         String
+  profit       String
+  tax          String
+  lineTotal    String
+  weightGrams  Decimal     @default(0) @db.Decimal(12, 3)
+  purityKarat  Decimal     @default(18) @db.Decimal(5, 2)
+  rateIrt      Decimal     @default(0) @db.Decimal(18, 0)
+  goldValueIrt Decimal     @default(0) @db.Decimal(18, 0)
+  wageIrt      Decimal     @default(0) @db.Decimal(18, 0)
+  profitIrt    Decimal     @default(0) @db.Decimal(18, 0)
+  taxIrt       Decimal     @default(0) @db.Decimal(18, 0)
+  discountIrt  Decimal     @default(0) @db.Decimal(18, 0)
+  lineTotalIrt Decimal     @default(0) @db.Decimal(18, 0)
+  invoice      SaleInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 
   @@index([invoiceId])
 }
@@ -279,7 +301,11 @@ model Purchase {
   displayDate     String                @default("")
   goldWeightGrams Decimal               @db.Decimal(12, 3)
   amountLabel     String
+  amountIrt       Decimal               @default(0) @db.Decimal(18, 0)
+  purityKarat     Decimal               @default(18) @db.Decimal(5, 2)
+  rateIrt         Decimal               @default(0) @db.Decimal(18, 0)
   paymentStatus   PurchasePaymentStatus @default(unpaid)
+  ledgerPostedAt  DateTime?
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
   organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -299,6 +325,8 @@ model PurchaseLine {
   weight      String   @default("")
   purity      String   @default("")
   amountLabel String
+  weightGrams Decimal  @default(0) @db.Decimal(12, 3)
+  purityKarat Decimal  @default(18) @db.Decimal(5, 2)
   purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 
   @@index([purchaseId])
@@ -311,6 +339,8 @@ model PurchaseReturn {
   number         String
   displayDate    String
   amountLabel    String
+  grams          Decimal      @default(0) @db.Decimal(12, 3)
+  purityKarat    Decimal      @default(18) @db.Decimal(5, 2)
   createdAt      DateTime     @default(now())
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   purchase       Purchase     @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
@@ -414,10 +444,20 @@ model GoldTxn {
   fineGold       String
   counterparty   String
   reference      String
+  grams          Decimal      @default(0) @db.Decimal(12, 3)
+  fineGrams      Decimal      @default(0) @db.Decimal(12, 3)
+  purityKarat    Decimal      @default(18) @db.Decimal(5, 2)
+  rateIrt        Decimal      @default(0) @db.Decimal(18, 0)
+  direction      String       @default("in")
+  sourceType     String?
+  sourceId       String?
+  reason         String       @default("")
   createdAt      DateTime     @default(now())
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
+  @@index([organizationId, sourceType, sourceId])
+  @@index([organizationId, createdAt])
 }
 
 model WorkshopOrder {
@@ -801,6 +841,8 @@ model GoldLot {
   code           String
   purityId       String?
   weightLabel    String
+  grams          Decimal      @default(0) @db.Decimal(12, 3)
+  purityKarat    Decimal      @default(18) @db.Decimal(5, 2)
   statusLabel    String       @default("open")
   createdAt      DateTime     @default(now())
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -815,12 +857,16 @@ model GoldBalance {
   organizationId String
   partyName      String
   purityId       String?
+  purityKarat    Decimal      @default(18) @db.Decimal(5, 2)
   weightLabel    String
+  grams          Decimal      @default(0) @db.Decimal(12, 3)
+  fineGrams      Decimal      @default(0) @db.Decimal(12, 3)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   purity         GoldPurity?  @relation(fields: [purityId], references: [id], onDelete: SetNull)
 
+  @@unique([organizationId, partyName, purityKarat])
   @@index([organizationId])
 }
 
@@ -830,10 +876,47 @@ model GoldOrgRate {
   label          String
   buyLabel       String
   sellLabel      String
+  buyRateIrt     Decimal?     @db.Decimal(18, 0)
+  sellRateIrt    Decimal?     @db.Decimal(18, 0)
+  businessDate   DateTime?    @db.Date
+  lockedAt       DateTime?
   sortOrder      Int          @default(0)
   updatedAt      DateTime     @updatedAt
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  @@unique([organizationId, businessDate])
+  @@index([organizationId])
+}
+
+model GoldRateCorrection {
+  id               String       @id @default(uuid())
+  organizationId   String
+  businessDate     DateTime     @db.Date
+  prevBuyRateIrt   Decimal      @db.Decimal(18, 0)
+  prevSellRateIrt  Decimal      @db.Decimal(18, 0)
+  nextBuyRateIrt   Decimal      @db.Decimal(18, 0)
+  nextSellRateIrt  Decimal      @db.Decimal(18, 0)
+  reason           String
+  correctedByUserId String?
+  createdAt        DateTime     @default(now())
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, businessDate])
+}
+
+model DayClose {
+  id             String       @id @default(uuid())
+  organizationId String
+  businessDate   DateTime     @db.Date
+  summaryJson    Json
+  closedAt       DateTime     @default(now())
+  closedByUserId String?
+  reopenedAt     DateTime?
+  reopenReason   String?
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, businessDate])
   @@index([organizationId])
 }
 
@@ -1089,6 +1172,30 @@ model AiInsight {
 
   @@index([organizationId, dismissedAt])
   @@index([organizationId, code])
+}
+
+/** Platform-global sidebar catalog (filtered per user by role/permission/entitlements). */
+model SidebarNavItem {
+  id         String           @id @default(uuid())
+  key        String           @unique
+  parentId   String?
+  parent     SidebarNavItem?  @relation("NavTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children   SidebarNavItem[] @relation("NavTree")
+  href       String
+  labelKey   String
+  icon       String
+  iconActive String
+  group      String
+  subject    String
+  roles      String[]         @default([])
+  moduleKey  String?
+  sortOrder  Int              @default(0)
+  isActive   Boolean          @default(true)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([parentId, sortOrder])
+  @@index([group, sortOrder])
 }
 
 

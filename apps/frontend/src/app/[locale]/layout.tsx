@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
@@ -16,11 +16,14 @@ import { yekanBakh } from '@/lib/fonts';
 import '../globals.css';
 import '../../styles/icon.css';
 
+export const viewport: Viewport = {
+  themeColor: '#C9A227',
+};
+
 export const metadata: Metadata = {
   title: 'ZARVA',
   description: 'Gold Business OS',
   manifest: '/manifest.webmanifest',
-  themeColor: '#C9A227',
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },

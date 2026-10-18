@@ -1,4 +1,9 @@
-import type { IArtisanRow, IProductionBatchRow, IWorkshopOrderRow } from '@zarva/shared';
+import type {
+  IArtisanRow,
+  IProductionBatchRow,
+  IWorkshopOrderRow,
+  IWorkshopSummary,
+} from '@zarva/shared';
 
 import { serverApiFetch } from '@/lib/auth/server-api';
 
@@ -17,4 +22,8 @@ export async function getWorkshopArtisans(): Promise<ReadonlyArray<IArtisanRow>>
 
 export async function getWorkshopProduction(): Promise<ReadonlyArray<IProductionBatchRow>> {
   return fetchWorkshopList<IProductionBatchRow>('/workshop/production');
+}
+
+export async function getWorkshopSummary(): Promise<IWorkshopSummary> {
+  return serverApiFetch('/workshop/summary');
 }

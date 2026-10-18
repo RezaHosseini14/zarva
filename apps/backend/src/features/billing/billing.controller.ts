@@ -58,6 +58,13 @@ export class BillingController {
     return this.billing.getSubscription(user.organizationId);
   }
 
+  @Get('billing/checkout-provider')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Checkout provider mode for UI (stripe vs mock)' })
+  getCheckoutProvider() {
+    return { provider: this.billing.getCheckoutProviderLabel() };
+  }
+
   @Post('billing/checkout')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create checkout session' })

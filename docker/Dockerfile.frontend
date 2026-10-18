@@ -1,0 +1,38 @@
+# SafShekan-style multi-stage (npm workspaces + Next standalone)
+FROM node:22-alpine AS base
+WORKDIR /app
+
+FROM base AS builder
+ARG NEXT_PUBLIC_API_URL=http://localhost:5032/api/v1
+ARG NEXT_PUBLIC_APP_URL=http://localhost:5032
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY package.json package-lock.json .npmrc* ./
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/backend/package.json ./apps/backend/
+COPY packages/shared/package.json ./packages/shared/
+RUN npm ci --ignore-scripts
+
+COPY . .
+RUN npm run build -w @zarva/shared
+RUN npm run build -w @zarva/frontend
+
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/apps/frontend/public ./apps/frontend/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
+
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+CMD ["node", "apps/frontend/server.js"]

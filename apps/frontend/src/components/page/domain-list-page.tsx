@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { AppShell } from '@/features/shell/app-shell';
@@ -75,6 +75,19 @@ export function DomainListPage<T>({
 }: IDomainListPageProps<T>) {
   const t = useTranslations('common');
   const isBody = chrome === 'body';
+  const [search, setSearch] = useState('');
+
+  const filteredRows = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return rows;
+    return rows.filter((row) => {
+      try {
+        return JSON.stringify(row).toLowerCase().includes(q);
+      } catch {
+        return true;
+      }
+    });
+  }, [rows, search]);
 
   const body = (
     <>
@@ -82,13 +95,22 @@ export function DomainListPage<T>({
       <KpiGrid items={kpis} className="mb-4" />
       {extraFilters ? (
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <FilterSearch placeholder={searchPlaceholder} />
+          <FilterSearch
+            placeholder={searchPlaceholder}
+            value={search}
+            onChange={setSearch}
+          />
           {extraFilters}
         </div>
       ) : (
-        <FilterSearch placeholder={searchPlaceholder} className="mb-4" />
+        <FilterSearch
+          placeholder={searchPlaceholder}
+          className="mb-4"
+          value={search}
+          onChange={setSearch}
+        />
       )}
-      {isBody ? null : belowToolbar}
+      {belowToolbar}
       <SectionBoundary>
         {isError ? (
           errorKind || (!errorTitle && !errorDescription) ? (
@@ -104,7 +126,7 @@ export function DomainListPage<T>({
         ) : (
           <DataTable
             columns={columns}
-            rows={rows}
+            rows={filteredRows}
             rowKey={rowKey}
             empty={
               <EmptyState

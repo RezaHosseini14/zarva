@@ -1,6 +1,12 @@
 import type { IconName } from '@/components/ui/icon';
 
-export type ReportCardKey = 'sales' | 'purchases' | 'inventory' | 'gold' | 'profit';
+export type ReportCardKey =
+  | 'sales'
+  | 'purchases'
+  | 'inventory'
+  | 'gold'
+  | 'profit'
+  | 'dayClose';
 
 export interface IReportKindMeta {
   readonly key: ReportCardKey;
@@ -51,6 +57,14 @@ export const REPORT_KINDS: ReadonlyArray<IReportKindMeta> = [
     iconLinear: 'graph-up-linear',
     accent: 'bg-primary/15 text-primary ring-primary/25',
     stripe: 'bg-primary',
+  },
+  {
+    key: 'dayClose',
+    href: '/reports/day-close',
+    icon: 'clipboard-list-bold',
+    iconLinear: 'clipboard-list-linear',
+    accent: 'bg-success/15 text-success ring-success/25',
+    stripe: 'bg-success',
   },
 ];
 

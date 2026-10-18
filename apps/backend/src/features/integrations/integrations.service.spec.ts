@@ -19,7 +19,7 @@ function user(partial: Partial<IAuthUser> & Pick<IAuthUser, 'roleName' | 'permis
 
 describe('IntegrationsService', () => {
   const prisma = {
-    integration: { findMany: jest.fn() },
+    integration: { findMany: jest.fn(), findFirst: jest.fn(), update: jest.fn() },
     orgApiKey: { count: jest.fn() },
   };
   let service: IntegrationsService;
@@ -54,5 +54,43 @@ describe('IntegrationsService', () => {
     await expect(
       service.summary(user({ roleName: 'VIEWER', permissions: [] })),
     ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('test marks scale offline when config empty', async () => {
+    prisma.integration.findFirst.mockResolvedValue({
+      id: 'i1',
+      kind: 'scale',
+      config: {},
+    });
+    prisma.integration.update.mockImplementation((args: { data: Record<string, unknown> }) =>
+      Promise.resolve({
+        id: 'i1',
+        kind: 'scale',
+        code: 'S1',
+        status: String(args.data.status),
+        detail: String(args.data.detail ?? ''),
+      }),
+    );
+    const row = await service.test(user({ roleName: 'ORG_ADMIN', permissions: [] }), 'i1');
+    expect(row.status).toBe('offline');
+  });
+
+  it('test marks device healthy when configured', async () => {
+    prisma.integration.findFirst.mockResolvedValue({
+      id: 'i2',
+      kind: 'device',
+      config: { port: 'COM3' },
+    });
+    prisma.integration.update.mockImplementation((args: { data: Record<string, unknown> }) =>
+      Promise.resolve({
+        id: 'i2',
+        kind: 'device',
+        code: 'D1',
+        status: String(args.data.status),
+        detail: String(args.data.detail ?? ''),
+      }),
+    );
+    const row = await service.test(user({ roleName: 'ORG_ADMIN', permissions: [] }), 'i2');
+    expect(row.status).toBe('healthy');
   });
 });

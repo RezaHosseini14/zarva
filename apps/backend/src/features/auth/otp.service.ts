@@ -30,6 +30,13 @@ export class OtpService {
     phoneRaw: string,
     purpose: OtpPurpose,
   ): Promise<{ readonly ok: true; readonly expiresIn: number }> {
+    if (process.env.NODE_ENV === 'production' && !this.sms.isLiveProvider()) {
+      throw new HttpException(
+        'SMS OTP is not available in production without a real SMS provider',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+
     let phone: string;
     try {
       phone = normalizeIranPhone(phoneRaw);

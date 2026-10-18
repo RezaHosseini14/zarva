@@ -34,6 +34,13 @@ export class JewelryController {
     await this.billing.assertModule(user.organizationId, 'jewelry');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Jewelry stock KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.jewelry.summary(user);
+  }
+
   @Get('pieces')
   @ApiOperation({ summary: 'List jewelry pieces' })
   async listPieces(@CurrentUser() user: IAuthUser) {

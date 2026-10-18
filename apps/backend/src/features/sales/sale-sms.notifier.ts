@@ -23,6 +23,13 @@ export class SaleSmsNotifier {
   ) {}
 
   async notify(event: SaleSmsEvent, payload: ISaleSmsPayload): Promise<void> {
+    if (!this.sms.isLiveProvider()) {
+      this.logger.debug(
+        `Sale customer SMS skipped (no live provider) event=${event} invoice=${payload.invoiceNumber}`,
+      );
+      return;
+    }
+
     const template = this.templateFor(event);
     const token2 =
       event === 'payment_partial'

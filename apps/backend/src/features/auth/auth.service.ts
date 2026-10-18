@@ -428,6 +428,7 @@ export class AuthService {
           where: { familyId: session.familyId },
           data: { revokedAt: new Date() },
         });
+        this.sessions.markFamilyRevoked(session.familyId);
       }
       throw new UnauthorizedException('Invalid refresh token');
     }
@@ -546,6 +547,7 @@ export class AuthService {
         expiresAt,
       },
     });
+    this.sessions.markFamilyLive(created.familyId);
 
     if (!isRefresh) {
       await this.sessions.afterSessionCreated({
@@ -572,7 +574,7 @@ export class AuthService {
     };
     const accessToken = await this.jwt.signAsync(payload, {
       secret: this.config.getOrThrow<string>('JWT_SECRET'),
-      expiresIn: this.config.get('JWT_ACCESS_TTL') ?? '15m',
+      expiresIn: this.config.get('JWT_ACCESS_TTL') ?? '24h',
     });
 
     res.cookie('refresh_token', refreshRaw, {

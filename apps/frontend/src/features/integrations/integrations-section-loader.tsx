@@ -2,7 +2,11 @@ import { getTranslations } from 'next-intl/server';
 import type { IntegrationKind } from '@zarva/shared';
 
 import { SimpleDomainPage } from '@/features/domain/simple-domain-page';
-import { getIntegrations } from '@/features/integrations/get-integrations-data';
+import {
+  getIntegrations,
+  getIntegrationsSummary,
+} from '@/features/integrations/get-integrations-data';
+import { integrationsSummaryToKpiItems } from '@/features/integrations/integrations-summary-mapper';
 import { loadServerApiSection } from '@/lib/auth/load-server-api-section';
 import { ACCENT } from '@/lib/lists/skeleton-kpi';
 import { WrapSimpleDomainLoader } from '@/lib/lists/wrap-simple-domain-loader';
@@ -13,7 +17,13 @@ interface IProps {
 }
 
 async function IntegrationsSectionLoaded({ moduleKey, kind }: IProps) {
-  const result = await loadServerApiSection(() => getIntegrations(kind));
+  const result = await loadServerApiSection(async () => {
+    const [rows, summary] = await Promise.all([
+      getIntegrations(kind),
+      getIntegrationsSummary(),
+    ]);
+    return { rows, summary };
+  });
   if (!result.ok) {
     return (
       <SimpleDomainPage
@@ -25,11 +35,16 @@ async function IntegrationsSectionLoaded({ moduleKey, kind }: IProps) {
       />
     );
   }
+  const hubT = await getTranslations('modules.integrations');
   return (
     <SimpleDomainPage
       moduleKey={moduleKey}
       chrome="body"
-      rows={result.data.map((r) => ({ id: r.id, a: r.a, b: r.b, c: r.c }))}
+      rows={result.data.rows.map((r) => ({ id: r.id, a: r.a, b: r.b, c: r.c }))}
+      kpiItems={integrationsSummaryToKpiItems(result.data.summary, {
+        connectedLabel: hubT('kpi.a'),
+        pendingLabel: hubT('kpi.b'),
+      })}
     />
   );
 }

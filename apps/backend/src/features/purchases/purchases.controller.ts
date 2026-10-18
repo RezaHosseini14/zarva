@@ -20,6 +20,13 @@ export class PurchasesController {
     await this.billing.assertModule(user.organizationId, 'purchases');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Purchases list KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.purchases.summary(user);
+  }
+
   @Get()
   @ApiOperation({ summary: 'List purchases' })
   async list(@CurrentUser() user: IAuthUser) {

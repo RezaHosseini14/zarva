@@ -61,7 +61,8 @@
     "audit": "ممیزی",
     "search": "جستجو",
     "platformOrgs": "سازمان‌ها",
-    "platformSessions": "نشست‌ها"
+    "platformSessions": "نشست‌ها",
+    "platformNavigation": "منوی سایدبار"
   },
   "auth": {
     "login": "ورود",
@@ -173,7 +174,8 @@
       "salesToday": "فروش امروز",
       "goldStock": "موجودی طلا",
       "customers": "مشتریان",
-      "margin": "حاشیه سود"
+      "margin": "حاشیه سود",
+      "cashInToday": "نقد ورودی امروز"
     },
     "liveRates": {
       "title": "نرخ لحظه‌ای",
@@ -216,7 +218,8 @@
     "activityItems": {
       "saleCompleted": "فروش ثبت شد",
       "purchaseReceived": "خرید دریافت شد",
-      "stockAdjust": "تعدیل موجودی"
+      "stockAdjust": "تعدیل موجودی",
+      "buybackCompleted": "خرید طلای کهنه ثبت شد"
     }
   },
   "pricing": {
@@ -241,6 +244,7 @@
     "errorDescription": "بارگذاری اشتراک ممکن نشد. دوباره تلاش کنید.",
     "emptyTitle": "پلن فعالی نیست",
     "emptyDescription": "هنوز جزئیات اشتراکی نیست. وقتی آماده بودید ارتقا دهید.",
+    "mockBadge": "صورتحساب آزمایشی",
     "manage": "مدیریت پرداخت",
     "status": "وضعیت",
     "periodEnd": "تمدید / پایان",
@@ -490,7 +494,30 @@
           "tax": "مالیات",
           "lineTotal": "مبلغ"
         }
-      }
+      },
+      "posPaying": "در حال ذخیره…",
+      "posRemove": "حذف ردیف",
+      "posCartEmpty": "سبد خالی است — وزن اضافه کنید",
+      "posKarat": "عیار",
+      "posManualItem": "طلای {karat} عیار",
+      "posDocumentKind": "نوع سند",
+      "posKindSale": "فروش",
+      "posKindBuyback": "خرید طلای کهنه",
+      "posRateRequired": "ابتدا نرخ امروز را قفل کنید",
+      "posCustomerRequired": "مشتری را انتخاب کنید",
+      "posRateLocked": "قفل · خرید {buy} / فروش {sell}",
+      "posRateMissing": "نرخ امروز قفل نشده",
+      "posCustomerSmsOff": "پیامک مشتری فعال نیست — پس از تسویه، پیامی برای خریدار ارسال نمی‌شود.",
+      "posWage": "اجرت",
+      "posProfit": "سود",
+      "posDiscount": "تخفیف",
+      "posPayments": "پرداخت‌ها",
+      "posAddPayment": "افزودن پرداخت",
+      "posPayCash": "نقد",
+      "posPayCard": "کارت",
+      "posPayTransfer": "حواله",
+      "posPaymentAmount": "مبلغ",
+      "posSaveDraft": "پیش‌نویس"
     },
     "purchases": {
       "title": "خرید",
@@ -528,7 +555,13 @@
         "paid": "پرداخت‌شده",
         "partial": "نسبی",
         "unpaid": "پرداخت‌نشده"
-      }
+      },
+      "returnFormTitle": "ثبت برگشت خرید",
+      "returnGrams": "گرم (اختیاری)",
+      "returnGramsPh": "خالی = برگشت کامل",
+      "returnSubmit": "ثبت برگشت",
+      "returnSubmitting": "در حال ذخیره…",
+      "returnPurchaseRequired": "خرید را انتخاب کنید"
     },
     "inventory": {
       "title": "انبار",
@@ -587,7 +620,7 @@
       "calculatorDisclaimer": "خروجی فقط برای بازبینی رابط کاربری است.",
       "calculatorResult": "برآورد جمع",
       "calculate": "محاسبه",
-      "ratesDescription": "نرخ نمایشی (بدون فید زنده).",
+      "ratesDescription": "قبل از فروش، نرخ خرید/فروش روز را قفل کنید.",
       "txDescription": "تراکنش وزن طلا.",
       "balanceDescription": "خلاصه مانده طلای خالص.",
       "rawDescription": "طلای خام.",
@@ -607,13 +640,15 @@
         "calculator": "ماشین‌حساب"
       },
       "kpi": {
-        "fine": "طلای خالص",
+        "fine": "موجودی (گرم)",
         "raw": "خام",
         "melted": "ذوب",
         "rate": "نرخ",
+        "rateLocked": "نرخ امروز قفل است",
+        "rateOpen": "نرخ قفل نیست",
         "opening": "اول دوره",
         "closing": "آخر دوره",
-        "rows": "ردیف"
+        "rows": "تراکنش‌ها"
       },
       "cols": {
         "date": "تاریخ",
@@ -628,8 +663,23 @@
         "debit": "بدهکار",
         "credit": "بستانکار",
         "balance": "مانده",
-        "fee": "کارمزد"
-      }
+        "fee": "کارمزد",
+        "buy": "خرید",
+        "sell": "فروش"
+      },
+      "rateLockTitle": "قفل نرخ روزانه",
+      "rateLockStatusLocked": "قفل برای {date}",
+      "rateLockStatusOpen": "هنوز قفل نشده — POS نمی‌تواند تأیید کند",
+      "rateLockAction": "قفل امروز",
+      "rateLocking": "در حال قفل…",
+      "rateLockInvalid": "نرخ خرید و فروش معتبر وارد کنید",
+      "rateBuy": "نرخ خرید (ریال/گرم خالص)",
+      "rateSell": "نرخ فروش (ریال/گرم خالص)",
+      "rateCorrectAction": "تصحیح نرخ",
+      "rateCorrecting": "در حال ذخیره…",
+      "rateCorrectReason": "دلیل تصحیح",
+      "rateCorrectReasonPh": "چرا نرخ را تغییر می‌دهید؟",
+      "rateCorrectReasonRequired": "دلیل را وارد کنید (حداقل ۳ حرف)"
     },
     "customers": {
       "title": "مشتریان",
@@ -756,7 +806,8 @@
       "bodyErrorTitle": "دادهٔ گزارش در دسترس نیست",
       "bodyErrorDescription": "بارگذاری این گزارش ممکن نشد. دوباره تلاش کنید.",
       "nav": {
-        "hub": "همه گزارش‌ها"
+        "hub": "همه گزارش‌ها",
+        "dayClose": "بستن روز"
       },
       "cards": {
         "sales": "فروش",
@@ -768,7 +819,9 @@
         "gold": "طلا",
         "goldDesc": "تراکنش‌ها و حرکت طلای خالص.",
         "profit": "سود",
-        "profitDesc": "فروش در برابر هزینه — نمای حاشیه."
+        "profitDesc": "فروش در برابر هزینه — نمای حاشیه.",
+        "dayClose": "بستن روز",
+        "dayCloseDesc": "امضای پایان روز برای فلز و نقد."
       },
       "kpi": {
         "period": "دوره",
@@ -783,7 +836,26 @@
         "txns": "تراکنش‌ها",
         "sales": "فروش",
         "cogs": "بهای تمام‌شده"
-      }
+      },
+      "dayCloseTitle": "بستن روز",
+      "dayCloseDescription": "تطبیق فلز و نقد برای یک روز کاری.",
+      "dayCloseDate": "تاریخ کاری",
+      "dayCloseSignOff": "تأیید بستن روز",
+      "dayCloseSigned": "امضا شده",
+      "dayCloseEmpty": "هنوز داده بستن روز نیست.",
+      "dayCloseSales": "تعداد فروش",
+      "dayCloseBuybacks": "خرید کهنه",
+      "dayClosePurchases": "خریدها",
+      "dayCloseCashIn": "ورود نقد",
+      "dayCloseCashOut": "خروج نقد",
+      "dayCloseSalesAmount": "مبلغ فروش",
+      "dayCloseMetal": "موجودی {karat} عیار",
+      "dayCloseFilter": "فیلتر فلز",
+      "dayCloseFilterPh": "عیار یا گرم",
+      "dayCloseFrozenHint": "این روز بسته شده — اعداد قفل هستند.",
+      "dayCloseReopen": "بازگشایی روز",
+      "dayCloseReopenReason": "دلیل بازگشایی",
+      "dayCloseReopenReasonRequired": "دلیل بازگشایی را وارد کنید"
     },
     "settings": {
       "title": "تنظیمات",
@@ -1080,6 +1152,8 @@
     "tax": {
       "title": "مالیات",
       "description": "اظهارنامه و دوره‌های مالیاتی.",
+      "submitToAuthority": "ارسال به سامانه",
+      "submitUnavailable": "اتصال زنده سامانه مالیاتی روی این سرور پیکربندی نشده است.",
       "search": "جستجو…",
       "emptyTitle": "پرونده نیست",
       "emptyDescription": "دوره‌ها اینجا می‌آید.",
@@ -1134,6 +1208,10 @@
     "ai": {
       "title": "بینش هوش مصنوعی",
       "description": "فقط کارت بینش — بدون موتور استدلال جعلی.",
+      "kpi": {
+        "a": "بینش‌ها",
+        "b": "بحرانی"
+      },
       "insightLowStock": "مراقب سکه کم‌موجود",
       "insightLowStockBody": "دو سکه بهار آزادی مانده؛ سفارش خرید را بررسی کنید.",
       "insightMargin": "توجه به حاشیه",
@@ -1264,5 +1342,48 @@
       "submit": "پیوستن",
       "back": "بازگشت به ورود"
     }
+  },
+  "platformNavigation": {
+    "title": "منوی سایدبار",
+    "description": "ساخت، ویرایش، تو‌در‌تو و مرتب‌سازی آیتم‌های منوی پلتفرم. آیکون‌ها از API می‌آیند.",
+    "listTitle": "کاتالوگ",
+    "createTitle": "آیتم جدید",
+    "editTitle": "ویرایش آیتم",
+    "create": "ایجاد",
+    "save": "ذخیره",
+    "cancel": "لغو",
+    "edit": "ویرایش",
+    "delete": "حذف",
+    "search": "جستجوی آیتم‌های منو…",
+    "emptyTitle": "آیتمی نیست",
+    "emptyDescription": "برای شروع یک آیتم سایدبار بسازید.",
+    "kpiItems": "آیتم‌ها",
+    "kpiActive": "فعال",
+    "kpiInactive": "غیرفعال",
+    "colLabel": "برچسب",
+    "colHref": "مسیر",
+    "colGroup": "گروه",
+    "colSubject": "موضوع",
+    "colStatus": "وضعیت",
+    "colActions": "عملیات",
+    "statusActive": "فعال",
+    "statusInactive": "غیرفعال",
+    "parentNone": "بدون والد",
+    "deleteConfirmTitle": "این آیتم حذف شود؟",
+    "deleteConfirmDescription": "آیتم و همه فرزندان تو‌در‌تو حذف می‌شوند. قابل بازگشت نیست.",
+    "errorTitle": "بارگذاری منو ممکن نشد",
+    "errorDescription": "اتصال را بررسی کنید و دوباره تلاش کنید.",
+    "fieldKey": "کلید",
+    "fieldHref": "مسیر",
+    "fieldLabelKey": "کلید برچسب (nav.*)",
+    "fieldIcon": "آیکون",
+    "fieldIconActive": "آیکون فعال",
+    "fieldGroup": "گروه",
+    "fieldSubject": "موضوع CASL",
+    "fieldRoles": "نقش‌ها (با ویرگول)",
+    "fieldModuleKey": "کلید ماژول",
+    "fieldParentId": "والد",
+    "fieldSortOrder": "ترتیب",
+    "fieldActive": "فعال"
   }
 }

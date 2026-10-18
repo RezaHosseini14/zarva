@@ -1,14 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../common/current-user.decorator';
 import type { IAuthUser } from '../auth/auth.types';
 import { BillingService } from '../billing/billing.service';
 import {
+  CorrectGoldRateDto,
   CreateGoldLotDto,
   CreateGoldPurityDto,
   CreateGoldTxnDto,
   GoldCalculatorDto,
+  LockGoldRateDto,
 } from './dto/gold.dto';
 import { GoldService } from './gold.service';
 
@@ -25,6 +27,20 @@ export class GoldController {
     await this.billing.assertModule(user.organizationId, 'gold');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Gold stock and ledger summary KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.gold.summary(user);
+  }
+
+  @Get('ledger')
+  @ApiOperation({ summary: 'Gold metal ledger with running balance' })
+  async ledger(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.gold.listLedger(user);
+  }
+
   @Get('transactions')
   @ApiOperation({ summary: 'List gold transactions' })
   async txns(@CurrentUser() user: IAuthUser) {
@@ -33,7 +49,7 @@ export class GoldController {
   }
 
   @Post('transactions')
-  @ApiOperation({ summary: 'Create gold transaction' })
+  @ApiOperation({ summary: 'Audited gold stock adjustment' })
   async createTxn(@CurrentUser() user: IAuthUser, @Body() dto: CreateGoldTxnDto) {
     await this.gate(user);
     return this.gold.createTxn(user, dto);
@@ -73,6 +89,33 @@ export class GoldController {
   async rates(@CurrentUser() user: IAuthUser) {
     await this.gate(user);
     return this.gold.listRates(user);
+  }
+
+  @Get('rates/today')
+  @ApiOperation({ summary: 'Get locked rate for today (or query date)' })
+  async todayRate(
+    @CurrentUser() user: IAuthUser,
+    @Query('date') date?: string,
+  ) {
+    await this.gate(user);
+    return this.gold.todayRate(user, date);
+  }
+
+  @Post('rates/lock')
+  @ApiOperation({ summary: 'Lock daily buy/sell gold rates' })
+  async lockRate(@CurrentUser() user: IAuthUser, @Body() dto: LockGoldRateDto) {
+    await this.gate(user);
+    return this.gold.lockRate(user, dto);
+  }
+
+  @Post('rates/correct')
+  @ApiOperation({ summary: 'Correct locked daily rates with audit reason' })
+  async correctRate(
+    @CurrentUser() user: IAuthUser,
+    @Body() dto: CorrectGoldRateDto,
+  ) {
+    await this.gate(user);
+    return this.gold.correctRate(user, dto);
   }
 
   @Get('melted')

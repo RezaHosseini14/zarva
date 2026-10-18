@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 export interface ISendEmailInput {
@@ -13,6 +13,12 @@ export class EmailService {
   private readonly logger = new Logger(EmailService.name);
 
   constructor(private readonly config: ConfigService) {}
+
+  isConfigured(): boolean {
+    const resendKey = this.config.get<string>('RESEND_API_KEY') ?? '';
+    const smtpHost = this.config.get<string>('SMTP_HOST') ?? '';
+    return resendKey.trim().length > 0 || smtpHost.trim().length > 0;
+  }
 
   async send(input: ISendEmailInput): Promise<boolean> {
     const resendKey = this.config.get<string>('RESEND_API_KEY');
@@ -48,13 +54,20 @@ export class EmailService {
 
     const host = this.config.get<string>('SMTP_HOST');
     if (host) {
-      this.logger.log(
-        `[SMTP stub] to=${input.to} subject=${input.subject} (configure SMTP transport or RESEND_API_KEY)`,
+      // SMTP transport not wired — do not claim delivery success.
+      this.logger.warn(
+        `[SMTP] configured host=${host} but transport is not implemented; email not sent to=${input.to}`,
       );
-      return true;
+      return false;
     }
 
-    this.logger.log(`[email:dev] to=${input.to} subject=${input.subject}\n${input.text}`);
-    return true;
+    if (process.env.NODE_ENV === 'production') {
+      throw new ServiceUnavailableException(
+        'Email is not configured. Set RESEND_API_KEY or SMTP_HOST.',
+      );
+    }
+
+    this.logger.log(`[email:dev-stub] not delivered to=${input.to} subject=${input.subject}`);
+    return false;
   }
 }

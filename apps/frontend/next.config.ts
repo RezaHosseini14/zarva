@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   output: 'standalone',
   transpilePackages: ['@zarva/shared'],
+  // Dev: allow both localhost and 127.0.0.1 so client JS / HMR aren't blocked
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
 };
 
 export default withNextIntl(nextConfig);

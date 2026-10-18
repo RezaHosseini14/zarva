@@ -4,8 +4,10 @@ import { useTranslations } from 'next-intl';
 
 import { DomainListPage } from '@/components/page/domain-list-page';
 import { WeightText } from '@/components/business/metrics';
-import { GOLD_SECTION_KPI_SLOTS } from '@/features/gold/gold-kpi-slots';
+import { goldSummaryToKpiItems } from '@/features/gold/gold-summary-mapper';
+import { GoldRateLockPanel } from '@/features/gold/gold-rate-lock-panel';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
+import type { IGoldLockedRate, IGoldSummary } from '@zarva/shared';
 
 interface IRow {
   readonly id: string;
@@ -18,22 +20,39 @@ interface IProps {
   readonly navKey: string;
   readonly descriptionKey: string;
   readonly rows: ReadonlyArray<IRow>;
+  readonly summary?: IGoldSummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
+  readonly todayRate?: IGoldLockedRate | null;
 }
 
 const NUMERIC_WEIGHT_RE = /^\s*[\d۰-۹٠-٩٫.,]+\s*$/u;
+
+const EMPTY_GOLD_SUMMARY: IGoldSummary = {
+  stockGrams: 0,
+  txnCount: 0,
+  lockedRateToday: false,
+};
 
 export function GoldSectionPage({
   navKey,
   descriptionKey,
   rows,
+  summary = null,
   isError,
   errorKind,
   chrome = 'full',
+  todayRate = null,
 }: IProps) {
   const t = useTranslations('modules.gold');
+  const isRates = navKey === 'rates';
+  const kpiItems = goldSummaryToKpiItems(summary ?? EMPTY_GOLD_SUMMARY, {
+    stock: t('kpi.fine'),
+    txns: t('kpi.rows'),
+    rateLocked: t('kpi.rateLocked'),
+    rateOpen: t('kpi.rateOpen'),
+  });
 
   return (
     <DomainListPage<IRow>
@@ -43,23 +62,26 @@ export function GoldSectionPage({
       chrome={chrome}
       isError={isError}
       errorKind={errorKind}
-      kpis={GOLD_SECTION_KPI_SLOTS.map((slot) => ({
-        id: slot.id,
-        label: t(slot.labelKey),
-        value: String(rows.length),
-        icon: slot.icon,
-        accent: slot.accent,
-      }))}
+      belowToolbar={isRates ? <GoldRateLockPanel todayRate={todayRate} /> : undefined}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       columns={[
         { id: 'a', header: t('cols.name'), cell: (r) => r.a },
         {
           id: 'b',
-          header: t('cols.weight'),
+          header: isRates ? t('cols.buy') : t('cols.weight'),
           cell: (r) =>
-            NUMERIC_WEIGHT_RE.test(r.b) ? <WeightText grams={r.b.trim()} /> : r.b,
+            !isRates && NUMERIC_WEIGHT_RE.test(r.b) ? (
+              <WeightText grams={r.b.trim()} />
+            ) : (
+              r.b
+            ),
         },
-        { id: 'c', header: t('cols.purity'), cell: (r) => r.c },
+        {
+          id: 'c',
+          header: isRates ? t('cols.sell') : t('cols.purity'),
+          cell: (r) => r.c,
+        },
       ]}
       rows={rows}
       rowKey={(r) => r.id}

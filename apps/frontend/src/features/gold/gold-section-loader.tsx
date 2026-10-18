@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { getTodayGoldRateAction } from '@/features/gold/gold-actions';
 import { GoldSectionPage } from '@/features/gold/gold-section-page';
 import {
   getGoldBalances,
@@ -8,6 +9,7 @@ import {
   getGoldPuritySectionRows,
   getGoldRateSectionRows,
   getGoldRawSectionRows,
+  getGoldSummary,
   getGoldTransactionSectionRows,
 } from '@/features/gold/get-gold-data';
 import {
@@ -56,7 +58,13 @@ async function loadRows(kind: GoldSectionKind) {
 }
 
 async function GoldSectionLoaded({ kind, navKey, descriptionKey }: IProps) {
-  const result = await loadServerApiSection(() => loadRows(kind));
+  const [result, todayRate] = await Promise.all([
+    loadServerApiSection(async () => {
+      const [rows, summary] = await Promise.all([loadRows(kind), getGoldSummary()]);
+      return { rows, summary };
+    }),
+    kind === 'rates' ? getTodayGoldRateAction() : Promise.resolve(null),
+  ]);
   if (!result.ok) {
     return (
       <GoldSectionPage
@@ -66,6 +74,7 @@ async function GoldSectionLoaded({ kind, navKey, descriptionKey }: IProps) {
         chrome="body"
         isError
         errorKind={result.error.kind}
+        todayRate={todayRate}
       />
     );
   }
@@ -73,8 +82,10 @@ async function GoldSectionLoaded({ kind, navKey, descriptionKey }: IProps) {
     <GoldSectionPage
       navKey={navKey}
       descriptionKey={descriptionKey}
-      rows={result.data}
+      rows={result.data.rows}
+      summary={result.data.summary}
       chrome="body"
+      todayRate={todayRate}
     />
   );
 }

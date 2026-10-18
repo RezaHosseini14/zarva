@@ -3,14 +3,20 @@ import { getTranslations } from 'next-intl/server';
 import { ErrorState } from '@/components/page/error-state';
 import { BillingPanel } from '@/features/billing/billing-panel';
 import type { ISubscriptionView } from '@/features/billing/get-billing-subscription';
-import { getBillingPlans } from '@/features/billing/get-billing-subscription';
+import {
+  getBillingCheckoutProvider,
+  getBillingPlans,
+} from '@/features/billing/get-billing-subscription';
 import { NestAuthError } from '@/lib/auth/nest-auth';
 import { serverApiFetch } from '@/lib/auth/server-api';
 import { StreamedDomainChrome } from '@/lib/lists/streamed-domain-chrome';
 
 async function BillingSectionLoaded() {
   const t = await getTranslations('billing');
-  const plans = await getBillingPlans();
+  const [plans, checkoutProvider] = await Promise.all([
+    getBillingPlans(),
+    getBillingCheckoutProvider(),
+  ]);
 
   let subscription: ISubscriptionView | null = null;
   let missing = false;
@@ -31,7 +37,12 @@ async function BillingSectionLoaded() {
   }
 
   return (
-    <BillingPanel subscription={missing ? null : subscription} plans={plans} chrome="body" />
+    <BillingPanel
+      subscription={missing ? null : subscription}
+      plans={plans}
+      checkoutProvider={checkoutProvider}
+      chrome="body"
+    />
   );
 }
 

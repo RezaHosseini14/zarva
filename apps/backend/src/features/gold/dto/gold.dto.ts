@@ -1,35 +1,96 @@
-import { IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import {
+  IsIn,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 export class CreateGoldTxnDto {
-  @ApiProperty()
-  @IsString()
-  displayDate!: string;
+  @ApiProperty({ description: 'Audited stock adjust (grams)' })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0.001)
+  grams!: number;
+
+  @ApiProperty({ example: 18 })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  purityKarat!: number;
+
+  @ApiProperty({ enum: ['in', 'out'] })
+  @IsIn(['in', 'out'])
+  direction!: 'in' | 'out';
 
   @ApiProperty()
   @IsString()
-  typeLabel!: string;
+  @MinLength(3)
+  reason!: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  displayDate?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  rateIrt?: number;
+}
+
+export class LockGoldRateDto {
+  @ApiProperty({ example: '2026-10-03' })
+  @IsString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  businessDate!: string;
+
+  @ApiProperty()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  buyRateIrt!: number;
+
+  @ApiProperty()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  sellRateIrt!: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  label?: string;
+}
+
+export class CorrectGoldRateDto {
+  @ApiProperty({ example: '2026-10-03' })
+  @IsString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  businessDate!: string;
+
+  @ApiProperty()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  buyRateIrt!: number;
+
+  @ApiProperty()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  sellRateIrt!: number;
 
   @ApiProperty()
   @IsString()
-  weight!: string;
-
-  @ApiProperty()
-  @IsString()
-  purity!: string;
-
-  @ApiProperty()
-  @IsString()
-  fineGold!: string;
-
-  @ApiProperty()
-  @IsString()
-  counterparty!: string;
-
-  @ApiProperty()
-  @IsString()
-  reference!: string;
+  @MinLength(3)
+  reason!: string;
 }
 
 export class GoldCalculatorDto {
@@ -82,6 +143,20 @@ export class CreateGoldLotDto {
   @ApiProperty()
   @IsString()
   weightLabel!: string;
+
+  @ApiPropertyOptional({ description: 'Numeric grams (preferred over parsing weightLabel)' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0.001)
+  grams?: number;
+
+  @ApiPropertyOptional({ example: 18 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  purityKarat?: number;
 
   @ApiPropertyOptional()
   @IsOptional()

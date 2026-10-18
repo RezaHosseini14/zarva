@@ -27,6 +27,7 @@ export class SmsService {
   }
 
   async sendOtp(phone: string, code: string): Promise<ISmsSendResult> {
+    this.assertProductionProvider();
     return this.provider.sendLookup(this.receptor(phone), this.otpTemplate, { token: code });
   }
 
@@ -35,11 +36,26 @@ export class SmsService {
     template: string,
     tokens: ISmsLookupTokens,
   ): Promise<ISmsSendResult> {
+    this.assertProductionProvider();
     return this.provider.sendLookup(this.receptor(phone), template, tokens);
   }
 
   async sendSms(phone: string, message: string): Promise<ISmsSendResult> {
+    this.assertProductionProvider();
     return this.provider.sendSms(this.receptor(phone), message);
+  }
+
+  /** True when a real (non-console) SMS provider is active. */
+  isLiveProvider(): boolean {
+    return this.provider.name !== 'console';
+  }
+
+  private assertProductionProvider(): void {
+    if (process.env.NODE_ENV === 'production' && this.provider.name === 'console') {
+      throw new BadRequestException(
+        'Production SMS requires a non-console provider (e.g. SMS_PROVIDER=kavenegar)',
+      );
+    }
   }
 
   private receptor(phone: string): string {

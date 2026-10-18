@@ -85,7 +85,6 @@ export class CommerceService {
         inventoryItemId: item.id,
         status: dto.status ?? 'active',
         externalSku: dto.externalSku ?? '',
-        syncedAt: new Date(),
       },
       include: { inventoryItem: true },
     });

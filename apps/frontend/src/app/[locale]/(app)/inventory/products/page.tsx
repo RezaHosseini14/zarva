@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getInventoryItems } from '@/features/catalog/get-catalog-data';
+import { getInventorySummary } from '@/features/inventory/get-inventory-data';
 import { InventoryOverviewPage } from '@/features/inventory/inventory-overview-page';
 import {
   INVENTORY_OVERVIEW_COLUMN_KEYS,
@@ -16,11 +17,20 @@ interface IPageProps {
 }
 
 async function Section() {
-  const result = await loadServerApiSection(() => getInventoryItems());
+  const result = await loadServerApiSection(async () => {
+    const [rows, summary] = await Promise.all([getInventoryItems(), getInventorySummary()]);
+    return { rows, summary };
+  });
   if (!result.ok) {
     return <InventoryOverviewPage rows={[]} isError errorKind={result.error.kind} chrome="body" />;
   }
-  return <InventoryOverviewPage rows={result.data} chrome="body" />;
+  return (
+    <InventoryOverviewPage
+      rows={result.data.rows}
+      summary={result.data.summary}
+      chrome="body"
+    />
+  );
 }
 
 export default async function Page({ params }: IPageProps) {

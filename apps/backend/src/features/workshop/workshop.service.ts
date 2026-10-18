@@ -1,5 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { IArtisanRow, IProductionBatchRow, IWorkshopOrderRow } from '@zarva/shared';
+import type {
+  IArtisanRow,
+  IProductionBatchRow,
+  IWorkshopOrderRow,
+  IWorkshopSummary,
+} from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
@@ -12,6 +17,21 @@ import type {
 @Injectable()
 export class WorkshopService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async summary(user: IAuthUser): Promise<IWorkshopSummary> {
+    this.assertRead(user);
+    const orgId = user.organizationId;
+    const openStatuses = ['completed', 'done', 'cancelled'];
+    const [orders, openOrders, artisans, batches] = await Promise.all([
+      this.prisma.workshopOrder.count({ where: { organizationId: orgId } }),
+      this.prisma.workshopOrder.count({
+        where: { organizationId: orgId, statusLabel: { notIn: openStatuses } },
+      }),
+      this.prisma.artisan.count({ where: { organizationId: orgId } }),
+      this.prisma.productionBatch.count({ where: { organizationId: orgId } }),
+    ]);
+    return { orders, openOrders, artisans, batches };
+  }
 
   async listOrders(user: IAuthUser): Promise<IWorkshopOrderRow[]> {
     this.assertRead(user);

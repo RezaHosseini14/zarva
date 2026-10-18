@@ -1,4 +1,10 @@
-import { BadRequestException, ForbiddenException, HttpException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import type { IAuthUser } from '../auth/auth.types';
@@ -128,14 +134,14 @@ describe('TaxService', () => {
     expect(result.format).toBe('csv');
   });
 
-  it('submit propagates 501 from authority', async () => {
+  it('submit propagates 503 from authority', async () => {
     prisma.taxFiling.findFirst.mockResolvedValue({
       id: 'f1',
       artifact: '',
       totals: {},
       period: { label: 'P' },
     });
-    authority.submit.mockRejectedValue(new HttpException('x', 501));
+    authority.submit.mockRejectedValue(new HttpException('x', HttpStatus.SERVICE_UNAVAILABLE));
     await expect(
       service.submitFiling(user({ roleName: 'ORG_ADMIN', permissions: [] }), 'f1'),
     ).rejects.toBeInstanceOf(HttpException);

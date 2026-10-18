@@ -4,25 +4,38 @@ import { useTranslations } from 'next-intl';
 
 import { DomainListPage } from '@/components/page/domain-list-page';
 import { WeightText } from '@/components/business/metrics';
-import { GOLD_OVERVIEW_KPI_SLOTS } from '@/features/gold/gold-kpi-slots';
-import type { IGoldTxnRow } from '@zarva/shared';
+import { goldSummaryToKpiItems } from '@/features/gold/gold-summary-mapper';
+import type { IGoldSummary, IGoldTxnRow } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
-
 
 interface IProps {
   readonly rows: ReadonlyArray<IGoldTxnRow>;
+  readonly summary?: IGoldSummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
 }
 
+const EMPTY_GOLD_SUMMARY: IGoldSummary = {
+  stockGrams: 0,
+  txnCount: 0,
+  lockedRateToday: false,
+};
+
 export function GoldOverviewPage({
   rows,
+  summary = null,
   isError,
   errorKind,
   chrome = 'full',
 }: IProps) {
   const t = useTranslations('modules.gold');
+  const kpiItems = goldSummaryToKpiItems(summary ?? EMPTY_GOLD_SUMMARY, {
+    stock: t('kpi.fine'),
+    txns: t('kpi.rows'),
+    rateLocked: t('kpi.rateLocked'),
+    rateOpen: t('kpi.rateOpen'),
+  });
   return (
     <DomainListPage<IGoldTxnRow>
       chrome={chrome}
@@ -31,14 +44,7 @@ export function GoldOverviewPage({
       description={t('description')}
       isError={isError}
       errorKind={errorKind}
-      kpis={GOLD_OVERVIEW_KPI_SLOTS.map((slot) => ({
-        id: slot.id,
-        label: t(slot.labelKey),
-        value: String(rows.length),
-        tone: slot.tone,
-        icon: slot.icon,
-        accent: slot.accent,
-      }))}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       columns={[
         { id: 'date', header: t('cols.date'), cell: (r) => r.date },

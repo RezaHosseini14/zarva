@@ -148,19 +148,29 @@ export async function applyAuthSession(result: INestAuthResult): Promise<IUser> 
   return result.user;
 }
 
+let refreshInFlight: Promise<INestAuthResult | null> | null = null;
+
 export async function refreshSessionFromCookies(): Promise<INestAuthResult | null> {
-  const refreshToken = await getRefreshToken();
-  if (!refreshToken) {
-    return null;
+  if (refreshInFlight) {
+    return refreshInFlight;
   }
-  try {
-    const result = await nestAuthPost('/auth/refresh', {}, { refreshToken });
-    await setSessionCookies(
-      result.accessToken,
-      result.refreshToken ?? refreshToken,
-    );
-    return result;
-  } catch {
-    return null;
-  }
+  refreshInFlight = (async (): Promise<INestAuthResult | null> => {
+    const refreshToken = await getRefreshToken();
+    if (!refreshToken) {
+      return null;
+    }
+    try {
+      const result = await nestAuthPost('/auth/refresh', {}, { refreshToken });
+      await setSessionCookies(
+        result.accessToken,
+        result.refreshToken ?? refreshToken,
+      );
+      return result;
+    } catch {
+      return null;
+    }
+  })().finally(() => {
+    refreshInFlight = null;
+  });
+  return refreshInFlight;
 }

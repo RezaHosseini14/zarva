@@ -111,6 +111,7 @@ describe('CommerceService', () => {
       channelId: 'c1',
       inventoryItemId: 'i1',
     });
+    expect(prisma.commerceListing.create.mock.calls[0]?.[0]?.data).not.toHaveProperty('syncedAt');
     expect(row.a).toBe('Ring');
   });
 

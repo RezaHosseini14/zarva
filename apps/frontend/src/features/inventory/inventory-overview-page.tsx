@@ -7,24 +7,40 @@ import { DomainListPage } from '@/components/page/domain-list-page';
 import { SubNav } from '@/components/page/sub-nav';
 import { StatusBadge } from '@/components/page/status-badge';
 import { MoneyText, WeightText } from '@/components/business/metrics';
-import type { IInventoryRow } from '@zarva/shared';
+import type { IInventoryRow, IInventorySummary } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
+import { inventorySummaryToKpiItems } from '@/features/inventory/inventory-summary-mapper';
 
 interface IProps {
   readonly rows?: ReadonlyArray<IInventoryRow>;
+  readonly summary?: IInventorySummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
 }
 
+const EMPTY_INVENTORY_SUMMARY: IInventorySummary = {
+  skuCount: 0,
+  lowStockCount: 0,
+  totalValueIrt: 0,
+  totalWeightGrams: 0,
+};
+
 export function InventoryOverviewPage({
   rows = [],
+  summary = null,
   isError,
   errorKind,
   chrome = 'full',
 }: IProps) {
   const t = useTranslations('modules.inventory');
   const locale = useLocale();
+  const kpiItems = inventorySummaryToKpiItems(summary ?? EMPTY_INVENTORY_SUMMARY, {
+    skus: t('kpi.skus'),
+    value: t('kpi.value'),
+    low: t('kpi.low'),
+    weight: t('kpi.weight'),
+  });
 
   return (
     <DomainListPage<IInventoryRow>
@@ -42,37 +58,7 @@ export function InventoryOverviewPage({
           {t('nav.products')}
         </Link>
       }
-      kpis={[
-        {
-          id: 'skus',
-          label: t('kpi.skus'),
-          value: String(rows.length),
-          icon: 'box-bold',
-          accent: 'bg-primary/15 text-primary ring-primary/25',
-        },
-        {
-          id: 'value',
-          label: t('kpi.value'),
-          value: rows[0]?.value ?? '—',
-          icon: 'dollar-bold',
-          accent: 'bg-success/15 text-success ring-success/25',
-        },
-        {
-          id: 'low',
-          label: t('kpi.low'),
-          value: String(rows.filter((r) => r.status === 'low').length),
-          tone: 'danger',
-          icon: 'danger-triangle-bold',
-          accent: 'bg-danger/15 text-danger ring-danger/25',
-        },
-        {
-          id: 'weight',
-          label: t('kpi.weight'),
-          value: rows[0]?.weight ?? '—',
-          icon: 'scale-bold',
-          accent: 'bg-info/15 text-info ring-info/25',
-        },
-      ]}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       belowToolbar={
         <SubNav

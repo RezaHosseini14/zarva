@@ -61,7 +61,8 @@
     "audit": "التدقيق",
     "search": "بحث",
     "platformOrgs": "المنظمات",
-    "platformSessions": "الجلسات"
+    "platformSessions": "الجلسات",
+    "platformNavigation": "قائمة الشريط الجانبي"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -173,7 +174,8 @@
       "salesToday": "مبيعات اليوم",
       "goldStock": "مخزون الذهب",
       "customers": "العملاء",
-      "margin": "الهامش"
+      "margin": "الهامش",
+      "cashInToday": "النقد الداخل اليوم"
     },
     "liveRates": {
       "title": "أسعار مباشرة",
@@ -216,7 +218,8 @@
     "activityItems": {
       "saleCompleted": "اكتملت عملية بيع",
       "purchaseReceived": "تم استلام شراء",
-      "stockAdjust": "تعديل المخزون"
+      "stockAdjust": "تعديل المخزون",
+      "buybackCompleted": "اكتمل شراء الذهب المستعمل"
     }
   },
   "pricing": {
@@ -242,6 +245,7 @@
     "emptyTitle": "لا خطة نشطة",
     "emptyDescription": "لا تفاصيل اشتراك بعد. قم بالترقية عندما تكون جاهزاً.",
     "manage": "إدارة الفوترة",
+    "mockBadge": "فوترة تجريبية",
     "status": "الحالة",
     "periodEnd": "التجديد / الانتهاء",
     "source": "مصدر الفوترة",
@@ -490,7 +494,30 @@
           "tax": "الضريبة",
           "lineTotal": "المجموع"
         }
-      }
+      },
+      "posPaying": "جارٍ الحفظ…",
+      "posRemove": "إزالة البند",
+      "posCartEmpty": "السلة فارغة — أضف وزناً",
+      "posKarat": "عيار",
+      "posManualItem": "ذهب {karat} عيار",
+      "posDocumentKind": "نوع المستند",
+      "posKindSale": "بيع",
+      "posKindBuyback": "شراء ذهب مستعمل",
+      "posRateRequired": "اقفل سعر اليوم أولاً",
+      "posCustomerRequired": "اختر عميلاً",
+      "posRateLocked": "مقفل · شراء {buy} / بيع {sell}",
+      "posRateMissing": "لا يوجد سعر مقفل لليوم",
+      "posCustomerSmsOff": "SMS للعميل غير مفعّل — لن يُرسل للمشتري بعد الدفع.",
+      "posWage": "أجرة",
+      "posProfit": "ربح",
+      "posDiscount": "خصم",
+      "posPayments": "المدفوعات",
+      "posAddPayment": "إضافة دفع",
+      "posPayCash": "نقداً",
+      "posPayCard": "بطاقة",
+      "posPayTransfer": "تحويل",
+      "posPaymentAmount": "المبلغ",
+      "posSaveDraft": "مسودة"
     },
     "purchases": {
       "title": "المشتريات",
@@ -528,7 +555,13 @@
         "paid": "Paid",
         "partial": "Partial",
         "unpaid": "Unpaid"
-      }
+      },
+      "returnFormTitle": "تسجيل مرتجع شراء",
+      "returnGrams": "غرام (اختياري)",
+      "returnGramsPh": "فارغ = إرجاع كامل",
+      "returnSubmit": "إنشاء المرتجع",
+      "returnSubmitting": "جارٍ الحفظ…",
+      "returnPurchaseRequired": "اختر عملية شراء"
     },
     "inventory": {
       "title": "المخزون",
@@ -587,7 +620,7 @@
       "calculatorDisclaimer": "Results are illustrative mock output for UI review only.",
       "calculatorResult": "Estimated total",
       "calculate": "Calculate",
-      "ratesDescription": "Displayed rates (not live market feeds).",
+      "ratesDescription": "اقفل أسعار الشراء/البيع قبل نقطة البيع.",
       "txDescription": "Gold weight transactions.",
       "balanceDescription": "Fine gold balance summary.",
       "rawDescription": "Raw gold stock.",
@@ -607,13 +640,15 @@
         "calculator": "Calculator"
       },
       "kpi": {
-        "fine": "Fine gold",
+        "fine": "المخزون (غ)",
         "raw": "Raw",
         "melted": "Melted",
         "rate": "Rate",
+        "rateLocked": "السعر مقفل اليوم",
+        "rateOpen": "السعر غير مقفل",
         "opening": "Opening",
         "closing": "Closing",
-        "rows": "Rows"
+        "rows": "المعاملات"
       },
       "cols": {
         "date": "Date",
@@ -628,8 +663,23 @@
         "debit": "Debit",
         "credit": "Credit",
         "balance": "Balance",
-        "fee": "Fee"
-      }
+        "fee": "Fee",
+        "buy": "شراء",
+        "sell": "بيع"
+      },
+      "rateLockTitle": "قفل السعر اليومي",
+      "rateLockStatusLocked": "مقفل لـ {date}",
+      "rateLockStatusOpen": "غير مقفل بعد — لا يمكن تأكيد نقطة البيع",
+      "rateLockAction": "اقفل اليوم",
+      "rateLocking": "جارٍ القفل…",
+      "rateLockInvalid": "أدخل أسعار شراء وبيع صالحة",
+      "rateBuy": "سعر الشراء",
+      "rateSell": "سعر البيع",
+      "rateCorrectAction": "تصحيح السعر",
+      "rateCorrecting": "جارٍ الحفظ…",
+      "rateCorrectReason": "سبب التصحيح",
+      "rateCorrectReasonPh": "لماذا تغيّر الأسعار؟",
+      "rateCorrectReasonRequired": "أدخل سبباً (٣ أحرف على الأقل)"
     },
     "customers": {
       "title": "العملاء",
@@ -756,7 +806,8 @@
       "bodyErrorTitle": "بيانات التقرير غير متاحة",
       "bodyErrorDescription": "تعذّر تحميل هذا التقرير. حاول مرة أخرى.",
       "nav": {
-        "hub": "كل التقارير"
+        "hub": "كل التقارير",
+        "dayClose": "إغلاق اليوم"
       },
       "cards": {
         "sales": "المبيعات",
@@ -768,7 +819,9 @@
         "gold": "الذهب",
         "goldDesc": "حركات ومعاملات الذهب الخالص.",
         "profit": "الربح",
-        "profitDesc": "المبيعات مقابل التكلفة — نظرة على الهامش."
+        "profitDesc": "المبيعات مقابل التكلفة — نظرة على الهامش.",
+        "dayClose": "إغلاق اليوم",
+        "dayCloseDesc": "اعتماد نهاية اليوم للمعدن والنقد."
       },
       "kpi": {
         "period": "الفترة",
@@ -783,7 +836,26 @@
         "txns": "المعاملات",
         "sales": "المبيعات",
         "cogs": "تكلفة البضاعة"
-      }
+      },
+      "dayCloseTitle": "إغلاق اليوم",
+      "dayCloseDescription": "مطابقة المعدن والنقد ليوم عمل.",
+      "dayCloseDate": "تاريخ العمل",
+      "dayCloseSignOff": "اعتماد إغلاق اليوم",
+      "dayCloseSigned": "تم الاعتماد",
+      "dayCloseEmpty": "لا توجد بيانات إغلاق بعد.",
+      "dayCloseSales": "عدد المبيعات",
+      "dayCloseBuybacks": "مشتريات مستعملة",
+      "dayClosePurchases": "المشتريات",
+      "dayCloseCashIn": "نقد داخل",
+      "dayCloseCashOut": "نقد خارج",
+      "dayCloseSalesAmount": "مبلغ المبيعات",
+      "dayCloseMetal": "رصيد {karat} عيار",
+      "dayCloseFilter": "تصفية المعدن",
+      "dayCloseFilterPh": "عيار أو غرام",
+      "dayCloseFrozenHint": "هذا اليوم مغلق — الأرقام مجمّدة.",
+      "dayCloseReopen": "إعادة فتح اليوم",
+      "dayCloseReopenReason": "سبب إعادة الفتح",
+      "dayCloseReopenReasonRequired": "أدخل سبب إعادة الفتح"
     },
     "settings": {
       "title": "الإعدادات",
@@ -1080,6 +1152,8 @@
     "tax": {
       "title": "الضرائب",
       "description": "Tax returns and filing stubs.",
+      "submitToAuthority": "Submit to authority",
+      "submitUnavailable": "Live tax authority is not configured on this server.",
       "search": "Search filings…",
       "emptyTitle": "No filings",
       "emptyDescription": "Tax periods will appear here.",
@@ -1134,6 +1208,10 @@
     "ai": {
       "title": "رؤى الذكاء الاصطناعي",
       "description": "Insight cards only — no fake reasoning engine.",
+      "kpi": {
+        "a": "الرؤى",
+        "b": "حرج"
+      },
       "insightLowStock": "Watch low-stock coins",
       "insightLowStockBody": "Two Bahar Azadi coins remain; consider a purchase order.",
       "insightMargin": "Margin attention",
@@ -1264,5 +1342,48 @@
       "submit": "انضمام",
       "back": "العودة لتسجيل الدخول"
     }
+  },
+  "platformNavigation": {
+    "title": "قائمة الشريط الجانبي",
+    "description": "إنشاء وتحرير وتداخل وإعادة ترتيب عناصر قائمة المنصة. الأيقونات تأتي من الـ API.",
+    "listTitle": "الكتالوج",
+    "createTitle": "عنصر جديد",
+    "editTitle": "تحرير العنصر",
+    "create": "إنشاء",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "edit": "تحرير",
+    "delete": "حذف",
+    "search": "بحث عناصر القائمة…",
+    "emptyTitle": "لا عناصر",
+    "emptyDescription": "أنشئ عنصر قائمة للبدء.",
+    "kpiItems": "العناصر",
+    "kpiActive": "نشط",
+    "kpiInactive": "غير نشط",
+    "colLabel": "التسمية",
+    "colHref": "المسار",
+    "colGroup": "المجموعة",
+    "colSubject": "الموضوع",
+    "colStatus": "الحالة",
+    "colActions": "إجراءات",
+    "statusActive": "نشط",
+    "statusInactive": "غير نشط",
+    "parentNone": "بدون أب",
+    "deleteConfirmTitle": "حذف هذا العنصر؟",
+    "deleteConfirmDescription": "سيُحذف العنصر وكل الأبناء المتداخلة. لا يمكن التراجع.",
+    "errorTitle": "تعذّر تحميل القائمة",
+    "errorDescription": "تحقق من الاتصال وحاول مجدداً.",
+    "fieldKey": "المفتاح",
+    "fieldHref": "المسار",
+    "fieldLabelKey": "مفتاح التسمية (nav.*)",
+    "fieldIcon": "الأيقونة",
+    "fieldIconActive": "أيقونة نشطة",
+    "fieldGroup": "المجموعة",
+    "fieldSubject": "موضوع CASL",
+    "fieldRoles": "الأدوار (مفصولة بفاصلة)",
+    "fieldModuleKey": "مفتاح الوحدة",
+    "fieldParentId": "الأب",
+    "fieldSortOrder": "الترتيب",
+    "fieldActive": "نشط"
   }
 }

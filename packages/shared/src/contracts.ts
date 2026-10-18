@@ -77,6 +77,13 @@ export interface IDashboardOverview {
   }>;
 }
 
+export interface IDashboardInsight {
+  readonly id: string;
+  readonly title: string;
+  readonly body: string;
+  readonly severity: 'info' | 'warning' | 'critical';
+}
+
 export type LiveRateId = 'xau_usd' | 'iran_gold_24k' | 'iran_gold_18k' | 'usd_irr';
 
 export type LiveRateTrend = 'up' | 'down' | 'flat';

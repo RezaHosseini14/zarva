@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import type { IOrgSettingSection } from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
@@ -26,7 +26,7 @@ export class SettingsService {
   async getSection(user: IAuthUser, section: string): Promise<IOrgSettingSection> {
     this.assertRead(user);
     if (!(SECTIONS as readonly string[]).includes(section)) {
-      return { section, values: {} };
+      throw new BadRequestException(`Unknown settings section: ${section}`);
     }
     const row = await this.prisma.orgSetting.findUnique({
       where: {
@@ -49,7 +49,7 @@ export class SettingsService {
   ): Promise<IOrgSettingSection> {
     this.assertWrite(user);
     if (!(SECTIONS as readonly string[]).includes(section)) {
-      return { section, values: dto.values };
+      throw new BadRequestException(`Unknown settings section: ${section}`);
     }
     const row = await this.prisma.orgSetting.upsert({
       where: {

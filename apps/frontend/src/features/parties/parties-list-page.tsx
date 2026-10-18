@@ -7,20 +7,40 @@ import { DomainListPage } from '@/components/page/domain-list-page';
 import { SubNav } from '@/components/page/sub-nav';
 import { StatusBadge } from '@/components/page/status-badge';
 import { MoneyText } from '@/components/business/metrics';
-import type { IPartyRow } from '@zarva/shared';
+import type { ICustomersSummary, IPartyRow, ISuppliersSummary } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
+import {
+  customersSummaryToKpiItems,
+  suppliersSummaryToKpiItems,
+} from '@/features/parties/parties-summary-mapper';
 
 interface IProps {
   readonly kind: 'customers' | 'suppliers';
   readonly rows: ReadonlyArray<IPartyRow>;
+  readonly customersSummary?: ICustomersSummary | null;
+  readonly suppliersSummary?: ISuppliersSummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
 }
 
+const EMPTY_CUSTOMERS: ICustomersSummary = {
+  count: 0,
+  openReceivablesIrt: 0,
+  lifetimeSalesIrt: 0,
+};
+
+const EMPTY_SUPPLIERS: ISuppliersSummary = {
+  count: 0,
+  openPayablesIrt: 0,
+  lifetimePurchasesIrt: 0,
+};
+
 export function PartiesListPage({
   kind,
   rows,
+  customersSummary = null,
+  suppliersSummary = null,
   isError,
   errorKind,
   chrome = 'full',
@@ -28,6 +48,15 @@ export function PartiesListPage({
   const t = useTranslations(`modules.${kind}`);
   const locale = useLocale();
   const base = kind === 'customers' ? '/customers' : '/suppliers';
+  const labels = {
+    count: t('kpi.count'),
+    balance: t('kpi.balance'),
+    total: t('kpi.total'),
+  };
+  const kpiItems =
+    kind === 'customers'
+      ? customersSummaryToKpiItems(customersSummary ?? EMPTY_CUSTOMERS, labels)
+      : suppliersSummaryToKpiItems(suppliersSummary ?? EMPTY_SUPPLIERS, labels);
 
   return (
     <DomainListPage<IPartyRow>
@@ -37,30 +66,7 @@ export function PartiesListPage({
       description={t('description')}
       isError={isError}
       errorKind={errorKind}
-      kpis={[
-        {
-          id: 'count',
-          label: t('kpi.count'),
-          value: String(rows.length),
-          icon: kind === 'customers' ? 'users-group-rounded-bold' : 'delivery-bold',
-          accent: 'bg-info/15 text-info ring-info/25',
-        },
-        {
-          id: 'balance',
-          label: t('kpi.balance'),
-          value: rows[0]?.balance ?? '۰',
-          tone: 'warning',
-          icon: 'wallet-money-bold',
-          accent: 'bg-warning/15 text-warning ring-warning/25',
-        },
-        {
-          id: 'total',
-          label: t('kpi.total'),
-          value: '—',
-          icon: 'hand-money-bold',
-          accent: 'bg-primary/15 text-primary ring-primary/25',
-        },
-      ]}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       belowToolbar={
         <SubNav

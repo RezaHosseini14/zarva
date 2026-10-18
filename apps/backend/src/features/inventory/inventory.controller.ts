@@ -25,6 +25,13 @@ export class InventoryController {
     await this.billing.assertModule(user.organizationId, 'inventory');
   }
 
+  @Get('summary')
+  @ApiOperation({ summary: 'Inventory list KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.inventory.summary(user);
+  }
+
   @Get()
   @ApiOperation({ summary: 'List inventory items' })
   async list(@CurrentUser() user: IAuthUser) {

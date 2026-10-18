@@ -61,7 +61,8 @@
     "audit": "Audit",
     "search": "Search",
     "platformOrgs": "Organizations",
-    "platformSessions": "Sessions"
+    "platformSessions": "Sessions",
+    "platformNavigation": "Sidebar menu"
   },
   "auth": {
     "login": "Sign in",
@@ -173,7 +174,8 @@
       "salesToday": "Sales today",
       "goldStock": "Gold stock",
       "customers": "Customers",
-      "margin": "Margin"
+      "margin": "Margin",
+      "cashInToday": "Cash in today"
     },
     "liveRates": {
       "title": "Live rates",
@@ -215,6 +217,7 @@
     "ratesErrorDescription": "Market rates could not be refreshed. Try again.",
     "activityItems": {
       "saleCompleted": "Sale completed",
+      "buybackCompleted": "Buy-back completed",
       "purchaseReceived": "Purchase received",
       "stockAdjust": "Stock adjusted"
     }
@@ -242,6 +245,7 @@
     "emptyTitle": "No active plan",
     "emptyDescription": "No subscription details yet. Upgrade when you are ready.",
     "manage": "Manage billing",
+    "mockBadge": "Mock billing",
     "status": "Status",
     "periodEnd": "Renews / ends",
     "source": "Billing source",
@@ -412,6 +416,19 @@
       "posTax": "Tax",
       "posTotal": "Total",
       "posPay": "Take payment",
+      "posPaying": "Saving…",
+      "posRemove": "Remove line",
+      "posCartEmpty": "Cart is empty — add a weight line",
+      "posKarat": "Karat",
+      "posManualItem": "{karat}k gold",
+      "posDocumentKind": "Document type",
+      "posKindSale": "Sale",
+      "posKindBuyback": "Old-gold buy-back",
+      "posRateRequired": "Lock today's gold rate before checkout",
+      "posCustomerRequired": "Select a customer",
+      "posRateLocked": "Locked · buy {buy} / sell {sell}",
+      "posRateMissing": "No locked rate for today",
+      "posCustomerSmsOff": "Customer SMS is not configured — checkout will not text the buyer.",
       "returnsTitle": "Sales returns",
       "returnsDescription": "Returned merchandise linked to original invoices.",
       "paymentsTitle": "Sales payments",
@@ -490,7 +507,17 @@
           "tax": "VAT",
           "lineTotal": "Total"
         }
-      }
+      },
+      "posWage": "Wage",
+      "posProfit": "Profit",
+      "posDiscount": "Discount",
+      "posPayments": "Payments",
+      "posAddPayment": "Add payment",
+      "posPayCash": "Cash",
+      "posPayCard": "Card",
+      "posPayTransfer": "Transfer",
+      "posPaymentAmount": "Amount",
+      "posSaveDraft": "Save draft"
     },
     "purchases": {
       "title": "Purchases",
@@ -528,7 +555,13 @@
         "paid": "Paid",
         "partial": "Partial",
         "unpaid": "Unpaid"
-      }
+      },
+      "returnFormTitle": "Record purchase return",
+      "returnGrams": "Grams (optional)",
+      "returnGramsPh": "Leave empty for full return",
+      "returnSubmit": "Create return",
+      "returnSubmitting": "Saving…",
+      "returnPurchaseRequired": "Select a purchase"
     },
     "inventory": {
       "title": "Inventory",
@@ -587,7 +620,15 @@
       "calculatorDisclaimer": "Results are illustrative mock output for UI review only.",
       "calculatorResult": "Estimated total",
       "calculate": "Calculate",
-      "ratesDescription": "Displayed rates (not live market feeds).",
+      "ratesDescription": "Lock buy/sell rates for the business day before POS.",
+      "rateLockTitle": "Daily rate lock",
+      "rateLockStatusLocked": "Locked for {date}",
+      "rateLockStatusOpen": "Not locked yet — POS cannot confirm sales",
+      "rateLockAction": "Lock today",
+      "rateLocking": "Locking…",
+      "rateLockInvalid": "Enter valid buy and sell rates",
+      "rateBuy": "Buy rate (IRT/g fine)",
+      "rateSell": "Sell rate (IRT/g fine)",
       "txDescription": "Gold weight transactions.",
       "balanceDescription": "Fine gold balance summary.",
       "rawDescription": "Raw gold stock.",
@@ -607,13 +648,15 @@
         "calculator": "Calculator"
       },
       "kpi": {
-        "fine": "Fine gold",
+        "fine": "Stock (g)",
         "raw": "Raw",
         "melted": "Melted",
         "rate": "Rate",
+        "rateLocked": "Rate locked today",
+        "rateOpen": "Rate not locked",
         "opening": "Opening",
         "closing": "Closing",
-        "rows": "Rows"
+        "rows": "Transactions"
       },
       "cols": {
         "date": "Date",
@@ -628,8 +671,15 @@
         "debit": "Debit",
         "credit": "Credit",
         "balance": "Balance",
-        "fee": "Fee"
-      }
+        "fee": "Fee",
+        "buy": "Buy",
+        "sell": "Sell"
+      },
+      "rateCorrectAction": "Correct rates",
+      "rateCorrecting": "Saving…",
+      "rateCorrectReason": "Correction reason",
+      "rateCorrectReasonPh": "Why are you changing the rates?",
+      "rateCorrectReasonRequired": "Enter a reason (min 3 chars)"
     },
     "customers": {
       "title": "Customers",
@@ -756,8 +806,22 @@
       "bodyErrorTitle": "Report data unavailable",
       "bodyErrorDescription": "We could not load this report. Try again.",
       "nav": {
-        "hub": "All reports"
+        "hub": "All reports",
+        "dayClose": "Day close"
       },
+      "dayCloseTitle": "Day close",
+      "dayCloseDescription": "Metal and cash reconciliation for a business day.",
+      "dayCloseDate": "Business date",
+      "dayCloseSignOff": "Sign off day",
+      "dayCloseSigned": "Signed off",
+      "dayCloseEmpty": "No day-close data yet.",
+      "dayCloseSales": "Sales count",
+      "dayCloseBuybacks": "Buy-backs",
+      "dayClosePurchases": "Purchases",
+      "dayCloseCashIn": "Cash in (IRT)",
+      "dayCloseCashOut": "Cash out (IRT)",
+      "dayCloseSalesAmount": "Sales amount (IRT)",
+      "dayCloseMetal": "{karat}k closing stock",
       "cards": {
         "sales": "Sales",
         "salesDesc": "Invoices, settlements, and sales performance over time.",
@@ -768,7 +832,9 @@
         "gold": "Gold",
         "goldDesc": "Fine-gold transactions and movement.",
         "profit": "Profit",
-        "profitDesc": "Sales versus cost — margin overview."
+        "profitDesc": "Sales versus cost — margin overview.",
+        "dayClose": "Day close",
+        "dayCloseDesc": "End-of-day metal and cash sign-off."
       },
       "kpi": {
         "period": "Period",
@@ -783,7 +849,13 @@
         "txns": "Transactions",
         "sales": "Sales",
         "cogs": "Cost of goods"
-      }
+      },
+      "dayCloseFilter": "Filter metal",
+      "dayCloseFilterPh": "Karat or grams",
+      "dayCloseFrozenHint": "This day is signed off — figures are frozen.",
+      "dayCloseReopen": "Reopen day",
+      "dayCloseReopenReason": "Reopen reason",
+      "dayCloseReopenReasonRequired": "Enter a reopen reason"
     },
     "settings": {
       "title": "Settings",
@@ -1080,6 +1152,8 @@
     "tax": {
       "title": "Tax",
       "description": "Tax returns and filing stubs.",
+      "submitToAuthority": "Submit to authority",
+      "submitUnavailable": "Live tax authority is not configured on this server.",
       "search": "Search filings…",
       "emptyTitle": "No filings",
       "emptyDescription": "Tax periods will appear here.",
@@ -1134,6 +1208,10 @@
     "ai": {
       "title": "AI insights",
       "description": "Insight cards only — no fake reasoning engine.",
+      "kpi": {
+        "a": "Insights",
+        "b": "Critical"
+      },
       "insightLowStock": "Watch low-stock coins",
       "insightLowStockBody": "Two Bahar Azadi coins remain; consider a purchase order.",
       "insightMargin": "Margin attention",
@@ -1264,5 +1342,48 @@
       "submit": "Join",
       "back": "Back to sign in"
     }
+  },
+  "platformNavigation": {
+    "title": "Sidebar menu",
+    "description": "Create, edit, nest, and reorder platform sidebar items. Icons come from the API.",
+    "listTitle": "Catalog",
+    "createTitle": "New item",
+    "editTitle": "Edit item",
+    "create": "Create",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search menu items…",
+    "emptyTitle": "No menu items",
+    "emptyDescription": "Create a sidebar item to get started.",
+    "kpiItems": "Items",
+    "kpiActive": "Active",
+    "kpiInactive": "Inactive",
+    "colLabel": "Label",
+    "colHref": "Path",
+    "colGroup": "Group",
+    "colSubject": "Subject",
+    "colStatus": "Status",
+    "colActions": "Actions",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "parentNone": "No parent",
+    "deleteConfirmTitle": "Delete this item?",
+    "deleteConfirmDescription": "This removes the item and any nested children. This cannot be undone.",
+    "errorTitle": "Could not load navigation",
+    "errorDescription": "Check your connection and try again.",
+    "fieldKey": "Key",
+    "fieldHref": "Href",
+    "fieldLabelKey": "Label key (nav.*)",
+    "fieldIcon": "Icon",
+    "fieldIconActive": "Active icon",
+    "fieldGroup": "Group",
+    "fieldSubject": "CASL subject",
+    "fieldRoles": "Roles (comma-separated)",
+    "fieldModuleKey": "Module key",
+    "fieldParentId": "Parent",
+    "fieldSortOrder": "Sort order",
+    "fieldActive": "Active"
   }
 }

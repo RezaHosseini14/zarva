@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getGoldTransactions } from '@/features/gold/get-gold-data';
+import { getGoldSummary, getGoldTransactions } from '@/features/gold/get-gold-data';
 import { GoldOverviewPage } from '@/features/gold/gold-overview-page';
 import {
   GOLD_OVERVIEW_COLUMN_KEYS,
@@ -16,11 +16,20 @@ interface IPageProps {
 }
 
 async function Section() {
-  const result = await loadServerApiSection(() => getGoldTransactions());
+  const result = await loadServerApiSection(async () => {
+    const [rows, summary] = await Promise.all([getGoldTransactions(), getGoldSummary()]);
+    return { rows, summary };
+  });
   if (!result.ok) {
     return <GoldOverviewPage rows={[]} isError errorKind={result.error.kind} chrome="body" />;
   }
-  return <GoldOverviewPage rows={result.data} chrome="body" />;
+  return (
+    <GoldOverviewPage
+      rows={result.data.rows}
+      summary={result.data.summary}
+      chrome="body"
+    />
+  );
 }
 
 export default async function Page({ params }: IPageProps) {

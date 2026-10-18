@@ -1,11 +1,13 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { AppShell } from '@/features/shell/app-shell';
 import { PageHeader } from '@/components/page/page-header';
 import { KpiGrid } from '@/components/page/kpi-grid';
 import { LedgerTable } from '@/components/page/ledger-table';
+import { Input } from '@/components/ui/input';
 import { GOLD_LEDGER_KPI_SLOTS } from '@/features/gold/gold-kpi-slots';
 import type { ILedgerRow } from '@zarva/shared';
 import { SectionLoadError } from '@/components/page/section-load-error';
@@ -25,8 +27,23 @@ export function GoldLedgerPage({
   chrome = 'full',
 }: IProps) {
   const t = useTranslations('modules.gold');
-  const opening = rows[0]?.balance ?? '—';
-  const closing = rows[rows.length - 1]?.balance ?? '—';
+  const [q, setQ] = useState('');
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return rows;
+    return rows.filter(
+      (r) =>
+        r.date.toLowerCase().includes(needle) ||
+        r.description.toLowerCase().includes(needle) ||
+        r.debit.toLowerCase().includes(needle) ||
+        r.credit.toLowerCase().includes(needle),
+    );
+  }, [rows, q]);
+  const opening = filtered[0]?.balance ?? rows[0]?.balance ?? '—';
+  const closing =
+    filtered[filtered.length - 1]?.balance ??
+    rows[rows.length - 1]?.balance ??
+    '—';
   const isBody = chrome === 'body';
 
   const body = (
@@ -46,8 +63,16 @@ export function GoldLedgerPage({
           accent: slot.accent,
         }))}
       />
+      <div className="mb-3 max-w-sm">
+        <Input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder={t('search')}
+          aria-label={t('search')}
+        />
+      </div>
       <LedgerTable
-        rows={[...rows]}
+        rows={[...filtered]}
         openingLabel={t('kpi.opening')}
         openingValue={opening}
         closingLabel={t('kpi.closing')}

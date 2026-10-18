@@ -7,6 +7,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
 import type { CreateIntegrationDto } from './dto/integrations.dto';
 
+type IntegrationKind = 'device' | 'scale' | 'api' | 'webhook';
+type IntegrationStatus = 'healthy' | 'degraded' | 'offline' | 'unknown';
+
 @Injectable()
 export class IntegrationsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -46,9 +49,7 @@ export class IntegrationsService {
     const rows = await this.prisma.integration.findMany({
       where: {
         organizationId: user.organizationId,
-        ...(kind
-          ? { kind: kind as 'device' | 'scale' | 'api' | 'webhook' }
-          : {}),
+        ...(kind ? { kind: kind as IntegrationKind } : {}),
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -77,22 +78,15 @@ export class IntegrationsService {
     });
     if (!existing) throw new NotFoundException('Integration not found');
 
-    // Mock adapter: scales/devices flip healthy; api/webhook prefer healthy if config present
-    const status =
-      existing.kind === 'scale' || existing.kind === 'device'
-        ? Math.random() > 0.2
-          ? 'healthy'
-          : 'degraded'
-        : existing.config
-          ? 'healthy'
-          : 'offline';
+    const config = this.asConfigRecord(existing.config);
+    const check = await this.runDeterministicTest(existing.kind, config);
 
     const r = await this.prisma.integration.update({
       where: { id },
       data: {
-        status,
+        status: check.status,
         lastCheckedAt: new Date(),
-        detail: status === 'healthy' ? 'ok' : status,
+        detail: check.detail,
       },
     });
     return this.map(r);
@@ -117,11 +111,89 @@ export class IntegrationsService {
     return { id: row.id, key: raw, prefix };
   }
 
+  private asConfigRecord(config: unknown): Record<string, unknown> {
+    if (!config || typeof config !== 'object' || Array.isArray(config)) {
+      return {};
+    }
+    return config as Record<string, unknown>;
+  }
+
+  private hasUsableConfig(config: Record<string, unknown>): boolean {
+    return Object.keys(config).some((key) => {
+      const value = config[key];
+      if (value === null || value === undefined) return false;
+      if (typeof value === 'string') return value.trim().length > 0;
+      if (typeof value === 'number') return Number.isFinite(value);
+      if (typeof value === 'boolean') return true;
+      if (Array.isArray(value)) return value.length > 0;
+      if (typeof value === 'object') return Object.keys(value as object).length > 0;
+      return false;
+    });
+  }
+
+  private webhookUrl(config: Record<string, unknown>): string | null {
+    const raw = config.url ?? config.webhookUrl ?? config.endpoint;
+    if (typeof raw !== 'string') return null;
+    const trimmed = raw.trim();
+    if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+      return null;
+    }
+    return trimmed;
+  }
+
+  private async probeWebhook(url: string): Promise<boolean> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5_000);
+    try {
+      const res = await fetch(url, { method: 'HEAD', signal: controller.signal });
+      return res.ok || (res.status >= 300 && res.status < 500);
+    } catch {
+      return false;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  private async runDeterministicTest(
+    kind: IntegrationKind,
+    config: Record<string, unknown>,
+  ): Promise<{ status: IntegrationStatus; detail: string }> {
+    if (kind === 'scale' || kind === 'device') {
+      if (!this.hasUsableConfig(config)) {
+        return { status: 'offline', detail: 'not_configured' };
+      }
+      return { status: 'healthy', detail: 'configured' };
+    }
+
+    if (kind === 'api') {
+      if (!this.hasUsableConfig(config)) {
+        return { status: 'offline', detail: 'not_configured' };
+      }
+      return { status: 'healthy', detail: 'configured' };
+    }
+
+    if (kind === 'webhook') {
+      if (!this.hasUsableConfig(config)) {
+        return { status: 'offline', detail: 'not_configured' };
+      }
+      const url = this.webhookUrl(config);
+      if (!url) {
+        return { status: 'degraded', detail: 'invalid_webhook_url' };
+      }
+      const reachable = await this.probeWebhook(url);
+      return reachable
+        ? { status: 'healthy', detail: 'webhook_reachable' }
+        : { status: 'degraded', detail: 'webhook_unreachable' };
+    }
+
+    return { status: 'offline', detail: 'unknown_kind' };
+  }
+
   private map(r: {
     id: string;
-    kind: 'device' | 'scale' | 'api' | 'webhook';
+    kind: IntegrationKind;
     code: string;
-    status: 'healthy' | 'degraded' | 'offline' | 'unknown';
+    status: IntegrationStatus;
     detail: string;
   }): IIntegrationRow {
     return {

@@ -8,18 +8,28 @@ import { SubNav } from '@/components/page/sub-nav';
 import { StatusBadge } from '@/components/page/status-badge';
 import { MoneyText, WeightText } from '@/components/business/metrics';
 import { useNavigateWithTransition } from '@/features/shell/navigation-progress';
-import type { ISaleInvoiceRow } from '@zarva/shared';
+import type { ISaleInvoiceRow, ISalesSummary } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
+import { salesSummaryToKpiItems } from '@/features/sales/sales-summary-mapper';
 
 interface IProps {
   readonly rows?: ReadonlyArray<ISaleInvoiceRow>;
+  readonly summary?: ISalesSummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
 }
 
+const EMPTY_SALES_SUMMARY: ISalesSummary = {
+  todayAmountIrt: 0,
+  invoiceCount: 0,
+  unpaidCount: 0,
+  avgAmountIrt: 0,
+};
+
 export function SalesListPage({
   rows = [],
+  summary = null,
   isError,
   errorKind,
   chrome = 'full',
@@ -29,6 +39,12 @@ export function SalesListPage({
   const locale = useLocale();
   const navigate = useNavigateWithTransition();
   const base = `/${locale}/sales`;
+  const kpiItems = salesSummaryToKpiItems(summary ?? EMPTY_SALES_SUMMARY, {
+    today: t('kpi.today'),
+    count: t('kpi.count'),
+    avg: t('kpi.avg'),
+    unpaid: t('kpi.unpaid'),
+  });
 
   return (
     <DomainListPage<ISaleInvoiceRow>
@@ -46,37 +62,7 @@ export function SalesListPage({
           {t('newSale')}
         </Link>
       }
-      kpis={[
-        {
-          id: 'today',
-          label: t('kpi.today'),
-          value: rows[0]?.amount ?? '—',
-          icon: 'cart-large-2-bold',
-          accent: 'bg-success/15 text-success ring-success/25',
-        },
-        {
-          id: 'count',
-          label: t('kpi.count'),
-          value: String(rows.length),
-          icon: 'document-text-bold',
-          accent: 'bg-info/15 text-info ring-info/25',
-        },
-        {
-          id: 'avg',
-          label: t('kpi.avg'),
-          value: '—',
-          icon: 'chart-bold',
-          accent: 'bg-primary/15 text-primary ring-primary/25',
-        },
-        {
-          id: 'unpaid',
-          label: t('kpi.unpaid'),
-          value: String(rows.filter((r) => r.paymentStatus !== 'paid').length),
-          tone: 'warning',
-          icon: 'danger-triangle-bold',
-          accent: 'bg-warning/15 text-warning ring-warning/25',
-        },
-      ]}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       belowToolbar={
         <SubNav

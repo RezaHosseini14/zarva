@@ -9,6 +9,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { OtpService } from './otp.service';
+import { SessionLivenessCache } from './session-liveness.cache';
 import { SessionsService } from './sessions.service';
 
 @Module({
@@ -20,7 +21,13 @@ import { SessionsService } from './sessions.service';
     forwardRef(() => NotificationsModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, OtpService, SessionsService],
-  exports: [AuthService, SessionsService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    OtpService,
+    SessionLivenessCache,
+    SessionsService,
+  ],
+  exports: [AuthService, SessionsService, SessionLivenessCache],
 })
 export class AuthModule {}

@@ -7,18 +7,27 @@ import { DomainListPage } from '@/components/page/domain-list-page';
 import { SubNav } from '@/components/page/sub-nav';
 import { StatusBadge } from '@/components/page/status-badge';
 import { MoneyText, WeightText } from '@/components/business/metrics';
-import type { IPurchaseRow } from '@zarva/shared';
+import type { IPurchaseRow, IPurchasesSummary } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
+import { purchasesSummaryToKpiItems } from '@/features/purchases/purchases-summary-mapper';
 
 interface IProps {
   readonly rows?: ReadonlyArray<IPurchaseRow>;
+  readonly summary?: IPurchasesSummary | null;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
 }
 
+const EMPTY_PURCHASES_SUMMARY: IPurchasesSummary = {
+  monthAmountIrt: 0,
+  openCount: 0,
+  totalWeightGrams: 0,
+};
+
 export function PurchasesListPage({
   rows = [],
+  summary = null,
   isError,
   errorKind,
   chrome = 'full',
@@ -26,6 +35,11 @@ export function PurchasesListPage({
   const t = useTranslations('modules.purchases');
   const locale = useLocale();
   const base = `/${locale}/purchases`;
+  const kpiItems = purchasesSummaryToKpiItems(summary ?? EMPTY_PURCHASES_SUMMARY, {
+    month: t('kpi.month'),
+    weight: t('kpi.weight'),
+    open: t('kpi.open'),
+  });
 
   return (
     <DomainListPage<IPurchaseRow>
@@ -43,30 +57,7 @@ export function PurchasesListPage({
           {t('newPurchase')}
         </Link>
       }
-      kpis={[
-        {
-          id: 'month',
-          label: t('kpi.month'),
-          value: rows[0]?.amount ?? '—',
-          icon: 'delivery-bold',
-          accent: 'bg-primary/15 text-primary ring-primary/25',
-        },
-        {
-          id: 'weight',
-          label: t('kpi.weight'),
-          value: rows[0]?.goldWeight ?? '—',
-          icon: 'scale-bold',
-          accent: 'bg-info/15 text-info ring-info/25',
-        },
-        {
-          id: 'open',
-          label: t('kpi.open'),
-          value: String(rows.filter((r) => r.paymentStatus !== 'paid').length),
-          tone: 'warning',
-          icon: 'danger-triangle-bold',
-          accent: 'bg-warning/15 text-warning ring-warning/25',
-        },
-      ]}
+      kpis={[...kpiItems]}
       searchPlaceholder={t('search')}
       belowToolbar={
         <SubNav

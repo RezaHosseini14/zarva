@@ -9,9 +9,12 @@ import {
   CreateSaleInvoiceDto,
   CreateSalePaymentRecordDto,
   CreateSaleReturnDto,
+  SaleCheckoutDto,
+  UpdateCustomerDto,
   UpdateSalePaymentDto,
   UpdateSaleStatusDto,
 } from './dto/sales.dto';
+import { SmsService } from '../sms/sms.service';
 import { SalesService } from './sales.service';
 
 @ApiTags('Sales')
@@ -21,10 +24,32 @@ export class SalesController {
   constructor(
     private readonly sales: SalesService,
     private readonly billing: BillingService,
+    private readonly sms: SmsService,
   ) {}
 
   private async gate(user: IAuthUser): Promise<void> {
     await this.billing.assertModule(user.organizationId, 'sales');
+  }
+
+  @Get('summary')
+  @ApiOperation({ summary: 'Sales list KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.sales.summary(user);
+  }
+
+  @Get('customer-sms/capabilities')
+  @ApiOperation({ summary: 'Whether customer sale SMS can be delivered' })
+  async customerSmsCapabilities(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return { enabled: this.sms.isLiveProvider() };
+  }
+
+  @Get('customers/summary')
+  @ApiOperation({ summary: 'Customers list KPIs' })
+  async customersSummary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.sales.customersSummary(user);
   }
 
   @Get('customers')
@@ -51,6 +76,17 @@ export class SalesController {
     return this.sales.createCustomer(user, dto);
   }
 
+  @Patch('customers/:id')
+  @ApiOperation({ summary: 'Update customer' })
+  async updateCustomer(
+    @CurrentUser() user: IAuthUser,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateCustomerDto,
+  ) {
+    await this.gate(user);
+    return this.sales.updateCustomer(user, id, dto);
+  }
+
   @Get('invoices')
   @ApiOperation({ summary: 'List gold sale invoices' })
   async listInvoices(@CurrentUser() user: IAuthUser) {
@@ -73,6 +109,13 @@ export class SalesController {
   async createInvoice(@CurrentUser() user: IAuthUser, @Body() dto: CreateSaleInvoiceDto) {
     await this.gate(user);
     return this.sales.createInvoice(user, dto);
+  }
+
+  @Post('checkout')
+  @ApiOperation({ summary: 'Atomic POS checkout: invoice + ledger + payments' })
+  async checkout(@CurrentUser() user: IAuthUser, @Body() dto: SaleCheckoutDto) {
+    await this.gate(user);
+    return this.sales.checkout(user, dto);
   }
 
   @Patch('invoices/:id/status')

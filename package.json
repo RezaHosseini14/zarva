@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run env:sync && concurrently -n backend,frontend -c yellow,cyan \"npm run dev -w @zarva/backend\" \"npm run dev -w @zarva/frontend\"",
+    "dev": "npm run env:sync && concurrently --success=last -n backend,frontend -c yellow,cyan \"npm run dev -w @zarva/backend\" \"npm run dev -w @zarva/frontend\"",
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",

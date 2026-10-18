@@ -5,11 +5,13 @@ import type {
   ILedgerRow,
   IPartyRow,
   IPurchaseRow,
+  ISuppliersSummary,
   IWorkshopOrderRow,
 } from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
+import type { CreateSupplierDto, UpdateSupplierDto } from './dto/catalog.dto';
 
 @Injectable()
 export class CatalogService {
@@ -24,12 +26,64 @@ export class CatalogService {
     return rows.map((r) => this.mapParty(r));
   }
 
+  async suppliersSummary(user: IAuthUser): Promise<ISuppliersSummary> {
+    this.assertPerm(user, 'suppliers.read');
+    const orgId = user.organizationId;
+    const [count, openAgg, lifeAgg] = await Promise.all([
+      this.prisma.supplier.count({ where: { organizationId: orgId } }),
+      this.prisma.purchase.aggregate({
+        where: { organizationId: orgId, paymentStatus: { not: 'paid' } },
+        _sum: { amountIrt: true },
+      }),
+      this.prisma.purchase.aggregate({
+        where: { organizationId: orgId },
+        _sum: { amountIrt: true },
+      }),
+    ]);
+    return {
+      count,
+      openPayablesIrt: Number(openAgg._sum.amountIrt ?? 0),
+      lifetimePurchasesIrt: Number(lifeAgg._sum.amountIrt ?? 0),
+    };
+  }
+
   async getSupplier(user: IAuthUser, id: string): Promise<IPartyRow> {
     this.assertPerm(user, 'suppliers.read');
     const row = await this.prisma.supplier.findFirst({
       where: { id, organizationId: user.organizationId },
     });
     if (!row) throw new NotFoundException('Supplier not found');
+    return this.mapParty(row);
+  }
+
+  async createSupplier(user: IAuthUser, dto: CreateSupplierDto): Promise<IPartyRow> {
+    this.assertPerm(user, 'suppliers.create');
+    const row = await this.prisma.supplier.create({
+      data: {
+        organizationId: user.organizationId,
+        name: dto.name.trim(),
+        phone: dto.phone.trim(),
+        address: dto.address?.trim() ?? '',
+      },
+    });
+    return this.mapParty(row);
+  }
+
+  async updateSupplier(
+    user: IAuthUser,
+    id: string,
+    dto: UpdateSupplierDto,
+  ): Promise<IPartyRow> {
+    this.assertPerm(user, 'suppliers.update');
+    await this.getSupplier(user, id);
+    const row = await this.prisma.supplier.update({
+      where: { id },
+      data: {
+        name: dto.name?.trim(),
+        phone: dto.phone?.trim(),
+        address: dto.address?.trim(),
+      },
+    });
     return this.mapParty(row);
   }
 

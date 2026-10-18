@@ -1,11 +1,16 @@
 import type {
   IInventoryRow,
+  IInventorySummary,
   IInventoryValuationRow,
   IStockMovementRow,
   IWarehouseRow,
 } from '@zarva/shared';
 
 import { serverApiFetch } from '@/lib/auth/server-api';
+
+export async function getInventorySummary(): Promise<IInventorySummary> {
+  return serverApiFetch('/inventory/summary');
+}
 
 export async function getInventoryMovements(): Promise<ReadonlyArray<IStockMovementRow>> {
   return serverApiFetch('/inventory/movements');

@@ -9,12 +9,18 @@ function createPool(): Pool {
     throw new Error('DATABASE_URL is not set');
   }
 
-  // Prisma Dev TCP proxy / PgBouncer reject named prepared statements.
-  // The pg driver adapter issues simple queries and avoids that failure mode.
+  // Remote VPS Postgres: keep the pool small, recycle idle clients, TCP keep-alive.
+  // Prisma Dev TCP proxy / PgBouncer reject named prepared statements — adapter uses simple queries.
   return new Pool({
     connectionString,
-    max: 10,
-    connectionTimeoutMillis: 10_000,
+    max: 8,
+    min: 1,
+    connectionTimeoutMillis: 8_000,
+    idleTimeoutMillis: 20_000,
+    allowExitOnIdle: true,
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 5_000,
+    application_name: 'zarva-backend',
   });
 }
 

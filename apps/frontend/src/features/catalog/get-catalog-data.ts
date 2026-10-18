@@ -5,10 +5,15 @@ import type {
   IPartyRow,
   IPurchaseRow,
   ISaleInvoiceDetailDto,
+  ISuppliersSummary,
   IWorkshopOrderRow,
 } from '@zarva/shared';
 
 import { serverApiFetch } from '@/lib/auth/server-api';
+
+export async function getSuppliersSummary(): Promise<ISuppliersSummary> {
+  return serverApiFetch('/suppliers/summary');
+}
 
 export async function getSuppliers(): Promise<ReadonlyArray<IPartyRow>> {
   return serverApiFetch('/suppliers');

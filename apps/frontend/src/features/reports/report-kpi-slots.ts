@@ -54,6 +54,12 @@ export const REPORT_KPI_SLOTS: Record<
     { id: 'period', icon: 'clipboard-list-bold' },
     { id: 'total', icon: 'graph-up-bold', tone: 'gold' },
   ],
+  dayClose: [
+    { id: 'count', icon: 'document-text-bold' },
+    { id: 'paid', icon: 'card-bold', tone: 'success' },
+    { id: 'period', icon: 'clipboard-list-bold' },
+    { id: 'total', icon: 'clipboard-list-bold', tone: 'gold' },
+  ],
 };
 
 export function reportKpiLabelKey(id: ReportKpiSlotId): string {

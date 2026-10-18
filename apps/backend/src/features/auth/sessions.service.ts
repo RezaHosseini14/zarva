@@ -23,6 +23,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { NotificationsService } from '../notifications/notifications.service';
 import { parseUserAgent } from './device-meta.util';
+import { SessionLivenessCache } from './session-liveness.cache';
 
 export interface IIssueDeviceContext {
   readonly clientDeviceId?: string | null;
@@ -37,6 +38,7 @@ export class SessionsService {
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
     private readonly gateway: NotificationsGateway,
+    private readonly liveness: SessionLivenessCache,
   ) {}
 
   async getOrgMaxDevices(organizationId: string): Promise<number | null> {
@@ -293,6 +295,14 @@ export class SessionsService {
       where: { familyId, revokedAt: null },
       data: { lastSeenAt: new Date() },
     });
+  }
+
+  markFamilyLive(familyId: string): void {
+    this.liveness.markLive(familyId);
+  }
+
+  markFamilyRevoked(familyId: string): void {
+    this.liveness.markRevoked(familyId);
   }
 
   async revokeSessionForUser(
@@ -583,6 +593,7 @@ export class SessionsService {
         data: { revokedAt: now },
       });
     }
+    this.liveness.markRevoked(familyId);
     await this.closeLoginEvents(familyId, reason);
 
     if (emit && anySession) {

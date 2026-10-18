@@ -192,17 +192,25 @@ export function SessionSecurityListener() {
         });
     });
 
-    // Heartbeat only for the revoked device (JWT family check → 401).
+    // Heartbeat: cheap /auth/sessions/pulse (JWT liveness only, cached server-side).
+    // Skip overlapping probes so a slow remote DB cannot pile up requests.
+    let beatInFlight = false;
     const beat = window.setInterval(() => {
-      void apiFetch<{ items: IAuthSession[] }>('/auth/sessions').catch((err: unknown) => {
-        if (!(err instanceof ApiError) || (err.status !== 401 && err.status !== 403)) {
-          return;
-        }
-        const mine = resolveMine();
-        // If we still know our family and JWT died, we were revoked.
-        if (mine) hardKick();
-      });
-    }, 3000);
+      if (beatInFlight || kickingRef.current) return;
+      beatInFlight = true;
+      void apiFetch<{ ok: true }>('/auth/sessions/pulse')
+        .catch((err: unknown) => {
+          if (!(err instanceof ApiError) || (err.status !== 401 && err.status !== 403)) {
+            return;
+          }
+          const mine = resolveMine();
+          // If we still know our family and JWT died, we were revoked.
+          if (mine) hardKick();
+        })
+        .finally(() => {
+          beatInFlight = false;
+        });
+    }, 30_000);
 
     return () => {
       window.clearInterval(beat);

@@ -5,11 +5,12 @@ import { useTranslations } from 'next-intl';
 import { DomainListPage } from '@/components/page/domain-list-page';
 import { SubNav } from '@/components/page/sub-nav';
 import { StatusBadge } from '@/components/page/status-badge';
-import type { IWorkshopOrderRow } from '@zarva/shared';
+import type { IWorkshopOrderRow, IWorkshopSummary } from '@zarva/shared';
 import type { SectionErrorKind } from '@/lib/auth/section-load-error';
 
 interface IProps {
   readonly rows: ReadonlyArray<IWorkshopOrderRow>;
+  readonly summary?: IWorkshopSummary;
   readonly isError?: boolean;
   readonly errorKind?: SectionErrorKind;
   readonly chrome?: 'full' | 'body';
@@ -17,12 +18,14 @@ interface IProps {
 
 export function WorkshopPage({
   rows,
+  summary,
   isError,
   errorKind,
   chrome = 'full',
 }: IProps) {
   const t = useTranslations('modules.workshop');
   const late = rows.filter((r) => r.progress < 50).length;
+  const openCount = summary?.openOrders ?? rows.length;
   return (
     <DomainListPage<IWorkshopOrderRow>
       chrome={chrome}
@@ -35,7 +38,7 @@ export function WorkshopPage({
         {
           id: 'open',
           label: t('kpi.open'),
-          value: String(rows.length),
+          value: String(openCount),
           icon: 'settings-minimalistic-bold',
           accent: 'bg-primary/15 text-primary ring-primary/25',
         },

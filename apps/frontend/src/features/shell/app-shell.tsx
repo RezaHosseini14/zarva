@@ -25,10 +25,11 @@ const ShellTitleContext = createContext<IShellTitleContext | null>(null);
 
 interface IAppShellFrameProps {
   readonly children: ReactNode;
+  readonly navSlot: ReactNode;
 }
 
 /** Persistent chrome for (app) routes — survives client navigations. */
-export function AppShellFrame({ children }: IAppShellFrameProps) {
+export function AppShellFrame({ children, navSlot }: IAppShellFrameProps) {
   const [open, setOpen] = useState(false);
   const [title, setTitleState] = useState('');
 
@@ -46,7 +47,7 @@ export function AppShellFrame({ children }: IAppShellFrameProps) {
       <ZarvaNavLoader />
       <ZarvaAppCanvas className="text-foreground">
         <div className="flex h-dvh gap-3 overflow-hidden p-[var(--shell-inset)] sm:gap-4">
-          <AppSidebar open={open} onClose={() => setOpen(false)} />
+          <AppSidebar open={open} onClose={() => setOpen(false)} navSlot={navSlot} />
           <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3 sm:gap-4">
             <AppHeader title={title} onMenuClick={() => setOpen(true)} />
             <main className="zarva-scrollbar min-h-0 flex-1 overflow-y-auto px-0.5 pb-4 sm:px-1">
@@ -85,7 +86,7 @@ export function AppShell({ title, children }: IAppShellProps) {
 
   if (!ctx) {
     return (
-      <AppShellFrame>
+      <AppShellFrame navSlot={null}>
         <ShellTitleBridge title={title}>{children}</ShellTitleBridge>
       </AppShellFrame>
     );

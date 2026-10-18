@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getAccountingLedger } from '@/features/accounting/get-accounting-data';
+import { getGoldLedger } from '@/features/gold/get-gold-data';
 import { GoldLedgerPage } from '@/features/gold/gold-ledger-page';
 import {
   GOLD_LEDGER_COLUMN_KEYS,
@@ -16,7 +16,7 @@ interface IPageProps {
 }
 
 async function Section() {
-  const result = await loadServerApiSection(() => getAccountingLedger());
+  const result = await loadServerApiSection(() => getGoldLedger());
   if (!result.ok) {
     return <GoldLedgerPage rows={[]} chrome="body" isError errorKind={result.error.kind} />;
   }

@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { IBranchRow } from '@zarva/shared';
+import type { IBranchRow, IBranchesSummary } from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import type { IAuthUser } from '../auth/auth.types';
@@ -17,6 +17,16 @@ export class BranchesService {
     private readonly prisma: PrismaService,
     private readonly billing: BillingService,
   ) {}
+
+  async summary(user: IAuthUser): Promise<IBranchesSummary> {
+    this.assertRead(user);
+    const orgId = user.organizationId;
+    const [total, active] = await Promise.all([
+      this.prisma.branch.count({ where: { organizationId: orgId } }),
+      this.prisma.branch.count({ where: { organizationId: orgId, isActive: true } }),
+    ]);
+    return { total, active, inactive: total - active };
+  }
 
   async list(user: IAuthUser): Promise<IBranchRow[]> {
     this.assertRead(user);

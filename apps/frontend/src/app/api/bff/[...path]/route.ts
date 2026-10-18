@@ -48,26 +48,34 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]): Promi
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  let upstream = await forwardOnce(path, search, method, accessToken, contentType, body);
+  let upstream: Response;
+  try {
+    upstream = await forwardOnce(path, search, method, accessToken, contentType, body);
 
-  if (upstream.status === 401) {
-    const refreshed = await refreshSessionFromCookies();
-    if (!refreshed?.accessToken) {
-      await clearSessionCookies();
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-    upstream = await forwardOnce(
-      path,
-      search,
-      method,
-      refreshed.accessToken,
-      contentType,
-      body,
-    );
     if (upstream.status === 401) {
-      await clearSessionCookies();
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      const refreshed = await refreshSessionFromCookies();
+      if (!refreshed?.accessToken) {
+        await clearSessionCookies();
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      }
+      upstream = await forwardOnce(
+        path,
+        search,
+        method,
+        refreshed.accessToken,
+        contentType,
+        body,
+      );
+      if (upstream.status === 401) {
+        await clearSessionCookies();
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      }
     }
+  } catch {
+    return NextResponse.json(
+      { message: 'Backend unavailable' },
+      { status: 503 },
+    );
   }
 
   const responseHeaders = new Headers();

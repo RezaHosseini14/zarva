@@ -23,7 +23,7 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        'zarva-glass-input inline-flex min-h-11 w-full items-center justify-between gap-2 px-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'zarva-glass-input inline-flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 px-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
@@ -68,7 +68,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        'relative flex w-full cursor-default select-none items-center rounded-md py-2 pe-8 ps-3 text-sm outline-none data-highlighted:bg-hover data-disabled:pointer-events-none data-disabled:opacity-50',
+        'relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pe-8 ps-3 text-sm outline-none data-highlighted:bg-hover data-disabled:pointer-events-none data-disabled:opacity-50',
         className,
       )}
       {...props}

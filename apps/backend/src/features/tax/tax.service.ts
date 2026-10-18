@@ -8,6 +8,7 @@ import type {
   ITaxExportResult,
   ITaxFilingRow,
   ITaxPeriodRow,
+  ITaxSummary,
   TaxFilingKind,
 } from '@zarva/shared';
 import { Prisma } from '@prisma/client';
@@ -26,6 +27,26 @@ export class TaxService {
     private readonly prisma: PrismaService,
     private readonly authority: TaxAuthorityAdapter,
   ) {}
+
+  async summary(user: IAuthUser): Promise<ITaxSummary> {
+    this.assertRead(user);
+    const orgId = user.organizationId;
+    const [periods, openPeriods, filings, submittedFilings] = await Promise.all([
+      this.prisma.taxPeriod.count({ where: { organizationId: orgId } }),
+      this.prisma.taxPeriod.count({ where: { organizationId: orgId, status: 'open' } }),
+      this.prisma.taxFiling.count({ where: { period: { organizationId: orgId } } }),
+      this.prisma.taxFiling.count({
+        where: { period: { organizationId: orgId }, status: 'submitted' },
+      }),
+    ]);
+    return {
+      periods,
+      openPeriods,
+      filings,
+      submittedFilings,
+      adapterConfigured: this.authority.isLiveConfigured(),
+    };
+  }
 
   async listPeriods(user: IAuthUser): Promise<ITaxPeriodRow[]> {
     this.assertRead(user);

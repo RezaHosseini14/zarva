@@ -8,6 +8,7 @@ import type {
   IJewelryBomLineRow,
   IJewelryPieceRow,
   IJewelryReservationRow,
+  IJewelrySummary,
 } from '@zarva/shared';
 
 import { PrismaService } from '../../prisma/prisma.service';
@@ -22,6 +23,17 @@ import type {
 @Injectable()
 export class JewelryService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async summary(user: IAuthUser): Promise<IJewelrySummary> {
+    this.assertRead(user);
+    const orgId = user.organizationId;
+    const [pieces, reserved, available] = await Promise.all([
+      this.prisma.jewelryPiece.count({ where: { organizationId: orgId } }),
+      this.prisma.jewelryPiece.count({ where: { organizationId: orgId, status: 'reserved' } }),
+      this.prisma.jewelryPiece.count({ where: { organizationId: orgId, status: 'showcase' } }),
+    ]);
+    return { pieces, reserved, available };
+  }
 
   async listPieces(user: IAuthUser): Promise<IJewelryPieceRow[]> {
     this.assertRead(user);

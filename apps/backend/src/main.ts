@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import cookieParser = require('cookie-parser');
 
+import { DbExceptionFilter } from './common/db-exception.filter';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -22,6 +23,8 @@ async function bootstrap(): Promise<void> {
       forbidNonWhitelisted: true,
     }),
   );
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new DbExceptionFilter(httpAdapter));
 
   if (process.env.SWAGGER_ENABLED !== 'false') {
     const config = new DocumentBuilder()

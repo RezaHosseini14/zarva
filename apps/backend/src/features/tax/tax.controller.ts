@@ -10,6 +10,7 @@ import {
   GenerateTaxFilingDto,
   UpdateTaxPeriodDto,
 } from './dto/tax.dto';
+import { TaxAuthorityAdapter } from './tax.authority.adapter';
 import { TaxService } from './tax.service';
 
 @ApiTags('Tax')
@@ -19,10 +20,18 @@ export class TaxController {
   constructor(
     private readonly tax: TaxService,
     private readonly billing: BillingService,
+    private readonly authority: TaxAuthorityAdapter,
   ) {}
 
   private async gate(user: IAuthUser): Promise<void> {
     await this.billing.assertModule(user.organizationId, 'tax');
+  }
+
+  @Get('summary')
+  @ApiOperation({ summary: 'Tax filing KPIs' })
+  async summary(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return this.tax.summary(user);
   }
 
   @Get('periods')
@@ -68,6 +77,13 @@ export class TaxController {
   async listFilings(@CurrentUser() user: IAuthUser) {
     await this.gate(user);
     return this.tax.listFilings(user);
+  }
+
+  @Get('capabilities')
+  @ApiOperation({ summary: 'Tax module capabilities (authority submit gate)' })
+  async capabilities(@CurrentUser() user: IAuthUser) {
+    await this.gate(user);
+    return { submitConfigured: this.authority.isLiveConfigured() };
   }
 
   @Post('filings/:id/export')

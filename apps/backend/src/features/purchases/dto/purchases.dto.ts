@@ -31,6 +31,27 @@ export class CreatePurchaseDto {
   @IsString()
   purity?: string;
 
+  @ApiPropertyOptional({ example: 18 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  purityKarat?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  rateIrt?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  amountIrt?: number;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
@@ -53,4 +74,18 @@ export class CreatePurchaseReturnDto {
   @ApiProperty()
   @IsString()
   amountLabel!: string;
+
+  @ApiPropertyOptional({ description: 'Grams to reverse; omit for full reverse' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0.001)
+  grams?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  purityKarat?: number;
 }

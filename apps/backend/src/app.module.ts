@@ -32,13 +32,14 @@ import { AiModule } from './features/ai/ai.module';
 import { SmsModule } from './features/sms/sms.module';
 import { RedisModule } from './features/sms/redis.module';
 import { PlatformModule } from './features/platform/platform.module';
+import { NavigationModule } from './features/navigation/navigation.module';
 import { EmailModule } from './features/email/email.module';
 import { JwtAuthGuard } from './features/auth/jwt-auth.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 300 }]),
     PrismaModule,
     RedisModule,
     SmsModule,
@@ -50,6 +51,7 @@ import { JwtAuthGuard } from './features/auth/jwt-auth.guard';
     ThemeModule,
     BillingModule,
     PlatformModule,
+    NavigationModule,
     RolesModule,
     OrganizationModule,
     NotificationsModule,
