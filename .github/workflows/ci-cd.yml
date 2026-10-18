@@ -392,6 +392,12 @@ jobs:
             exit 1
           fi
 
+          echo "--> Seeding database (idempotent upserts)..."
+          if ! docker compose -f docker-compose.yml run --rm --no-deps backend \
+            node --experimental-strip-types apps/backend/prisma/seed.ts; then
+            echo "::warning::Database seed failed (login users may be missing)"
+          fi
+
           up_one() {
             local service="$1"
             local timeout="$2"

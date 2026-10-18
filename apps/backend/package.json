@@ -18,7 +18,7 @@
     "db:generate": "prisma generate"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "node --experimental-strip-types prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^12.1.0",

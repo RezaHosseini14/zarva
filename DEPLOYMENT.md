@@ -30,6 +30,7 @@ openssl req -x509 -nodes -days 825 -newkey rsa:2048 \
 docker compose pull
 docker compose up -d postgres redis minio --wait
 docker compose run --rm --no-deps backend npx prisma migrate deploy --schema=apps/backend/prisma/schema.prisma
+docker compose run --rm --no-deps backend node --experimental-strip-types apps/backend/prisma/seed.ts
 docker compose up -d --force-recreate --wait backend
 docker compose up -d --force-recreate --wait frontend
 docker compose up -d --force-recreate --wait nginx
