@@ -157,8 +157,8 @@ jobs:
             ${{ steps.meta.outputs.ref }}
             ${{ steps.meta.outputs.image }}:latest
           build-args: |
-            NEXT_PUBLIC_API_URL=https://5.159.49.36:5032/api/v1
-            NEXT_PUBLIC_APP_URL=https://5.159.49.36:5032
+            NEXT_PUBLIC_API_URL=https://109.70.78.80:1032/api/v1
+            NEXT_PUBLIC_APP_URL=https://109.70.78.80:1032
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
 
@@ -194,9 +194,9 @@ jobs:
     timeout-minutes: 30
     environment: production
     env:
-      SSH_HOST: ${{ secrets.SSH_HOST || '5.159.49.36' }}
+      SSH_HOST: ${{ secrets.SSH_HOST || '109.70.78.80' }}
       SSH_USER: ${{ secrets.SSH_USER || 'root' }}
-      TLS_HOST: ${{ secrets.SSH_HOST || '5.159.49.36' }}
+      TLS_HOST: ${{ secrets.SSH_HOST || '109.70.78.80' }}
 
     steps:
       - name: Checkout repository
@@ -282,8 +282,8 @@ jobs:
           export COMPOSE_PROJECT_NAME=zarva
 
           echo "--> Deploy host: $(hostname) pwd=$(pwd)"
-          echo "--> Compose ports (must include 5030/5031/5032):"
-          grep -nE 'ports:|5030|5031|5032' docker-compose.yml || true
+          echo "--> Compose ports (must include 1030/1031/1032):"
+          grep -nE 'ports:|1030|1031|1032' docker-compose.yml || true
 
           if [ -n "${GHCR_TOKEN}" ]; then
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
@@ -302,7 +302,7 @@ jobs:
             echo "FRONTEND_IMAGE=${FRONTEND_IMAGE}" >> .env
           fi
 
-          for kv in BACKEND_PORT=5030 FRONTEND_PORT=5031 NGINX_PORT=5032 MINIO_PUBLIC_PORT=9030 MINIO_CONSOLE_PORT=9031; do
+          for kv in BACKEND_PORT=1030 FRONTEND_PORT=1031 NGINX_PORT=1032 MINIO_PUBLIC_PORT=9030 MINIO_CONSOLE_PORT=9031; do
             key=${kv%%=*}; val=${kv#*=}
             if grep -q "^${key}=" .env; then
               sed -i "s|^${key}=.*|${key}=${val}|" .env
@@ -341,10 +341,10 @@ jobs:
             echo "MINIO_SECRET_KEY=$(openssl rand -hex 24)" >> .env
           fi
           if ! grep -q '^NEXT_PUBLIC_API_URL=' .env; then
-            echo "NEXT_PUBLIC_API_URL=https://${TLS_HOST:-5.159.49.36}:5032/api/v1" >> .env
+            echo "NEXT_PUBLIC_API_URL=https://${TLS_HOST:-109.70.78.80}:1032/api/v1" >> .env
           fi
           if ! grep -q '^NEXT_PUBLIC_APP_URL=' .env; then
-            echo "NEXT_PUBLIC_APP_URL=https://${TLS_HOST:-5.159.49.36}:5032" >> .env
+            echo "NEXT_PUBLIC_APP_URL=https://${TLS_HOST:-109.70.78.80}:1032" >> .env
           fi
 
           sed -i '/^API_IMAGE=/d;/^WEB_IMAGE=/d' .env || true
@@ -357,8 +357,8 @@ jobs:
             openssl req -x509 -nodes -days 825 -newkey rsa:2048 \
               -keyout docker/certs/server.key \
               -out docker/certs/server.crt \
-              -subj "/CN=${TLS_HOST:-5.159.49.36}" \
-              -addext "subjectAltName=IP:${TLS_HOST:-5.159.49.36}"
+              -subj "/CN=${TLS_HOST:-109.70.78.80}" \
+              -addext "subjectAltName=IP:${TLS_HOST:-109.70.78.80}"
           fi
 
           echo "--> Pulling latest container images..."
@@ -450,7 +450,7 @@ jobs:
             exit 1
           fi
 
-          echo "--> Verifying published host ports (backend:5030 frontend:5031 nginx:5032)..."
+          echo "--> Verifying published host ports (backend:1030 frontend:1031 nginx:1032)..."
           docker ps --filter name=zarva --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
           BACKEND_PORTS=$(docker port zarva-backend 3000/tcp 2>/dev/null || true)
           FRONTEND_PORTS=$(docker port zarva-frontend 3000/tcp 2>/dev/null || true)
@@ -458,16 +458,16 @@ jobs:
           echo "    backend 3000/tcp -> ${BACKEND_PORTS}"
           echo "    frontend 3000/tcp -> ${FRONTEND_PORTS}"
           echo "    nginx 443/tcp -> ${NGINX_PORTS}"
-          echo "$BACKEND_PORTS" | grep -qE '(:|::)5030$' || {
-            echo "::error::backend is not published on host port 5030 (got: ${BACKEND_PORTS})"
+          echo "$BACKEND_PORTS" | grep -qE '(:|::)1030$' || {
+            echo "::error::backend is not published on host port 1030 (got: ${BACKEND_PORTS})"
             exit 1
           }
-          echo "$FRONTEND_PORTS" | grep -qE '(:|::)5031$' || {
-            echo "::error::frontend is not published on host port 5031 (got: ${FRONTEND_PORTS})"
+          echo "$FRONTEND_PORTS" | grep -qE '(:|::)1031$' || {
+            echo "::error::frontend is not published on host port 1031 (got: ${FRONTEND_PORTS})"
             exit 1
           }
-          echo "$NGINX_PORTS" | grep -qE '(:|::)5032$' || {
-            echo "::error::nginx is not published on host port 5032 (got: ${NGINX_PORTS})"
+          echo "$NGINX_PORTS" | grep -qE '(:|::)1032$' || {
+            echo "::error::nginx is not published on host port 1032 (got: ${NGINX_PORTS})"
             exit 1
           }
 
@@ -538,23 +538,23 @@ jobs:
           fi
           REMOTE
 
-          echo "Verifying stack at https://${SSH_HOST}:5032 (nginx → frontend + /api/v1/health)..."
+          echo "Verifying stack at https://${SSH_HOST}:1032 (nginx → frontend + /api/v1/health)..."
           STACK_UP=false
           for i in $(seq 1 40); do
-            if curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:5032/api/v1/health" >/dev/null \
-              && curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:5032" >/dev/null; then
+            if curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:1032/api/v1/health" >/dev/null \
+              && curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:1032" >/dev/null; then
               STACK_UP=true
               echo "Frontend + Backend (via nginx) healthy on attempt $i"
-              curl -kfsS "https://${SSH_HOST}:5032/api/v1/health"
+              curl -kfsS "https://${SSH_HOST}:1032/api/v1/health"
               echo ""
               break
             fi
-            echo "Waiting for :5032... ($i/40)"
+            echo "Waiting for :1032... ($i/40)"
             sleep 3
           done
 
           if [ "$STACK_UP" = false ]; then
-            echo "::error::Deployment health check failed (port 5032 unreachable from GitHub runner)"
+            echo "::error::Deployment health check failed (port 1032 unreachable from GitHub runner)"
             echo "=== Container status (via SSH, best effort) ==="
             # shellcheck disable=SC2086
             ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker ps -a --filter name=zarva" || true
@@ -577,15 +577,15 @@ jobs:
 
           | Component | Status | URL |
           |---|---|---|
-          | **Gateway** | Live | [https://${{ env.SSH_HOST }}:5032](https://${{ env.SSH_HOST }}:5032) |
-          | **Health Check** | Healthy | [https://${{ env.SSH_HOST }}:5032/api/v1/health](https://${{ env.SSH_HOST }}:5032/api/v1/health) |
-          | **Swagger** | Ready | [https://${{ env.SSH_HOST }}:5032/api/docs](https://${{ env.SSH_HOST }}:5032/api/docs) |
+          | **Gateway** | Live | [https://${{ env.SSH_HOST }}:1032](https://${{ env.SSH_HOST }}:1032) |
+          | **Health Check** | Healthy | [https://${{ env.SSH_HOST }}:1032/api/v1/health](https://${{ env.SSH_HOST }}:1032/api/v1/health) |
+          | **Swagger** | Ready | [https://${{ env.SSH_HOST }}:1032/api/docs](https://${{ env.SSH_HOST }}:1032/api/docs) |
 
           - **Git SHA**: \`${{ github.sha }}\`
           - **Triggered By**: @${{ github.actor }}
           - **Target VPS**: \`${{ env.SSH_HOST }}\` (\`/opt/zarva\`)
-          - **Gateway**: nginx on \`:5032\` → backend \`/api\`+\`/socket.io\`, frontend \`/\`
-          - **Direct ports**: backend \`:5030\`, frontend \`:5031\`
+          - **Gateway**: nginx on \`:1032\` → backend \`/api\`+\`/socket.io\`, frontend \`/\`
+          - **Direct ports**: backend \`:1030\`, frontend \`:1031\`
           - **Backend Image**: \`${{ needs.build-backend.outputs.image_ref }}\`
           - **Frontend Image**: \`${{ needs.build-frontend.outputs.image_ref }}\`
           EOF
