@@ -48,27 +48,40 @@ services:
       - zarva-net
 
   minio:
-    # Docker Hub minio pulls often fail on IR VPS; Arvan mirror matches cached host images.
-    image: ${MINIO_IMAGE:-docker.arvancloud.ir/minio/minio:RELEASE.2022-10-24T18-35-07Z}
+    # MinIO official images (quay/arvan) are unreachable from many IR VPS; SeaweedFS exposes S3 on :9000.
+    image: ${MINIO_IMAGE:-chrislusf/seaweedfs:3.79}
     container_name: zarva-minio
     restart: unless-stopped
-    command: server /data --console-address ":9001"
+    command:
+      [
+        "server",
+        "-dir=/data",
+        "-ip=minio",
+        "-ip.bind=0.0.0.0",
+        "-master.port=9333",
+        "-volume.port=8080",
+        "-filer",
+        "-s3",
+        "-s3.port=9000",
+      ]
     environment:
+      # Kept for compose/.env compatibility with the Nest MinIO client (anonymous/open S3 on seaweed default).
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-zarva}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-zarva-secret-key}
-      MINIO_API_CORS_ALLOW_ORIGIN: '*'
     ports:
-      # 9020/9021 taken by pooya-minio on shared VPS — keep zarva on 9030/9031
       - "${MINIO_PUBLIC_PORT:-9030}:9000"
-      - "${MINIO_CONSOLE_PORT:-9031}:9001"
     volumes:
       - zarva_miniodata:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://127.0.0.1:9333/cluster/status >/dev/null || exit 1",
+        ]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 10s
+      retries: 5
+      start_period: 20s
     networks:
       - zarva-net
 
