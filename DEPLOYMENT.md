@@ -14,14 +14,53 @@ Remote: `/opt/zarva`
 
 | Name | Required | Notes |
 |------|----------|--------|
-| `SSH_PRIVATE_KEY` | yes | Private key (full PEM) for GitHub Actions → VPS |
-| `SSH_HOST` | yes | Hostname or IP the runner connects to over SSH |
-| `SSH_USER` | yes | e.g. `root` |
+| `SSH_PRIVATE_KEY` | for SSH deploy | Private key (full PEM) for GitHub Actions → VPS |
+| `SSH_HOST` | for SSH deploy | Hostname or IP the runner connects to over SSH |
+| `SSH_USER` | for SSH deploy | e.g. `root` |
 | `GHCR_PULL_TOKEN` | if pulling from GHCR on the VPS | PAT with `read:packages` |
 | `SSH_PORT` | no | SSH port (default **22**). Set if `sshd` is not on 22 |
 | `TLS_HOST` | no | Hostname or IP for **HTTPS** checks and `NEXT_PUBLIC_*` on first `.env` bootstrap (defaults to `SSH_HOST`) |
 
-CI reads **`SSH_PORT`** from secrets and passes `-p` to every `ssh`/`scp` and to `ssh-keyscan`.
+### Repo variable (self-hosted)
+
+| Name | Value |
+|------|--------|
+| `DEPLOY_RUNS_ON` | `["self-hosted","zarva"]` |
+
+When set, the **Deploy** job runs **on the VPS runner** (no inbound SSH from GitHub). Build still uses `ubuntu-latest`.
+
+## SSH from GitHub Actions (timeout / Permission denied)
+
+Two separate failures:
+
+1. **`Connection timed out`** — GitHub-hosted runners (US/EU) cannot open TCP to your VPS (panel firewall or provider geo-block). Your home PC can still connect.  
+   - **Fix A (recommended):** self-hosted runner (see below).  
+   - **Fix B:** open inbound **TCP 22** (or your `SSH_PORT`) to **`0.0.0.0/0`** in the VPS **panel** firewall and `ufw`.
+
+2. **`Permission denied (publickey)`** — the CI public key is **not** in `authorized_keys` on this server (common after migrating to a new VPS).
+
+Install the zarva CI public key (run **once** on the VPS as the SSH user, e.g. `root`, after password/console login):
+
+```bash
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+grep -q 'zarva-github-actions' ~/.ssh/authorized_keys 2>/dev/null || \
+  echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8mffGincHJutX2pqMQpH5Nu/82aNXq37UBW7W+nkrE zarva-github-actions' >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+Verify from your PC:
+
+```powershell
+ssh -i $env:USERPROFILE\.ssh\id_ed25519_zarva_ci root@109.70.78.80
+```
+
+## Self-hosted runner (recommended when GitHub cannot SSH)
+
+1. On GitHub: **Settings → Actions → Runners → New self-hosted runner** (Linux x64).  
+2. On the VPS: follow the download/`./config.sh` instructions; use labels **`self-hosted`**, **`zarva`**.  
+3. Repo **Settings → Variables → Actions**: create `DEPLOY_RUNS_ON` = `["self-hosted","zarva"]`.  
+4. Install Docker + Compose on the VPS; ensure `/opt/zarva` is writable.  
+5. Re-run the workflow.
 
 ## First boot
 
