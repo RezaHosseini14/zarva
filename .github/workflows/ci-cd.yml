@@ -18,12 +18,6 @@ permissions:
 env:
   REGISTRY: ghcr.io
   REMOTE_DIR: /opt/zarva
-  SSH_FLAGS: >-
-    -o ConnectTimeout=20
-    -o ServerAliveInterval=15
-    -o ServerAliveCountMax=20
-    -o TCPKeepAlive=yes
-    -o StrictHostKeyChecking=accept-new
 
 jobs:
   validate:
@@ -196,7 +190,9 @@ jobs:
     env:
       SSH_HOST: ${{ secrets.SSH_HOST || '109.70.78.80' }}
       SSH_USER: ${{ secrets.SSH_USER || 'root' }}
-      TLS_HOST: ${{ secrets.SSH_HOST || '109.70.78.80' }}
+      # Public hostname or IP for HTTPS curl checks and NEXT_PUBLIC_* (set TLS_HOST if it differs from SSH_HOST)
+      TLS_HOST: ${{ secrets.TLS_HOST || secrets.SSH_HOST || '109.70.78.80' }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
 
     steps:
       - name: Checkout repository
@@ -209,6 +205,19 @@ jobs:
           test -n "$SSH_HOST" || { echo "::error::Missing SSH_HOST"; exit 1; }
           test -n "$SSH_USER" || { echo "::error::Missing SSH_USER"; exit 1; }
           test -n "$SSH_PRIVATE_KEY" || { echo "::error::Missing secret SSH_PRIVATE_KEY"; exit 1; }
+          P="${SSH_PORT:-22}"
+          case "$P" in
+            ''|*[!0-9]*)
+              echo "::error::SSH_PORT must be a positive integer (1-65535), got: ${P}"
+              exit 1
+              ;;
+          esac
+          if [ "$P" -lt 1 ] || [ "$P" -gt 65535 ]; then
+            echo "::error::SSH_PORT out of range: ${P}"
+            exit 1
+          fi
+          echo "SSH_FLAGS=-o ConnectTimeout=20 -o ServerAliveInterval=15 -o ServerAliveCountMax=20 -o TCPKeepAlive=yes -o StrictHostKeyChecking=accept-new -p ${P}" >> "$GITHUB_ENV"
+          echo "--> SSH target: ${SSH_USER}@${SSH_HOST} port ${P}; TLS_HOST=${TLS_HOST}"
 
       - name: Setup SSH agent
         uses: webfactory/ssh-agent@v0.9.0
@@ -227,7 +236,7 @@ jobs:
             ConnectTimeout 30
             StrictHostKeyChecking accept-new
           EOF
-          ssh-keyscan -H -T 20 "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || {
+          ssh-keyscan -H -T 20 -p "${SSH_PORT:-22}" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || {
             echo "WARN: ssh-keyscan failed; host key will be verified via accept-new"
           }
           chmod 600 ~/.ssh/known_hosts ~/.ssh/config 2>/dev/null || true
@@ -538,14 +547,14 @@ jobs:
           fi
           REMOTE
 
-          echo "Verifying stack at https://${SSH_HOST}:1032 (nginx → frontend + /api/v1/health)..."
+          echo "Verifying stack at https://${TLS_HOST}:1032 (nginx → frontend + /api/v1/health)..."
           STACK_UP=false
           for i in $(seq 1 40); do
-            if curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:1032/api/v1/health" >/dev/null \
-              && curl -kfsS --connect-timeout 5 "https://${SSH_HOST}:1032" >/dev/null; then
+            if curl -kfsS --connect-timeout 5 "https://${TLS_HOST}:1032/api/v1/health" >/dev/null \
+              && curl -kfsS --connect-timeout 5 "https://${TLS_HOST}:1032" >/dev/null; then
               STACK_UP=true
               echo "Frontend + Backend (via nginx) healthy on attempt $i"
-              curl -kfsS "https://${SSH_HOST}:1032/api/v1/health"
+              curl -kfsS "https://${TLS_HOST}:1032/api/v1/health"
               echo ""
               break
             fi
@@ -554,7 +563,7 @@ jobs:
           done
 
           if [ "$STACK_UP" = false ]; then
-            echo "::error::Deployment health check failed (port 1032 unreachable from GitHub runner)"
+            echo "::error::Deployment health check failed (https://${TLS_HOST}:1032 unreachable from GitHub runner)"
             echo "=== Container status (via SSH, best effort) ==="
             # shellcheck disable=SC2086
             ssh $SSH_FLAGS "$SSH_USER@$SSH_HOST" "docker ps -a --filter name=zarva" || true
@@ -577,13 +586,13 @@ jobs:
 
           | Component | Status | URL |
           |---|---|---|
-          | **Gateway** | Live | [https://${{ env.SSH_HOST }}:1032](https://${{ env.SSH_HOST }}:1032) |
-          | **Health Check** | Healthy | [https://${{ env.SSH_HOST }}:1032/api/v1/health](https://${{ env.SSH_HOST }}:1032/api/v1/health) |
-          | **Swagger** | Ready | [https://${{ env.SSH_HOST }}:1032/api/docs](https://${{ env.SSH_HOST }}:1032/api/docs) |
+          | **Gateway** | Live | [https://${{ env.TLS_HOST }}:1032](https://${{ env.TLS_HOST }}:1032) |
+          | **Health Check** | Healthy | [https://${{ env.TLS_HOST }}:1032/api/v1/health](https://${{ env.TLS_HOST }}:1032/api/v1/health) |
+          | **Swagger** | Ready | [https://${{ env.TLS_HOST }}:1032/api/docs](https://${{ env.TLS_HOST }}:1032/api/docs) |
 
           - **Git SHA**: \`${{ github.sha }}\`
           - **Triggered By**: @${{ github.actor }}
-          - **Target VPS**: \`${{ env.SSH_HOST }}\` (\`/opt/zarva\`)
+          - **Target VPS (SSH)**: \`${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.SSH_PORT }}\` — **public URL host**: \`${{ env.TLS_HOST }}\` (\`/opt/zarva\`)
           - **Gateway**: nginx on \`:1032\` → backend \`/api\`+\`/socket.io\`, frontend \`/\`
           - **Direct ports**: backend \`:1030\`, frontend \`:1031\`
           - **Backend Image**: \`${{ needs.build-backend.outputs.image_ref }}\`
