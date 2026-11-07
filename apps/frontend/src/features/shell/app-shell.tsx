@@ -12,6 +12,7 @@ import {
 
 import { ZarvaAppCanvas } from '@/components/surfaces/zarva-app-canvas';
 
+import { ChangelogModal } from './changelog-modal';
 import { AppSidebar } from './app-sidebar';
 import { AppHeader } from './app-header';
 import { ZarvaNavLoader } from './zarva-nav-loader';
@@ -31,6 +32,7 @@ interface IAppShellFrameProps {
 /** Persistent chrome for (app) routes — survives client navigations. */
 export function AppShellFrame({ children, navSlot }: IAppShellFrameProps) {
   const [open, setOpen] = useState(false);
+  const [changelogOpen, setChangelogOpen] = useState(false);
   const [title, setTitleState] = useState('');
 
   const setTitle = useCallback((next: string) => {
@@ -47,7 +49,12 @@ export function AppShellFrame({ children, navSlot }: IAppShellFrameProps) {
       <ZarvaNavLoader />
       <ZarvaAppCanvas className="text-foreground">
         <div className="flex h-dvh gap-3 overflow-hidden p-[var(--shell-inset)] sm:gap-4">
-          <AppSidebar open={open} onClose={() => setOpen(false)} navSlot={navSlot} />
+          <AppSidebar
+            open={open}
+            onClose={() => setOpen(false)}
+            navSlot={navSlot}
+            onOpenChangelog={() => setChangelogOpen(true)}
+          />
           <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3 sm:gap-4">
             <AppHeader title={title} onMenuClick={() => setOpen(true)} />
             <main className="zarva-scrollbar min-h-0 flex-1 overflow-y-auto px-0.5 pb-4 sm:px-1">
@@ -55,6 +62,7 @@ export function AppShellFrame({ children, navSlot }: IAppShellFrameProps) {
             </main>
           </div>
         </div>
+        <ChangelogModal open={changelogOpen} onOpenChange={setChangelogOpen} />
       </ZarvaAppCanvas>
     </ShellTitleContext.Provider>
   );

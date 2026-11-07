@@ -8,6 +8,8 @@ import { cn } from '@/lib/utils';
 import { ZarvaMark } from '@/components/brand/zarva-mark';
 import { Icon } from '@/components/ui/icon';
 
+import { APP_VERSION } from '@/data/changelog';
+
 import { SidebarNavCloseProvider } from './sidebar-nav-close-context';
 import { UserMenu } from './user-menu';
 
@@ -15,11 +17,13 @@ interface IAppSidebarProps {
   readonly open: boolean;
   readonly onClose: () => void;
   readonly navSlot: ReactNode;
+  readonly onOpenChangelog?: () => void;
 }
 
-export function AppSidebar({ open, onClose, navSlot }: IAppSidebarProps) {
+export function AppSidebar({ open, onClose, navSlot, onOpenChangelog }: IAppSidebarProps) {
   const t = useTranslations('nav');
   const tCommon = useTranslations('common');
+  const tShell = useTranslations('shell.changelog');
   const locale = useLocale();
 
   return (
@@ -67,7 +71,17 @@ export function AppSidebar({ open, onClose, navSlot }: IAppSidebarProps) {
         <SidebarNavCloseProvider onClose={onClose}>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">{navSlot}</div>
         </SidebarNavCloseProvider>
-        <div className="shrink-0 border-t border-border/60 p-2">
+        <div className="shrink-0 space-y-1 border-t border-border/60 p-2">
+          {onOpenChangelog ? (
+            <button
+              type="button"
+              className="w-full rounded-lg px-2 py-1 text-center text-[10px] font-medium text-muted-fg transition-colors hover:bg-muted/40 hover:text-foreground"
+              aria-label={tShell('openVersion', { version: APP_VERSION })}
+              onClick={onOpenChangelog}
+            >
+              v{APP_VERSION}
+            </button>
+          ) : null}
           <UserMenu onNavigate={onClose} />
         </div>
       </aside>

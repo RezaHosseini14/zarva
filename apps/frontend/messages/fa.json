@@ -379,6 +379,12 @@
     "colName": "نام",
     "colStatus": "وضعیت",
     "colUpdated": "به‌روزرسانی",
+    "changelog": {
+      "title": "تغییرات نسخه",
+      "currentVersion": "نسخه فعلی:",
+      "currentVersionLabel": "نسخه فعلی",
+      "openVersion": "نسخه {version} — مشاهده تغییرات"
+    },
     "header": {
       "quickCreateAria": "ایجاد سریع",
       "quickCreateTitle": "ایجاد",

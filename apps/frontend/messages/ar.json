@@ -379,6 +379,12 @@
     "colName": "الاسم",
     "colStatus": "الحالة",
     "colUpdated": "آخر تحديث",
+    "changelog": {
+      "title": "سجل الإصدارات",
+      "currentVersion": "الإصدار الحالي:",
+      "currentVersionLabel": "الإصدار الحالي",
+      "openVersion": "الإصدار {version} — عرض سجل الإصدارات"
+    },
     "header": {
       "quickCreateAria": "إنشاء سريع",
       "quickCreateTitle": "إنشاء",

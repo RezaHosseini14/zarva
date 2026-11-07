@@ -379,6 +379,12 @@
     "colName": "Name",
     "colStatus": "Status",
     "colUpdated": "Updated",
+    "changelog": {
+      "title": "Release notes",
+      "currentVersion": "Current version:",
+      "currentVersionLabel": "Current version",
+      "openVersion": "Version {version} — view release notes"
+    },
     "header": {
       "quickCreateAria": "Quick create",
       "quickCreateTitle": "Create",
