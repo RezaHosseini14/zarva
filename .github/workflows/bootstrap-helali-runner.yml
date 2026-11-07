@@ -1,0 +1,37 @@
+name: Bootstrap helali self-hosted runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      registration_token:
+        description: Helali runner registration token (from API or emit-runner workflow)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  register-helali-vps:
+    name: Register helali-vps on this host
+    runs-on: [self-hosted, zarva]
+    timeout-minutes: 15
+    steps:
+      - name: Checkout helali (register script)
+        uses: actions/checkout@v4
+        with:
+          repository: RezaHosseini14/helali
+          ref: main
+          path: helali
+          token: ${{ secrets.HELALI_BOOTSTRAP_CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Register Actions runner (helali-vps)
+        env:
+          REGISTRATION_TOKEN: ${{ inputs.registration_token }}
+          RUNNER_DIR: /opt/actions-runner-helali
+        run: |
+          set -euo pipefail
+          test -n "$REGISTRATION_TOKEN"
+          sudo mkdir -p /opt/helali
+          sudo REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$GITHUB_WORKSPACE/helali/scripts/register-self-hosted-runner-helali.sh"
+          echo "Runner registered. Confirm at: https://github.com/RezaHosseini14/helali/settings/actions/runners"
