@@ -58,6 +58,6 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$REGISTRATION_TOKEN"
-          sudo mkdir -p /opt/helali
-          sudo REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$GITHUB_WORKSPACE/helali/scripts/register-self-hosted-runner-helali.sh"
+          sudo mkdir -p /opt/helali /opt/actions-runner-helali
+          sudo env REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$GITHUB_WORKSPACE/helali/scripts/register-helali-runner-on-vps.sh"
           echo "helali-vps registered — https://github.com/RezaHosseini14/helali/settings/actions/runners"
