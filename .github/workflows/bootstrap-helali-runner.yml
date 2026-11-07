@@ -2,11 +2,6 @@ name: Bootstrap helali self-hosted runner
 
 on:
   workflow_dispatch:
-    inputs:
-      registration_token:
-        description: Helali runner registration token (from API or emit-runner workflow)
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -23,15 +18,33 @@ jobs:
           repository: RezaHosseini14/helali
           ref: main
           path: helali
-          token: ${{ secrets.HELALI_BOOTSTRAP_CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Create helali runner registration token
+        id: reg
+        env:
+          HELALI_ADMIN_PAT: ${{ secrets.HELALI_RUNNER_ADMIN_PAT }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HELALI_ADMIN_PAT:-}" ]; then
+            echo "::error::Add zarva repo secret HELALI_RUNNER_ADMIN_PAT (classic PAT with admin:repo on helali, or fine-grained Actions: write on helali)."
+            exit 1
+          fi
+          TOKEN=$(curl -fsSL -X POST \
+            -H "Authorization: Bearer ${HELALI_ADMIN_PAT}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/RezaHosseini14/helali/actions/runners/registration-token" \
+            | jq -r '.token')
+          test -n "$TOKEN" && test "$TOKEN" != null
+          echo "::add-mask::${TOKEN}"
+          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
 
       - name: Register Actions runner (helali-vps)
         env:
-          REGISTRATION_TOKEN: ${{ inputs.registration_token }}
-          RUNNER_DIR: /opt/actions-runner-helali
+          REGISTRATION_TOKEN: ${{ steps.reg.outputs.token }}
         run: |
           set -euo pipefail
           test -n "$REGISTRATION_TOKEN"
           sudo mkdir -p /opt/helali
           sudo REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$GITHUB_WORKSPACE/helali/scripts/register-self-hosted-runner-helali.sh"
-          echo "Runner registered. Confirm at: https://github.com/RezaHosseini14/helali/settings/actions/runners"
+          echo "helali-vps registered — https://github.com/RezaHosseini14/helali/settings/actions/runners"
