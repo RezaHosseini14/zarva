@@ -7,6 +7,8 @@ on:
         description: Optional — paste from helali emit-runner workflow (else uses HELALI_RUNNER_ADMIN_PAT)
         required: false
         type: string
+  repository_dispatch:
+    types: [helali-runner-bootstrap]
 
 permissions:
   contents: read
@@ -28,7 +30,7 @@ jobs:
         id: reg
         env:
           HELALI_ADMIN_PAT: ${{ secrets.HELALI_RUNNER_ADMIN_PAT }}
-          INPUT_TOKEN: ${{ inputs.registration_token }}
+          INPUT_TOKEN: ${{ inputs.registration_token || github.event.client_payload.registration_token }}
         run: |
           set -euo pipefail
           if [ -n "${INPUT_TOKEN:-}" ]; then
