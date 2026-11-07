@@ -54,6 +54,21 @@ Verify from your PC:
 ssh -i $env:USERPROFILE\.ssh\id_ed25519_zarva_ci root@109.70.78.80
 ```
 
+## Public domain (`zarva.rmhosseini.ir`)
+
+DNS (Cloudflare, Proxied) → `109.70.78.80`. Host **nginx** on the VPS terminates **80/443** and proxies to docker `1030`/`1031`. Let's Encrypt via **certbot**.
+
+1. Cloudflare SSL/TLS mode: **Full** or **Full (strict)** after the first cert succeeds.  
+2. Panel firewall: allow inbound **80** and **443** (Cloudflare only needs these).  
+3. Run workflow **Setup zarva.rmhosseini.ir (host nginx + certbot)** (`workflow_dispatch`), or on the VPS:
+
+```bash
+cd /path/to/zarva   # or checkout
+sudo DOMAIN=zarva.rmhosseini.ir CERTBOT_EMAIL=admin@rmhosseini.ir bash scripts/setup-host-domain-zarva.sh
+```
+
+4. Redeploy CI so the frontend image is built with `NEXT_PUBLIC_*=https://zarva.rmhosseini.ir`.
+
 ## Self-hosted runner (recommended when GitHub cannot SSH)
 
 1. On GitHub: **Settings → Actions → Runners → New self-hosted runner** (Linux x64).  

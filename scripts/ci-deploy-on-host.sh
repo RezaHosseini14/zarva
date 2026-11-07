@@ -5,7 +5,7 @@
 set -euo pipefail
 
 REMOTE_DIR="${REMOTE_DIR:-/opt/zarva}"
-TLS_HOST="${TLS_HOST:-109.70.78.80}"
+TLS_HOST="${TLS_HOST:-zarva.rmhosseini.ir}"
 cd "$REMOTE_DIR"
 unset COMPOSE_FILE COMPOSE_PATH || true
 export COMPOSE_PROJECT_NAME=zarva
@@ -69,12 +69,19 @@ if ! grep -q '^MINIO_SECRET_KEY=.\+' .env; then
   sed -i '/^MINIO_SECRET_KEY=/d' .env || true
   echo "MINIO_SECRET_KEY=$(openssl rand -hex 24)" >> .env
 fi
-if ! grep -q '^NEXT_PUBLIC_API_URL=' .env; then
-  echo "NEXT_PUBLIC_API_URL=https://${TLS_HOST}:1032/api/v1" >> .env
-fi
-if ! grep -q '^NEXT_PUBLIC_APP_URL=' .env; then
-  echo "NEXT_PUBLIC_APP_URL=https://${TLS_HOST}:1032" >> .env
-fi
+# Always keep public URLs on the Cloudflare domain (no :1032).
+for kv in \
+  "NEXT_PUBLIC_API_URL=https://${TLS_HOST}/api/v1" \
+  "NEXT_PUBLIC_APP_URL=https://${TLS_HOST}" \
+  "APP_URL=https://${TLS_HOST}" \
+  "CORS_ORIGIN=https://${TLS_HOST}"; do
+  key=${kv%%=*}; val=${kv#*=}
+  if grep -q "^${key}=" .env; then
+    sed -i "s|^${key}=.*|${key}=${val}|" .env
+  else
+    echo "${key}=${val}" >> .env
+  fi
+done
 
 sed -i '/^API_IMAGE=/d;/^WEB_IMAGE=/d' .env || true
 
@@ -83,11 +90,17 @@ docker rm -f zarva-api zarva-web 2>/dev/null || true
 mkdir -p docker/certs
 if [ ! -s docker/certs/server.crt ] || [ ! -s docker/certs/server.key ]; then
   echo "--> Creating the self-signed TLS certificate on the host..."
+  # Docker-edge self-signed (host nginx + Let's Encrypt is the public cert).
+  SAN="DNS:${TLS_HOST}"
+  case "${TLS_HOST}" in
+    *[!0-9.]* ) ;;
+    *) SAN="IP:${TLS_HOST}" ;;
+  esac
   openssl req -x509 -nodes -days 825 -newkey rsa:2048 \
     -keyout docker/certs/server.key \
     -out docker/certs/server.crt \
     -subj "/CN=${TLS_HOST}" \
-    -addext "subjectAltName=IP:${TLS_HOST}"
+    -addext "subjectAltName=${SAN}"
 fi
 
 echo "--> Pulling latest container images..."

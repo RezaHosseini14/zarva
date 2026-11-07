@@ -1,0 +1,39 @@
+name: Setup zarva.rmhosseini.ir (host nginx + certbot)
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: Domain to configure
+        required: true
+        default: zarva.rmhosseini.ir
+      certbot_email:
+        description: Email for Let's Encrypt
+        required: true
+        default: admin@rmhosseini.ir
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zarva-host-domain
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    name: Host nginx + certbot
+    runs-on: ${{ fromJSON(vars.DEPLOY_RUNS_ON || '["self-hosted","zarva"]') }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install nginx site and certificate
+        env:
+          DOMAIN: ${{ inputs.domain }}
+          CERTBOT_EMAIL: ${{ inputs.certbot_email }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/setup-host-domain-zarva.sh
+          sudo DOMAIN="$DOMAIN" CERTBOT_EMAIL="$CERTBOT_EMAIL" \
+            bash scripts/setup-host-domain-zarva.sh

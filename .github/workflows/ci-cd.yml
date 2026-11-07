@@ -151,8 +151,8 @@ jobs:
             ${{ steps.meta.outputs.ref }}
             ${{ steps.meta.outputs.image }}:latest
           build-args: |
-            NEXT_PUBLIC_API_URL=https://109.70.78.80:1032/api/v1
-            NEXT_PUBLIC_APP_URL=https://109.70.78.80:1032
+            NEXT_PUBLIC_API_URL=https://zarva.rmhosseini.ir/api/v1
+            NEXT_PUBLIC_APP_URL=https://zarva.rmhosseini.ir
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
 
@@ -194,7 +194,7 @@ jobs:
     env:
       SSH_HOST: ${{ secrets.SSH_HOST || '109.70.78.80' }}
       SSH_USER: ${{ secrets.SSH_USER || 'root' }}
-      TLS_HOST: ${{ secrets.TLS_HOST || secrets.SSH_HOST || '109.70.78.80' }}
+      TLS_HOST: ${{ secrets.TLS_HOST || 'zarva.rmhosseini.ir' }}
       SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
 
     steps:
@@ -415,23 +415,38 @@ jobs:
           REMOTE
           fi
 
-          echo "Verifying stack at https://${TLS_HOST}:1032 (nginx → frontend + /api/v1/health)..."
+          # Prefer public domain (host nginx :443); fall back to docker gateway :1032
+          HEALTH_URLS=(
+            "https://${TLS_HOST}/api/v1/health"
+            "https://127.0.0.1/api/v1/health"
+            "https://127.0.0.1:1032/api/v1/health"
+          )
+          HOME_URLS=(
+            "https://${TLS_HOST}/"
+            "https://127.0.0.1/"
+            "https://127.0.0.1:1032/"
+          )
+          echo "Verifying stack (domain ${TLS_HOST} or local nginx / :1032)..."
           STACK_UP=false
           for i in $(seq 1 40); do
-            if curl -kfsS --connect-timeout 5 "https://${TLS_HOST}:1032/api/v1/health" >/dev/null \
-              && curl -kfsS --connect-timeout 5 "https://${TLS_HOST}:1032" >/dev/null; then
-              STACK_UP=true
-              echo "Frontend + Backend (via nginx) healthy on attempt $i"
-              curl -kfsS "https://${TLS_HOST}:1032/api/v1/health"
-              echo ""
-              break
-            fi
-            echo "Waiting for :1032... ($i/40)"
+            for idx in 0 1 2; do
+              h="${HEALTH_URLS[$idx]}"
+              p="${HOME_URLS[$idx]}"
+              if curl -kfsS --connect-timeout 5 "$h" >/dev/null \
+                && curl -kfsS --connect-timeout 5 "$p" >/dev/null; then
+                STACK_UP=true
+                echo "Healthy via $h (attempt $i)"
+                curl -kfsS "$h"
+                echo ""
+                break 2
+              fi
+            done
+            echo "Waiting for health... ($i/40)"
             sleep 3
           done
 
           if [ "$STACK_UP" = false ]; then
-            echo "::error::Deployment health check failed (https://${TLS_HOST}:1032 unreachable from this runner)"
+            echo "::error::Deployment health check failed for ${TLS_HOST} (and local :443 / :1032)"
             echo "=== Container status (best effort) ==="
             if [ "$DEPLOY_MODE" = "local" ]; then
               docker ps -a --filter name=zarva || true
@@ -461,9 +476,9 @@ jobs:
 
           | Component | Status | URL |
           |---|---|---|
-          | **Gateway** | Live | [https://${{ env.TLS_HOST }}:1032](https://${{ env.TLS_HOST }}:1032) |
-          | **Health Check** | Healthy | [https://${{ env.TLS_HOST }}:1032/api/v1/health](https://${{ env.TLS_HOST }}:1032/api/v1/health) |
-          | **Swagger** | Ready | [https://${{ env.TLS_HOST }}:1032/api/docs](https://${{ env.TLS_HOST }}:1032/api/docs) |
+          | **Gateway** | Live | [https://${{ env.TLS_HOST }}](https://${{ env.TLS_HOST }}) |
+          | **Health Check** | Healthy | [https://${{ env.TLS_HOST }}/api/v1/health](https://${{ env.TLS_HOST }}/api/v1/health) |
+          | **Swagger** | Ready | [https://${{ env.TLS_HOST }}/api/docs](https://${{ env.TLS_HOST }}/api/docs) |
 
           - **Git SHA**: \`${{ github.sha }}\`
           - **Triggered By**: @${{ github.actor }}
