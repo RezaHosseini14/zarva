@@ -2,6 +2,11 @@ name: Bootstrap helali self-hosted runner
 
 on:
   workflow_dispatch:
+    inputs:
+      registration_token:
+        description: Optional — paste from helali emit-runner workflow (else uses HELALI_RUNNER_ADMIN_PAT)
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -19,14 +24,20 @@ jobs:
           ref: main
           path: helali
 
-      - name: Create helali runner registration token
+      - name: Resolve helali runner registration token
         id: reg
         env:
           HELALI_ADMIN_PAT: ${{ secrets.HELALI_RUNNER_ADMIN_PAT }}
+          INPUT_TOKEN: ${{ inputs.registration_token }}
         run: |
           set -euo pipefail
+          if [ -n "${INPUT_TOKEN:-}" ]; then
+            echo "::add-mask::${INPUT_TOKEN}"
+            echo "token=${INPUT_TOKEN}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ -z "${HELALI_ADMIN_PAT:-}" ]; then
-            echo "::error::Add zarva repo secret HELALI_RUNNER_ADMIN_PAT (classic PAT with admin:repo on helali, or fine-grained Actions: write on helali)."
+            echo "::error::Pass registration_token workflow input, or add zarva secret HELALI_RUNNER_ADMIN_PAT."
             exit 1
           fi
           TOKEN=$(curl -fsSL -X POST \
