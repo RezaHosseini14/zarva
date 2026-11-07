@@ -12,6 +12,7 @@ import { APP_VERSION } from '@/data/changelog';
 
 import { SidebarNavCloseProvider } from './sidebar-nav-close-context';
 import { UserMenu } from './user-menu';
+import { VersionSemverLabel } from './version-semver-label';
 
 interface IAppSidebarProps {
   readonly open: boolean;
@@ -71,15 +72,21 @@ export function AppSidebar({ open, onClose, navSlot, onOpenChangelog }: IAppSide
         <SidebarNavCloseProvider onClose={onClose}>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">{navSlot}</div>
         </SidebarNavCloseProvider>
-        <div className="shrink-0 space-y-1 border-t border-border/60 p-2">
+        <div className="shrink-0 space-y-1.5 border-t border-border/60 p-2">
           {onOpenChangelog ? (
             <button
               type="button"
-              className="w-full rounded-lg px-2 py-1 text-center text-[10px] font-medium text-muted-fg transition-colors hover:bg-muted/40 hover:text-foreground"
+              className={cn(
+                'group w-full rounded-xl border border-primary/25 bg-gradient-to-b from-primary/[0.14] to-primary/[0.04]',
+                'px-3 py-2.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
+                'ring-1 ring-primary/15 transition-[border-color,background-color,box-shadow] duration-200',
+                'hover:border-primary/40 hover:from-primary/[0.2] hover:ring-primary/30',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+              )}
               aria-label={tShell('openVersion', { version: APP_VERSION })}
               onClick={onOpenChangelog}
             >
-              v{APP_VERSION}
+              <VersionSemverLabel version={APP_VERSION} size="md" className="justify-center" />
             </button>
           ) : null}
           <UserMenu onNavigate={onClose} />

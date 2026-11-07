@@ -1111,6 +1111,22 @@ a.zarva-breadcrumb__home:active {
   letter-spacing: -0.02em;
 }
 
+.zarva-version-num {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'lnum' 1;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 @keyframes zarva-tick-up {
   0% {
     background-color: color-mix(in oklab, var(--success) 28%, transparent);

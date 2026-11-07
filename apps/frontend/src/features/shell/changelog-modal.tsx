@@ -19,6 +19,8 @@ import {
 } from '@/data/changelog';
 import { cn } from '@/lib/utils';
 
+import { VersionSemverLabel } from './version-semver-label';
+
 export interface IChangelogModalProps {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
@@ -97,23 +99,23 @@ export function ChangelogModal({ open, onOpenChange }: IChangelogModalProps) {
               <DialogTitle className="text-base tracking-tight">{t('title')}</DialogTitle>
               <DialogDescription className="flex flex-wrap items-center gap-2 text-sm">
                 <span>{t('currentVersionLabel')}</span>
-                <span className="inline-flex h-6 items-center rounded-full border border-border/60 bg-nested/60 px-2.5 font-mono text-[11px] font-semibold tabular-nums text-primary ring-1 ring-primary/15">
-                  v{APP_VERSION}
+                <span className="inline-flex h-7 items-center rounded-full border border-primary/25 bg-nested/60 px-2.5 ring-1 ring-primary/15">
+                  <VersionSemverLabel version={APP_VERSION} size="sm" />
                 </span>
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">
+        <div className="zarva-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">
           {CHANGELOG.map((entry) => (
             <section
               key={entry.version}
-              className="zarva-glass-card overflow-hidden rounded-2xl p-0 shadow-sm"
+              className="overflow-hidden rounded-2xl border border-border/70 bg-nested/40 shadow-sm"
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 bg-nested/50 px-4 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <span className="rounded-md bg-primary/15 px-2 py-0.5 font-mono text-xs font-semibold tabular-nums text-primary ring-1 ring-primary/20">
-                    v{entry.version}
+                  <span className="rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 ring-1 ring-primary/15">
+                    <VersionSemverLabel version={entry.version} size="sm" />
                   </span>
                   <h3 className="text-sm font-semibold text-foreground">{entry.title}</h3>
                 </div>
