@@ -331,8 +331,9 @@ jobs:
         env:
           BACKEND_IMAGE: ${{ needs.build-backend.outputs.image_ref }}
           FRONTEND_IMAGE: ${{ needs.build-frontend.outputs.image_ref }}
-          GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+          # GHCR login user must match image owner (lowercase); token falls back to GITHUB_TOKEN for self-hosted / CI pull.
+          GHCR_USER: ${{ github.repository_owner }}
+          GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN || secrets.GITHUB_TOKEN }}
           DEPLOY_MODE: ${{ steps.mode.outputs.mode }}
         run: |
           set -euo pipefail

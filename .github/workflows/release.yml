@@ -1,8 +1,8 @@
 name: Release
 
+# Placeholder until semantic-release is wired — do not duplicate every main push (ci-cd.yml already runs).
 on:
-  push:
-    branches: [main, master]
+  workflow_dispatch:
 
 permissions:
   contents: write

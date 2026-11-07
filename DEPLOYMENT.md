@@ -17,7 +17,7 @@ Remote: `/opt/zarva`
 | `SSH_PRIVATE_KEY` | for SSH deploy | Private key (full PEM) for GitHub Actions → VPS |
 | `SSH_HOST` | for SSH deploy | Hostname or IP the runner connects to over SSH |
 | `SSH_USER` | for SSH deploy | e.g. `root` |
-| `GHCR_PULL_TOKEN` | if pulling from GHCR on the VPS | PAT with `read:packages` |
+| `GHCR_PULL_TOKEN` | optional | Classic PAT with `read:packages` for manual `docker pull` on the VPS. **CI deploy** uses this when set; otherwise the job’s `GITHUB_TOKEN` is passed to the host for `docker login ghcr.io`. |
 | `SSH_PORT` | no | SSH port (default **22**). Set if `sshd` is not on 22 |
 | `TLS_HOST` | no | Hostname or IP for **HTTPS** checks and `NEXT_PUBLIC_*` on first `.env` bootstrap (defaults to `SSH_HOST`) |
 
