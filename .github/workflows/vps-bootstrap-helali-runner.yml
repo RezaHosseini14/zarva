@@ -1,0 +1,85 @@
+# One-time: register the helali GitHub Actions runner on this VPS (same box as zarva-vps).
+# Helali jobs cannot use zarva-vps — each repo needs its own runner registration.
+#
+# How to run (agent cannot SSH from Cursor; this runs ON the VPS via zarva-vps):
+# 1. helali repo → Settings → Actions → Runners → New self-hosted runner → copy --token …
+# 2. zarva repo → Actions → "VPS bootstrap helali runner" → Run workflow → paste token
+# 3. helali repo → Settings → Variables → DEPLOY_RUNS_ON = ["self-hosted","helali"]
+name: VPS bootstrap helali runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      registration_token:
+        description: Registration token from helali → Settings → Actions → Runners → New (expires ~1h)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vps-bootstrap-helali-runner
+  cancel-in-progress: false
+
+jobs:
+  register:
+    name: Register helali-vps runner
+    runs-on: [self-hosted, zarva]
+    timeout-minutes: 15
+    steps:
+      - name: Register runner in /opt/actions-runner-helali
+        env:
+          REGISTRATION_TOKEN: ${{ inputs.registration_token }}
+        run: |
+          set -euo pipefail
+          RUNNER_DIR=/opt/actions-runner-helali
+          REMOTE_DIR=/opt/helali
+
+          if [ ! -x "$RUNNER_DIR/config.sh" ]; then
+            echo "::error::Missing $RUNNER_DIR — extract actions-runner-linux-x64 on the VPS first."
+            exit 1
+          fi
+
+          if [ -f "$RUNNER_DIR/.runner" ]; then
+            echo "Runner already configured:"
+            head -c 400 "$RUNNER_DIR/.runner" || true
+            echo ""
+            sudo systemctl status 'actions.runner.*helali*' --no-pager 2>/dev/null || true
+            exit 0
+          fi
+
+          sudo chown -R github-runner:github-runner "$RUNNER_DIR"
+
+          sudo -u github-runner bash -c "cd '$RUNNER_DIR' && ./config.sh \
+            --url 'https://github.com/RezaHosseini14/helali' \
+            --token '$REGISTRATION_TOKEN' \
+            --name helali-vps \
+            --labels self-hosted,helali \
+            --unattended \
+            --replace"
+
+          sudo -u github-runner bash -c "cd '$RUNNER_DIR' && ./svc.sh install github-runner"
+          sudo bash -c "cd '$RUNNER_DIR' && ./svc.sh start"
+          sleep 3
+          sudo systemctl list-units --type=service --all | grep -i helali || true
+
+          sudo mkdir -p "$REMOTE_DIR/docker" "$REMOTE_DIR/data"
+          sudo chown -R github-runner:github-runner "$REMOTE_DIR" 2>/dev/null || true
+
+          if ! sudo grep -q github-runner /etc/sudoers.d/github-runner 2>/dev/null; then
+            echo 'github-runner ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/github-runner >/dev/null
+            sudo chmod 440 /etc/sudoers.d/github-runner
+          fi
+
+      - name: Summary
+        run: |
+          cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          ## helali runner
+
+          If **helali-vps** shows online under **RezaHosseini14/helali → Settings → Runners**, set repo variable:
+
+          `DEPLOY_RUNS_ON` = `["self-hosted","helali"]`
+
+          Then re-run **helali CI/CD** on `main`.
+          EOF
