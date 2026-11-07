@@ -58,6 +58,16 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$REGISTRATION_TOKEN"
-          sudo mkdir -p /opt/helali /opt/actions-runner-helali
-          sudo env REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$GITHUB_WORKSPACE/helali/scripts/register-helali-runner-on-vps.sh"
+          SCRIPT="$GITHUB_WORKSPACE/helali/scripts/register-helali-runner-on-vps.sh"
+          sed -i 's/\r$//' "$SCRIPT"
+          if sudo -n true 2>/dev/null; then
+            SUDO=sudo
+          elif [ "$(id -u)" -eq 0 ]; then
+            SUDO=
+          else
+            echo "::error::Runner user cannot sudo and is not root — grant NOPASSWD for deploy dirs or run as root."
+            exit 1
+          fi
+          $SUDO mkdir -p /opt/helali /opt/actions-runner-helali
+          $SUDO env REGISTRATION_TOKEN="$REGISTRATION_TOKEN" bash "$SCRIPT"
           echo "helali-vps registered — https://github.com/RezaHosseini14/helali/settings/actions/runners"
